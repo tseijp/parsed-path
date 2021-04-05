@@ -1,0 +1,26 @@
+{
+  "name": "parsed-path",
+  "version": "0.1.0",
+  "module": "index.js",
+  "types": "index.d.ts",
+  "main": "index.cjs.js",
+  "author": "tsei",
+  "license": "MIT",
+  "private": false,
+  "sideEffects": false,
+  "description": "parse path",
+  "keywords": [
+    "parse",
+    "path",
+    "typescript"
+  ],
+  "homepage": "https://github.com/tseijp/parsed-path#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tseijp/parsed-path.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tseijp/parsed-path/issues"
+  },
+  "dependencies": {}
+}
