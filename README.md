@@ -7,28 +7,22 @@ A node module to make path manipulation without stress. 🤳🏻
 ### Docs
 See the documentation for more information about using `parsed-path`
 
-- [Getting started]("./parsed-path/docs/get.md")
-- [API Reference]("./packages/parsed-path/docs/api.md")
+- [Getting started](
+    https://github.com/tseijp/parsed-path/packages/parsed-path/docs/get.md)
+- [API Reference](
+    https://github.com/tseijp/parsed-path/packages/parsed-path/docs/api.md)
 
 ### Example
 ```js
 import parsed from 'parsed-path';
 
-const path = parsed('src/utils')`
+const path = parsed`src``utils``
     root: /;
 `;
 console.log(`
-  ${ path.mount`test` } toBe test/src/utils
-  ${ path.from`src`   } toBe utils/index.ts
-  ${ path.to`src`     } toBe ..
-`);
-
-const file = path`index${ ({ext=".ts"}) => ext }`;
-console.log(`
-  ${ file({exc: ".js"}) } toBe /src/utils/index.js
-  ${ file.dirname`test` } toBe /src/utils/test
-  ${ file.move`../test` } toBe /src/test/index.ts
-  ${ file.basename`.js` } toBe index.js
+  ${ path.mount`test` } to equal test\\src\\utils
+  ${ path.from`src`   } to equal utils
+  ${ path.to`src`     } to equal ..
 `);
 ```
 

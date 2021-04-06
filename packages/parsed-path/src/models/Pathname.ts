@@ -1,5 +1,5 @@
 import { is, RuleSet, flatten } from '../utils'
-
+import { join, parse } from 'path'
 
 function isStaticRuleSets(ruleSets: RuleSet[]=[]): boolean {
     for (let i = 0; i < ruleSets.length; i += 1)
@@ -19,12 +19,18 @@ export interface IPathname {
 export function Pathname (ruleSets?: RuleSet[], parsedId?: string, pathname?: IPathname): IPathname
 
 export function Pathname (ruleSets?: any, parsedId?: any, pathname?: any) {
-    const isStatic = Boolean(pathname?.isStatic) && isStaticRuleSets(ruleSets)
+    const isStatic = (is.und(pathname) || pathname.isStatic) && isStaticRuleSets(ruleSets)
 
-    function WrapedPathname (execution?: any, parseSheet?: any, parser?: any) {
-        let i, name = '', names = [];
+    const WrapedPathname = (execution?: any, parseSheet?: any, parser: any=parse) => {
+        let i, names = [];
 
-        if (!isStatic)
+        if (pathname)
+            names.push(pathname(execution, parseSheet, parser));
+
+        if (isStatic)
+            names.push(...ruleSets)
+        else {
+            let name = '';
             for (i = 0; i < ruleSets.length; i++) {
                 const rule = ruleSets[i]
                 if (is.str(rule))
@@ -36,15 +42,15 @@ export function Pathname (ruleSets?: any, parsedId?: any, pathname?: any) {
                         : partChunk
                 }
             }
-        if (name) {
             // TODO format by parseSheet
             // if (!parseSheet?.hasNameForId(parsedId, name)) {
             //     const formated = parser(name, `.${name}`, undefined, parsedId);
             //     parseSheet.insertRuleSets(parsedId, name, formated);
             // }
-            names.push(name);
+            if (name)
+                names.push(name);
         }
-        return names.join('/')
+        return join(...names)
     }
 
     WrapedPathname.ruleSets = ruleSets

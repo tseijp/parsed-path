@@ -1,69 +1,59 @@
-import { Pathname, IPathname } from './Pathname'
-import { is, RuleSet } from "../utils"
-import { generateComponentId, generateParsedId, generateDisplayName } from '../utils'
+import { parsed } from '../constructors';
+import { is, RuleSet } from '../utils';
+import { Pathname, IPathname } from './Pathname';
+import { generatePathId, generateParsedId, generateDisplayName } from '../utils';
 
 export interface IParsedPath {
-    target: RuleSet | IParsedPath
-    options: object
-    ruleSets: RuleSet
-    componentId: string
-    displayName: string
+    attrs: any[]
+    pathId: string
     parsedId: string
+    displayName: string
     pathname: IPathname
     isStatic: boolean
     toString: () => string
-    mount: () => 'TODO'
-    from: () => 'TODO'
-    to: () => 'TODO'
-    basename: () => 'TODO'
-    dirname: () => 'TODO'
-    move: () => 'TODO'
 }
 
-export function ParsedPath (target: RuleSet | IParsedPath, options: object, ruleSets: RuleSet[]): IParsedPath
+export function ParsedPath (targets: RuleSet[], options: object, paths: RuleSet[]): IParsedPath
 
-export function ParsedPath (target: any, options: any, ruleSets: any) {
+export function ParsedPath (targets: [IParsedPath], options: object, paths: RuleSet[]): IParsedPath
+
+export function ParsedPath (targets: any, options: any, paths: any) {
+    const [target] = targets;
     const {
         attrs = [],
-        componentId = generateComponentId(options.displayName, options.parentComponentId),
-        parsedId = generateParsedId(options.displayName, options.componentId, componentId),
+        pathId = generatePathId(options.displayName, options.parentComponentId),
+        parsedId = generateParsedId(options.displayName, options.pathId, pathId),
         displayName = generateDisplayName(target),
     } = options;
 
+    const isCompositePathname = !is.str(target) || !is.big(target.charAt(0));
     const isTargetParsedPath = !is.str(target) && is.str(target?.parsedId);
-    // const isCompositePathname = !is.str(target) && is.big(target.charAt(0));
+    const isTargetRuleSets = !isTargetParsedPath && is.str(target)
+    const finalAttrs = isTargetParsedPath && target.attrs
+        ? target.attrs.concat(attrs).filter(Boolean)
+        : attrs
 
-    const basePath = isTargetParsedPath? target.componentStyle : undefined
+    const ruleSets = isTargetRuleSets? [...targets, ...paths]: paths;
+    const basePath = isTargetParsedPath? target.pathname: undefined;
     const pathname = Pathname(ruleSets, parsedId, basePath);
     const isStatic = pathname.isStatic && attrs.length === 0;
 
+    const WrappedParsedPath = (...args: any) => is.obj(args[0]) || is.und(args[0])
+        ? (pathname as any)(...args)
+        : parsed(WrappedParsedPath)(...args)
 
-    const WrapedParsedPath: any = (...args: any) => (pathname as any)(...args)
-    WrapedParsedPath.target = target
-    WrapedParsedPath.options = options
-    WrapedParsedPath.ruleSets = ruleSets
-    WrapedParsedPath.componentId = componentId
-    WrapedParsedPath.displayName = displayName
-    WrapedParsedPath.parsedId = parsedId
-    WrapedParsedPath.pathname = pathname
-    WrapedParsedPath.isStatic = isStatic
-    WrapedParsedPath.toString = () => WrapedParsedPath()
-    WrapedParsedPath.mount = () => 'TODO'
-    WrapedParsedPath.from = () => 'TODO'
-    WrapedParsedPath.to = () => 'TODO'
-    WrapedParsedPath.basename = () => 'TODO'
-    WrapedParsedPath.dirname = () => 'TODO'
-    WrapedParsedPath.move = () => 'TODO'
-    // if (isCompositePathname)
-    //     hoist(WrapedParsedPath, target, {
-    //         attrs: true,
-    //         pathname: true,
-    //         displayName: true,
-    //         foldedComponentIds: true,
-    //         shouldForwardProp: true,
-    //         styledComponentId: true,
-    //         target: true,
-    //         withComponent: true,
-    //     });
-    return WrapedParsedPath as IParsedPath
+    WrappedParsedPath.attrs = finalAttrs
+    WrappedParsedPath.pathId = pathId
+    WrappedParsedPath.parsedId = parsedId
+    WrappedParsedPath.displayName = displayName
+
+    WrappedParsedPath.isCompositePathname = isCompositePathname
+    WrappedParsedPath.isTargetParsedPath = isTargetParsedPath
+    WrappedParsedPath.isTargetRuleSets = isTargetRuleSets
+
+    WrappedParsedPath.pathname = pathname
+    WrappedParsedPath.isStatic = isStatic
+    WrappedParsedPath.toString = () => WrappedParsedPath()
+
+    return WrappedParsedPath as IParsedPath
 }

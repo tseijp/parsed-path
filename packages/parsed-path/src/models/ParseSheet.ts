@@ -1,6 +1,6 @@
 import { RuleSet } from '../utils'
 
-type pathObject = {
+export type pathObject = {
     root?: RuleSet
     dir?: RuleSet
     base?: RuleSet

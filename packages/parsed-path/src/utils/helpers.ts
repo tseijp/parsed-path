@@ -42,6 +42,7 @@ is.num = (a: unknown): a is number => typeof a === "number";
 is.str = (a: unknown): a is string => typeof a === "string";
 is.fun = (a: unknown): a is Function => typeof a === "function";
 is.obj = (a: unknown): a is object => Object.prototype.toString.call(a) === "[object Object]";
+is.url = (a: unknown): a is URL => a instanceof URL;
 is.set = (a: unknown): a is Set<any> => a instanceof Set;
 is.map = (a: unknown): a is Map<any, any> => a instanceof Map;
 is.big = (a: unknown): a is string => typeof a === "string" && a === a.toUpperCase()
