@@ -27,30 +27,30 @@ export function generateAlphabeticName (code: any) {
 
 const identifiers: any = {};
 
-export function generateParsedId (displayName?: string, Id?: string, current?: string): string
+export function generateParsedId (displayId?: string, Id?: string, current?: string): string
 
-export function generateParsedId (displayName: any, pathId: any, current: any) {
-    return displayName && pathId
-        ? `${escape(displayName)}-${pathId}`
+export function generateParsedId (displayId: any, pathId: any, current: any) {
+    return displayId && pathId
+        ? `${escape(displayId)}-${pathId}`
         : pathId || current;
 }
 
-export function generatePathId (displayName?: string, parentComponentId?: string): string
+export function generatePathId (displayId?: string, parentComponentId?: string): string
 
-export function generatePathId (displayName?: any, parentComponentId?: any) {
-    const name = is.str(displayName)? 'pp' : escape(displayName);
+export function generatePathId (displayId?: any, parentComponentId?: any) {
+    const name = is.str(displayId)? 'pp' : escape(displayId);
     const str = hash(name + identifiers[name]) >>> 0
     const pathId = `${name}-${generateAlphabeticName(str)}`;
     identifiers[name] = (identifiers[name] || 0) + 1;
     return parentComponentId ? `${parentComponentId}-${pathId}` : pathId;
 }
 
-export function getDisplayName (target: any) {
-    return (is.str(target) && target) || target?.displayName || target?.name || 'Pathname'
+export function getDisplayName (tag: any) {
+    return (is.str(tag) && tag) || tag?.displayId || tag?.name || 'Pathname'
 }
 
-export function generateDisplayName (target: any) {
-    return is.str(target) && !is.big(target.chartAt?.call(0))
-        ? `parsed.${target}`
-        : `Parsed(${getDisplayName(target)})`;
+export function generateDisplayName (tag: any) {
+    return is.str(tag) && !is.big(tag.charAt(0))
+        ? `parsed.${tag}`
+        : `Parsed(${getDisplayName(tag)})`;
 }

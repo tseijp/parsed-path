@@ -19,6 +19,10 @@
     "watch": true,
     "baseUrl": "./",
     "outDir": "./",
+    "types": [
+      "jest",
+      "node"
+    ],
     "lib": [
       "dom",
       "dom.iterable",

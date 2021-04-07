@@ -1,23 +1,24 @@
 # API References
 
-### Parsing
+### Parsed
 
 This is the default export.
-We use to create the parsed.target helper method.
+We use to create the parsed.tag helper method.
 
 Return a function that accepts a tagged template literal and turns it into a pathname.
 
 ```js
 const Api = parsed.https`
-    root: tsei.jp;
-    base: api/v${({version}) => version};
-`
+  root: tsei.jp;
+  base: api/v${({version}) => version};
+`;
+
 render(
   <>
     <Api version={1}/>
     <Api version={1}/>
   </>
-)
+);
 ```
 
 ### Adapting based on props
@@ -28,7 +29,9 @@ This path has a api version.
 When setting the primary prop to true, we are swapping out its background and text color.
 
 ```js
-const Path = parsed.https`localhost:3000/api/v${props => props.version}`
+const Path = parsed.https`localhost:3000/api/v${
+  props => props.version
+}`;
 
 render(
   <>
@@ -37,9 +40,10 @@ render(
   </>
 );
 
-const Post = Path`${props => (version === 1)
-  ? "post/is/undefined"
-  : "post"
+const Post = Path`${props =>
+  version === 1
+    ? "post/is/undefined"
+    : "post"
 }`
 
 render(
@@ -109,21 +113,21 @@ The parsed method works perfectly on all of your own or any third-party componen
 as long as they attach the passed className prop to a DOM element.
 
 ```js
-const Url = new URL("https://localhost:3000/")
-const ParsedUrl = parsed(Url)`
+const Url = new URL("https://localhost:3000/");
+const Api = parsed(Url)`
   port: 3001;
   path: api/v1;
 `;
 
 render(
   <>
-    <ParsedUrl/>
-    <ParsedUrl port="8000"/>
+    <Api/>
+    <Api port="8000"/>
   </>
 );
 ```
 
-### Attaching additional props v2
+### Attaching additional props
 
 To avoid unnecessary wrappers that just pass on some props to the rendered component,
 or element, you can use the .attrs constructor.
@@ -170,22 +174,23 @@ similarly to how css properties defined later in a stylesheet override previous 
 Input's .attrs are applied first, and then PasswordInput's .attrs:
 
 ```js
-const Root = parsed.attrs(props => ({
+const Api = parsed.attrs(props => ({
   dev: false,
   port: props.dev && 3000,
   root: props.dev? "localhost": "tsei.jp"
-}))`
+}))`api``v1``
   port: ${props => props.port}
   root: ${props => props.root}
 `;
 
-const Pro = Root.attrs(props => ({dev: true}))
-const Dev = Root.attrs(props => ({dev: false})
+const Dev = parsed(Root).attrs(props => ({dev: false});
+const Pro = parsed(Root).attrs(props => ({dev: true}));
 
 render(
   <>
-    <Pro/>
+    <Api/>
     <Dev/>
+    <Pro/>
   </>
 );
 ```

@@ -12,7 +12,7 @@ export function path (paths?: any, ...interpolations: any) {
         return []
 
     if (is.url(paths))
-        return flatten(interleave([], [parse(paths), ...interpolations]))
+        return flatten(interleave([], [parse(paths.pathname), ...interpolations]))
 
     if (is.fun(paths) || is.obj(paths))
         return flatten(interleave([], [paths, ...interpolations]));

@@ -1,5 +1,5 @@
 import { is, RuleSet, flatten } from '../utils'
-import { join, parse } from 'path'
+import { join, resolve, parse } from 'path'
 
 function isStaticRuleSets(ruleSets: RuleSet[]=[]): boolean {
     for (let i = 0; i < ruleSets.length; i += 1)
@@ -8,56 +8,55 @@ function isStaticRuleSets(ruleSets: RuleSet[]=[]): boolean {
     return true;
 }
 
-export interface IPathname {
+export interface Pathname {
     isStatic: boolean
-    toString: () => string,
+    parsedId: string
     ruleSets: RuleSet[]
-    parsedId: string,
-    pathname: IPathname,
+    pathname: Pathname
 }
 
-export function Pathname (ruleSets?: RuleSet[], parsedId?: string, pathname?: IPathname): IPathname
+export class Pathname <Props extends object=any> {
+    toString = (...args: any): string => this.join(...args)
+    resolve = (...args: any): string => resolve(...this.generate(...args))
+    join = (...args: any): string => join(...this.generate(...args))
+    pure = (isOptionsPure=false) => isOptionsPure
+        ? (...args: any) => this.resolve(...args)
+        : (...args: any) => this.join(...args)
 
-export function Pathname (ruleSets?: any, parsedId?: any, pathname?: any) {
-    const isStatic = (is.und(pathname) || pathname.isStatic) && isStaticRuleSets(ruleSets)
+    constructor (parsedId: string, ruleSets: RuleSet[], pathname?: Pathname)
 
-    const WrapedPathname = (execution?: any, parseSheet?: any, parser: any=parse) => {
-        let i, names = [];
+    constructor (parsedId: any, ruleSets: any, pathname?: any) {
+        this.parsedId = parsedId
+        this.ruleSets = ruleSets
+        this.pathname = pathname
+        this.isStatic = (is.und(pathname) || pathname.isStatic) && isStaticRuleSets(ruleSets)
+    }
 
+    generate (props?: Props, parseSheet?: any, parser?: any): string[]
+
+    generate (props?: any, parseSheet?: any, parser: any=parse) {
+        const {pathname, isStatic, ruleSets} = this
+        let names: string[] = [];
         if (pathname)
-            names.push(pathname(execution, parseSheet, parser));
+            names.push(...pathname.generate(props, parseSheet, parser));
 
         if (isStatic)
-            names.push(...ruleSets)
+            names.push(...ruleSets as string[])
         else {
-            let name = '';
-            for (i = 0; i < ruleSets.length; i++) {
-                const rule = ruleSets[i]
+            let name = ''
+            ruleSets.forEach(rule => {
                 if (is.str(rule))
-                    name += rule
+                    return name += rule
                 else {
-                    const partChunk = flatten(rule, execution)
+                    const partChunk = flatten(rule, props)
                     name += Array.isArray(partChunk)
                         ? partChunk.join("")
                         : partChunk
                 }
-            }
-            // TODO format by parseSheet
-            // if (!parseSheet?.hasNameForId(parsedId, name)) {
-            //     const formated = parser(name, `.${name}`, undefined, parsedId);
-            //     parseSheet.insertRuleSets(parsedId, name, formated);
-            // }
+            })
             if (name)
-                names.push(name);
+                names.push(name)
         }
-        return join(...names)
+        return names
     }
-
-    WrapedPathname.ruleSets = ruleSets
-    WrapedPathname.parsedId = parsedId
-    WrapedPathname.pathname = pathname
-    WrapedPathname.isStatic = isStatic
-    WrapedPathname.toString = () => WrapedPathname()
-
-    return WrapedPathname as IPathname
 }

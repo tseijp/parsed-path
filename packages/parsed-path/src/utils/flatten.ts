@@ -5,7 +5,7 @@ import { is } from './helpers'
 
 export function flatten (
     chunk: undefined | null | false | "",
-    execution?: any,
+    props?: any,
 ): string
 
 export function flatten (
@@ -18,14 +18,14 @@ export function flatten <FunChunk=(...args: any) => any> (
     exection?: any
 ): string[] | FunChunk
 
-export function flatten (chunk: any, execution?: any) {
+export function flatten (chunk: any, props?: any) {
     if (is.fls(chunk))
         return ''
 
     if (is.arr(chunk)) {
         const ruleSet = []
         for (let i = 0, len = chunk.length, result: any; i < len; i += 1) {
-            result = flatten(chunk[i], execution)
+            result = flatten(chunk[i], props)
             if (result === '') continue;
             else if (is.arr(result)) ruleSet.push(...result)
             else ruleSet.push(result)
@@ -34,8 +34,8 @@ export function flatten (chunk: any, execution?: any) {
     }
 
     if (is.fun(chunk)) {
-        if (execution)
-            return flatten(chunk(execution), execution)
+        if (props)
+            return flatten(chunk(props), props)
         else return chunk
     }
 
