@@ -27,6 +27,16 @@ export function generateAlphabeticName (code: any) {
 
 const identifiers: any = {};
 
+export function generatePathId (displayId?: string, parentPathId?: string): string
+
+export function generatePathId (displayId?: any, parentPathId?: any) {
+    const name = is.str(displayId)? 'pp' : escape(displayId);
+    const str = hash(name + identifiers[name]) >>> 0
+    const pathId = `${name}-${generateAlphabeticName(str)}`;
+    identifiers[name] = (identifiers[name] || 0) + 1;
+    return parentPathId ? `${parentPathId}-${pathId}` : pathId;
+}
+
 export function generateParsedId (displayId?: string, Id?: string, current?: string): string
 
 export function generateParsedId (displayId: any, pathId: any, current: any) {
@@ -35,22 +45,12 @@ export function generateParsedId (displayId: any, pathId: any, current: any) {
         : pathId || current;
 }
 
-export function generatePathId (displayId?: string, parentComponentId?: string): string
-
-export function generatePathId (displayId?: any, parentComponentId?: any) {
-    const name = is.str(displayId)? 'pp' : escape(displayId);
-    const str = hash(name + identifiers[name]) >>> 0
-    const pathId = `${name}-${generateAlphabeticName(str)}`;
-    identifiers[name] = (identifiers[name] || 0) + 1;
-    return parentComponentId ? `${parentComponentId}-${pathId}` : pathId;
-}
-
 export function getDisplayName (tag: any) {
     return (is.str(tag) && tag) || tag?.displayId || tag?.name || 'Pathname'
 }
 
-export function generateDisplayName (tag: any) {
-    return is.str(tag) && !is.big(tag.charAt(0))
+export function generateDisplayName (tag: any, isCompositePath=false) {
+    return !isCompositePath
         ? `parsed.${tag}`
         : `Parsed(${getDisplayName(tag)})`;
 }

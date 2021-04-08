@@ -1,23 +1,22 @@
-import { parsedEntries } from './parsed';
-import { resetParsed } from '../utils';
+import { parsedEntries } from '../parsed';
+import { resetParsed } from '../../utils';
 
 let parsed: any;
 
-describe('parsed isStatic', () => {
+describe('parsed static', () => {
     beforeEach(() => {
         parsed = resetParsed()
     })
-    it('to string without tags', () => {
+    it('to string without args', () => {
         expect(parsed`foo`()).toEqual('foo')
         expect(parsed`foo`({})).toEqual('foo')
         expect(parsed`foo` + '').toEqual('foo')
         expect(parsed`foo`.toString()).toEqual('foo')
     })
-    it('to string with tags', () => {
+    it('to string with args', () => {
         expect(parsed`foo``bar``baz`()).toEqual('foo\\bar\\baz')
         expect(parsed`foo``bar``baz`({})).toEqual('foo\\bar\\baz')
         expect(parsed`foo``bar``baz` + '').toEqual('foo\\bar\\baz')
-        expect(parsed`foo``bar``baz`.toString()).toEqual('foo\\bar\\baz')
     })
     it('tag as parsed path', () => {
         expect(parsed(parsed`foo``bar``baz`) + '').toEqual('foo\\bar\\baz')
@@ -31,25 +30,18 @@ describe('parsed with props', () => {
     beforeEach(() => {
         parsed = resetParsed()
     })
-    it('to string without tags', () => {
-        // const obj = {foo: "foo"}
-        // expect(parsed`${(props: any) => props.foo}`()).toEqual('.')
-        // expect(parsed`${(props: any) => props.foo}`(obj)).toEqual('foo')
-        // expect(parsed`${(props: any) => props.foo || 'bar'}` + '').toEqual('bar')
-        // expect(parsed`${(props=obj) => props.foo}`.toString()).toEqual('bar')
+    it('to string without args', () => {
+        expect(parsed`${({foo}: any) => foo}`()).toEqual('.')
+        expect(parsed`${({foo}: any) => foo}`({foo: "foo"})).toEqual('foo')
+        expect(parsed`${({foo}: any) => foo || 'foo'}` + '').toEqual('foo')
+        expect(parsed`${({foo='foo'}: any) => foo}`.toString()).toEqual('foo')
     })
-    // it('to string with tags', () => {
-    //     expect(parsed`foo``bar``baz`()).toEqual('foo\\bar\\baz')
-    //     expect(parsed`foo``bar``baz`({})).toEqual('foo\\bar\\baz')
-    //     expect(parsed`foo``bar``baz` + '').toEqual('foo\\bar\\baz')
-    //     expect(parsed`foo``bar``baz`.toString()).toEqual('foo\\bar\\baz')
-    // })
-    // it('tag as parsed path', () => {
-    //     expect(parsed(parsed`foo``bar``baz`) + '').toEqual('foo\\bar\\baz')
-    //     expect(parsed(parsed`foo``bar`)`baz` + '').toEqual('foo\\bar\\baz')
-    //     expect(parsed(parsed()`foo`)`bar``baz` + '').toEqual('foo\\bar\\baz')
-    //     expect(parsed(parsed()``)`foo``bar``baz` + '').toEqual('foo\\bar\\baz')
-    // })
+    it('to string with args', () => {
+        expect(parsed`f${({o}: any) => o}o``bar``baz`()).toEqual('fo\\bar\\baz')
+        expect(parsed`f${({o}: any) => o}o``bar``baz`({o: "o"})).toEqual('foo\\bar\\baz')
+        expect(parsed`f${({o}: any) => o || 'o'}o``bar``baz` + '').toEqual('foo\\bar\\baz')
+        expect(parsed`f${({o = 'o'}: any) => o}o``bar``baz`.toString()).toEqual('foo\\bar\\baz')
+    })
 })
 
 

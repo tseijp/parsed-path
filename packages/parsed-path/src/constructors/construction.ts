@@ -1,27 +1,28 @@
 import { path } from './path';
 import { IParsedPath } from '../models';
-import { is, relative, RuleSet } from '../utils';
+import { is, relative, PathSet } from '../utils';
 
-export function construction(
-    constructor: (...args: any) => IParsedPath,
-    tags: RuleSet[],
-    options?: object
-): (...args: any) => IParsedPath
-
-export function construction(
-    constructor: (...args: any) => IParsedPath,
-    tags: RuleSet[],
-    options?: object
-): (arg: object | undefined, ...args: any) => string
+export interface IConstruction {
+    toString: (...args: any) => string
+    pure: (...args: any) => IParsedPath
+    mount: (...args: any) => IParsedPath
+    from: (...args: any) => IConstruction
+    to: (...args: any) => IConstruction
+    withAttrs: (args: any) => IConstruction
+    withConfig: (args: any) => IConstruction
+}
 
 export function construction (
-    constructor: (...args: any) => any,
-    tags: any,
-    options: any={}
-) {
-    const templateFunction = (...args: any) => is.obj(args[0]) || is.und(args[0])
-        ? constructor(path(...tags), options)(...args)
-        : constructor(path(...tags), options, path(...args))
+    constructor: (...args: any) => IParsedPath,
+    tags: PathSet,
+    options?: object
+): IConstruction
+
+export function construction (constructor: any, tags: any, options: any={}) {
+    const templateFunction = (props?: any, ...args: any) =>
+        is.obj(props) || is.und(props)
+            ? constructor(path(...tags), options)(props, ...args)
+            : constructor(path(...tags), options, path(props, ...args))
 
     templateFunction.toString = (...args: any) => templateFunction(...args)
 
@@ -37,13 +38,13 @@ export function construction (
     templateFunction.to = (...to: any) =>
         construction(constructor, relative(path(...tags), path(...to)), options)
 
-    templateFunction.withConfig = (config: any) =>
-        construction(constructor, path(...tags), {...options, ...config});
-
-    templateFunction.attrs = (attrs: any) =>
+    templateFunction.withAttrs = (attrs: any) =>
         construction(constructor, path(...tags), {...options,
             attrs: Array.prototype.concat(options.attrs, attrs).filter(Boolean),
         });
 
-    return templateFunction;
+    templateFunction.withConfig = (config: any) =>
+        construction(constructor, path(...tags), {...options, ...config});
+
+    return templateFunction as IConstruction;
 }

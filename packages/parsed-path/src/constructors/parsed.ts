@@ -1,8 +1,7 @@
 import { ParsedPath } from '../models';
 import { construction } from './construction';
 
-const parsed: any = (...tags: any) =>
-    construction(ParsedPath, tags)
+const parsed: any = (...tags: any) => construction(ParsedPath, tags)
 
 const parsedEntries = Object.entries({
     https: 'https://',
@@ -17,10 +16,9 @@ parsedEntries.forEach(([tag, tags]: any) => {
     parsed[tag] = parsed(tags)
 })
 
-window.location.pathname.split('/').reduce((paths, tag) => {
-    if (tag)
-        parsed[tag] = parsed(paths + '/' + tag)
-    return paths + '/' + tag
+window.location.pathname.split('/').reduce((tags, tag) => {
+    parsed[tag || "top"] = parsed(tags + '/' + tag)
+    return tags + '/' + tag
 })
 
 export { parsed, parsedEntries };

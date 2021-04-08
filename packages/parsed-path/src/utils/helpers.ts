@@ -1,28 +1,34 @@
 /**
  * https://github.com/styled-components/styled-components/blob/master/packages/styled-components/src/utils/interleave.js
  */
-export type RuleSet =
-    | null
-    | boolean
-    | undefined
-    | number
+export type Rule =
     | string
-    | object
     | ((props: any) => RuleSet)
-    | RuleSet[];
+    | Rule[];
+
+export type Path =
+    | null
+    | unknown
+    | number
+    | boolean
+    | object
+    | Rule
+    | Path[]
+
+export type RuleSet = Rule[]
+export type PathSet = Path[]
 
 export function interleave (
     strings: TemplateStringsArray[],
-    interpolations: RuleSet[]
+    interpolations: Path[]
 ): RuleSet[]
 
-export function interleave(strings: any, interpolations: any){
+export function interleave(strings: any=[], interpolations: any=[]){
     const result = [strings[0]];
     for (let i = 0, len = interpolations.length; i < len; i += 1)
         result.push(interpolations[i], strings[i + 1]);
     return result;
 };
-
 
 const is = (a: any, b?: any, ...other: any): boolean => {
     if (other.length > 0) return is(a, b) && is(b, ...other)
@@ -55,7 +61,7 @@ export  { is }
  * TODO: ralative paths without resolve
  * forked from https://github.com/nodejs/node/blob/master/lib/path.js
  */
-export function relative (from: RuleSet[], to: RuleSet[]): RuleSet[]
+export function relative (from: RuleSet, to: RuleSet): RuleSet
 
 export function relative(from: any, to: any) {
     const length = from.length > to.length? from.length: to.length

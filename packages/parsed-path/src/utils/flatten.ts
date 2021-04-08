@@ -22,12 +22,15 @@ export function flatten (chunk: any, props?: any) {
     if (is.fls(chunk))
         return ''
 
+    if (is.str(chunk))
+        return chunk
+
     if (is.arr(chunk)) {
         const ruleSet = []
         for (let i = 0, len = chunk.length, result: any; i < len; i += 1) {
             result = flatten(chunk[i], props)
             if (result === '') continue;
-            else if (is.arr(result)) ruleSet.push(...result)
+            if (is.arr(result)) ruleSet.push(...result)
             else ruleSet.push(result)
         }
         return ruleSet
@@ -40,7 +43,7 @@ export function flatten (chunk: any, props?: any) {
     }
 
     if (is.obj(chunk) && chunk.constructor === Object)
-        return Object.keys(chunk).map(k => `${k}:${chunk[k]};`).join()
+        return Object.keys(chunk).map(k => `${k}:${(chunk as any)[k]};`).join()
 
     return chunk.toString()
 }

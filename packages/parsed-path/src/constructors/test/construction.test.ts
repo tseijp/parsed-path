@@ -1,19 +1,9 @@
-import { resetParsed } from '../utils';
+import { resetParsed } from '../../utils';
 
 describe('parsed utils', () => {
     let parsed: any;
     beforeEach(() => {
         parsed = resetParsed()
-    })
-    it('basic utils', () => {
-        const path = parsed`src``utils`
-        expect(parsed(path).mount`test` + '').toEqual('test\\src\\utils')
-        // expect(parsed(path).from`src` + '').toEqual('utils')
-        // expect(parsed(path).to`src` + '').toEqual('..')
-        //
-        // const file = path`..``index.js`
-        // expect(parsed(file).move`test`).toEqual('src\\test\\index.ts')
-        // expect(parsed(file).name`.tsx`).toEqual('index.tsx')
     })
     it('mount util', () => {
         expect(parsed`foo``bar``baz`.mount`` + '').toEqual('baz')
@@ -41,5 +31,15 @@ describe('parsed utils', () => {
     //     expect(parsed(parsed`foo.ts`).name`foo` + 'foo').toEqual('foo.ts')
     //     expect(parsed(parsed`foo``bar.ts`).name`bar` + 'bar').toEqual('foo\\bar.bar')
     //     expect(parsed(parsed`foo``bar``baz.ts`).name`baz` + 'baz').toEqual('foo\\bar\\baz.baz')
+    // })
+    // it('TODO: all utils', () => {
+    //     const path = parsed`src``utils`
+    //     expect(parsed(path).mount`test` + '').toEqual('test\\src\\utils')
+    //     expect(parsed(path).from`src` + '').toEqual('utils')
+    //     expect(parsed(path).to`src` + '').toEqual('..')
+    //
+    //     const file = path`..``index.js`
+    //     expect(parsed(file).move`test`).toEqual('src\\test\\index.ts')
+    //     expect(parsed(file).name`.tsx`).toEqual('index.tsx')
     // })
 })

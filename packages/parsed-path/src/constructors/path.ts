@@ -1,16 +1,15 @@
 import { parse } from 'path'
-import {interleave, flatten, is, RuleSet} from '../utils';
+import {interleave, flatten, is, Path, PathSet, RuleSet} from '../utils';
 
-export function path (paths?: RuleSet): RuleSet[]
+export function path (paths?: PathSet): RuleSet
 
-export function path (paths: URL, ...interpolations: RuleSet[]): RuleSet[]
+export function path (paths: URL, ...interpolations: PathSet): RuleSet
 
-export function path (paths: RuleSet, ...interpolations: RuleSet[]): RuleSet[]
+export function path (paths: Path, ...interpolations: PathSet): RuleSet
+
+export function path (paths: TemplateStringsArray, ...interpolations: PathSet): RuleSet
 
 export function path (paths?: any, ...interpolations: any) {
-    if (is.fls(paths))
-        return []
-
     if (is.url(paths))
         return flatten(interleave([], [parse(paths.pathname), ...interpolations]))
 
