@@ -1,5 +1,5 @@
-import { ParsedPath } from '../models';
-import { construction } from './construction';
+import { ParsedPath } from '../models'
+import { construction } from './construction'
 
 const parsed: any = (...tags: any) => construction(ParsedPath, tags)
 
@@ -21,4 +21,4 @@ window.location.pathname.split('/').reduce((tags, tag) => {
     return tags + '/' + tag
 })
 
-export { parsed, parsedEntries };
+export { parsed, parsedEntries }

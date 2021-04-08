@@ -1,4 +1,5 @@
-import { is, RuleSet, flatten } from '../utils'
+import { is, flatten } from '../utils'
+import { PathSet } from '../constructors'
 import {
     join,
     resolve,
@@ -6,19 +7,19 @@ import {
     normalize
  } from 'path'
 
-function isStaticRuleSet(ruleSet: any=[]): boolean {
-    return !ruleSet.some((rule: any) => {
+function isStaticPathSet(pathSet: any=[]): boolean {
+    return !pathSet.some((rule: any) => {
         if (is.fun(rule))
             return true
         if (is.arr(rule))
-            return !isStaticRuleSet(rule)
+            return !isStaticPathSet(rule)
     })
 }
 
 export interface Pathname {
     isStatic: boolean
     pathId: string
-    ruleSets: RuleSet[]
+    pathSets: PathSet[]
     pathname: Pathname
 }
 
@@ -27,36 +28,31 @@ export class Pathname <Props extends object=any> {
     toString = (...args: any): string => this.join(...args)
     resolve = (...args: any): string => resolve(...this.generate(...args))
     join = (...args: any): string => join(...this.generate(...args))
-    pure = (isOptionsPure=false, ...args: any) => {
-        return isOptionsPure
-            ? this.resolve(...args)
-            : this.join(...args)
-    }
+    pure = (isOptionsPure=false, ...args: any) => isOptionsPure
+        ? this.resolve(...args)
+        : this.join(...args)
 
-    constructor (pathId: string, pathname?: Pathname, ...ruleSets: RuleSet[])
+    constructor (pathId: string, pathname?: Pathname, ...pathSets: PathSet[])
 
-    constructor (pathId: any, pathname?: any, ...ruleSets: any) {
+    constructor (pathId: any, pathname?: any, ...pathSets: any) {
         this.pathId = pathId
         this.pathname = pathname || false
-        this.ruleSets = ruleSets.filter(Boolean)
-        this.isStatic = (is.fls(pathname) || pathname.isStatic) && isStaticRuleSet(ruleSets)
+        this.pathSets = pathSets.filter(Boolean)
+        this.isStatic = (is.fls(pathname) || pathname.isStatic) && isStaticPathSet(pathSets)
     }
 
     generate (props?: Props, parseSheet?: any, parser?: any): string[]
 
     generate (props?: any, parseSheet?: any, parser: any=parse) {
-        const {pathname, isStatic, ruleSets} = this
-        let paths: any[] = [];
-        if (pathname)
-            paths.push(...pathname.generate(props, parseSheet, parser));
-
-        if (isStatic)
-            paths.push(...flatten(ruleSets))
-        else {
-            ruleSets.forEach(ruleSet => {
+        const {pathname, isStatic, pathSets} = this
+        let paths: any[] = []
+        if (pathname) paths.push(...pathname.generate(props, parseSheet, parser))
+        if (isStatic) paths.push(...flatten(pathSets))
+        else
+            pathSets.forEach(pathSet => {
                 let path = ''
-                ruleSet.forEach(rule => {
-                    const partChunk = flatten(rule, props)
+                pathSet.forEach(chunk => {
+                    const partChunk = flatten(chunk, props)
                     path += Array.isArray(partChunk)
                         ? partChunk.join("")
                         : partChunk
@@ -64,7 +60,6 @@ export class Pathname <Props extends object=any> {
                 if (path)
                     paths.push(path)
             })
-        }
         return paths
     }
 }

@@ -1,11 +1,11 @@
-import { Rule } from '../utils'
+import { PathSet } from '../constructors'
 
 export type pathObject = {
-    root?: Rule
-    dir?: Rule
-    base?: Rule
-    ext?: Rule
-    name?: Rule
+    root?: PathSet
+    dir?: PathSet
+    base?: PathSet
+    ext?: PathSet
+    name?: PathSet
 }
 
 export class ParseSheet {
@@ -21,9 +21,9 @@ export class ParseSheet {
     // {foo: "bar"} => "foo:bar;"
     format () {}
 
-    get root (): Rule {return this.pathObject.root || ""}
-    get dir  (): Rule {return this.pathObject.dir  || ""}
-    get base (): Rule {return this.pathObject.base || ""}
-    get ext  (): Rule {return this.pathObject.ext  || ""}
-    get name (): Rule {return this.pathObject.name || ""}
+    get root (): PathSet {return this.pathObject.root || []}
+    get dir  (): PathSet {return this.pathObject.dir  || []}
+    get base (): PathSet {return this.pathObject.base || []}
+    get ext  (): PathSet {return this.pathObject.ext  || []}
+    get name (): PathSet {return this.pathObject.name || []}
 }

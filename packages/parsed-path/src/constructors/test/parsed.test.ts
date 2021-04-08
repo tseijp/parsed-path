@@ -1,7 +1,7 @@
-import { parsedEntries } from '../parsed';
-import { resetParsed } from '../../utils';
+import { parsedEntries } from '../parsed'
+import { resetParsed } from '../../utils'
 
-let parsed: any;
+let parsed: any
 
 describe('parsed static', () => {
     beforeEach(() => {
@@ -37,22 +37,26 @@ describe('parsed with props', () => {
         expect(parsed`${({foo='foo'}: any) => foo}`.toString()).toEqual('foo')
     })
     it('to string with args', () => {
-        expect(parsed`f${({o}: any) => o}o``bar``baz`()).toEqual('fo\\bar\\baz')
-        expect(parsed`f${({o}: any) => o}o``bar``baz`({o: "o"})).toEqual('foo\\bar\\baz')
-        expect(parsed`f${({o}: any) => o || 'o'}o``bar``baz` + '').toEqual('foo\\bar\\baz')
-        expect(parsed`f${({o = 'o'}: any) => o}o``bar``baz`.toString()).toEqual('foo\\bar\\baz')
+        expect(parsed`f${({o}: any) => [o, o]}``bar``baz`()).toEqual('f\\bar\\baz')
+        expect(parsed`f${({o}: any) => [o, o]}``bar``baz`({o: "o"})).toEqual('foo\\bar\\baz')
+        expect(parsed`f${({o}: any) => o? [o, o]: 'oo'}``bar``baz` + '').toEqual('foo\\bar\\baz')
+        expect(parsed`f${({o = 'o'}: any) => [o, o]}``bar``baz`.toString()).toEqual('foo\\bar\\baz')
+    })
+    it('to string with args', () => {
+        expect(parsed(parsed`f${({o}: any) => o}o``bar`)`baz`()).toEqual('fo\\bar\\baz')
+        expect(parsed(parsed`f${({o}: any) => o}o``bar`)`baz`({o: "o"})).toEqual('foo\\bar\\baz')
+        expect(parsed(parsed`f${({o}: any) => o || 'o'}o``bar`)`baz` + '').toEqual('foo\\bar\\baz')
+        expect(parsed(parsed`f${({o = 'o'}: any) => o}o``bar`)`baz`.toString()).toEqual('foo\\bar\\baz')
     })
 })
 
-
-
-describe('defined parse==d tag', () => {
-    let windowSpy: any;
+describe('defined parsed tag', () => {
+    let windowSpy: any
     const location = new URL('https://tsei.jp/note/api/user/100')
     // const targets = location.pathname.split('/').filter(Boolean)
 
     beforeEach(() => {
-        const originalWindow = { ...window };
+        const originalWindow = { ...window }
         parsed = resetParsed()
         windowSpy = jest.spyOn(global, 'window', 'get')
         windowSpy.mockImplementation(() => ({
@@ -61,17 +65,17 @@ describe('defined parse==d tag', () => {
         }))
     })
 
-    afterEach(() => void windowSpy.mockRestore());
+    afterEach(() => void windowSpy.mockRestore())
 
     it('should have all paths defined', () => {
-        // parsedEntries.forEach(([tag]) => {
-        //     expect(parsed[tag]).toBeTruthy();
-        // });
-    });
+        parsedEntries.forEach(([tag]) => {
+            expect(parsed[tag]).toBeTruthy()
+        })
+    })
 
     // it('ERROR: should have all tags defined', () => {
     //     targets.forEach(tag => {
-    //         expect(parsed[tag]).toBeTruthy();
-    //     });
-    // });
-});
+    //         expect(parsed[tag]).toBeTruthy()
+    //     })
+    // })
+})

@@ -1,9 +1,16 @@
-import { resetParsed } from '../../utils';
+import { resetParsed } from '../../utils'
 
 describe('parsed utils', () => {
-    let parsed: any;
+    let parsed: any
     beforeEach(() => {
         parsed = resetParsed()
+    })
+    it('attr utils', () => {
+        const foo = {key: 'foo'}, bar = {key: 'bar'}
+        expect(parsed`${({key}: any) => key}`.withAttrs(foo)`bar``baz` + "").toEqual('foo\\bar\\baz')
+        expect(parsed`${({key}: any) => key}``bar`.withAttrs(foo)`baz` + "").toEqual('foo\\bar\\baz')
+        expect(parsed`${({key}: any) => key}``bar``baz`.withAttrs(foo) + "").toEqual('foo\\bar\\baz')
+        expect(parsed`${({key}: any) => key}``bar``baz`.withAttrs(foo)(bar) + "").toEqual('bar\\bar\\baz')
     })
     it('mount util', () => {
         expect(parsed`foo``bar``baz`.mount`` + '').toEqual('baz')

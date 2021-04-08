@@ -1,23 +1,39 @@
 import { parse } from 'path'
-import {interleave, flatten, is, Path, PathSet, RuleSet} from '../utils';
+import {interleave, flatten, is} from '../utils'
 
-export function path (paths?: PathSet): RuleSet
+export type Path =
+    | string
+    | ((props: any) => PathSet)
+    | Path[]
 
-export function path (paths: URL, ...interpolations: PathSet): RuleSet
+export type Rule =
+    | null
+    | unknown
+    | boolean
+    | number
+    | object
+    | Path
+    | Rule[]
 
-export function path (paths: Path, ...interpolations: PathSet): RuleSet
+export type RuleSet = Rule[]
 
-export function path (paths: TemplateStringsArray, ...interpolations: PathSet): RuleSet
+export type PathSet = Path[]
 
-export function path (paths?: any, ...interpolations: any) {
-    if (is.url(paths))
-        return flatten(interleave([], [parse(paths.pathname), ...interpolations]))
+export function path (rules?: URL, ...interpolations: RuleSet): PathSet
 
-    if (is.fun(paths) || is.obj(paths))
-        return flatten(interleave([], [paths, ...interpolations]));
+export function path (rules?: Rule, ...interpolations: RuleSet): PathSet
 
-    if (is.len(0, interpolations) && is.len(1, paths) && is.str(paths[0]))
-        return paths;
+export function path (rules?: TemplateStringsArray, ...interpolations: RuleSet): PathSet
 
-    return flatten(interleave(paths, interpolations));
+export function path (rules?: any, ...interpolations: any) {
+    if (is.url(rules))
+        return flatten(interleave([], [parse(rules.pathname), ...interpolations]))
+
+    if (is.fun(rules) || is.obj(rules))
+        return flatten(interleave([], [rules, ...interpolations]))
+
+    if (is.len(0, interpolations) && is.len(1, rules) && is.str(rules[0]))
+        return rules
+
+    return flatten(interleave(rules, interpolations))
 }

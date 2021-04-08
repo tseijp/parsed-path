@@ -2,21 +2,17 @@
  * https://github.com/styled-components/styled-components/blob/master/packages/styled-components/src/utils/flatten.js
  */
 import { is } from './helpers'
+import { Path, PathSet, Rule } from '../constructors'
 
 export function flatten (
-    chunk: undefined | null | false | "",
+    chunk: undefined | unknown | null | false | string,
     props?: any,
 ): string
 
 export function flatten (
-    chunk: any[],
-    exection?: any
-): any[]
-
-export function flatten <FunChunk=(...args: any) => any> (
-    chunk: FunChunk,
-    exection?: any
-): string[] | FunChunk
+    chunk: Rule | Path,
+    props?: any
+): PathSet
 
 export function flatten (chunk: any, props?: any) {
     if (is.fls(chunk))
@@ -29,18 +25,17 @@ export function flatten (chunk: any, props?: any) {
         const ruleSet = []
         for (let i = 0, len = chunk.length, result: any; i < len; i += 1) {
             result = flatten(chunk[i], props)
-            if (result === '') continue;
+            if (result === '') continue
             if (is.arr(result)) ruleSet.push(...result)
             else ruleSet.push(result)
         }
         return ruleSet
     }
 
-    if (is.fun(chunk)) {
+    if (is.fun(chunk))
         if (props)
             return flatten(chunk(props), props)
         else return chunk
-    }
 
     if (is.obj(chunk) && chunk.constructor === Object)
         return Object.keys(chunk).map(k => `${k}:${(chunk as any)[k]};`).join()

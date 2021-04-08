@@ -1,9 +1,8 @@
-import { parsed, IConstruction } from '../constructors';
-import { is, RuleSet } from '../utils';
-import { Pathname } from './Pathname';
-import { generatePathId, generateParsedId, generateDisplayName } from '../utils';
+import { Pathname } from './Pathname'
+import { parsed, PathSet, Construction } from '../constructors'
+import { is, resolveAttrs, generatePathId, generateParsedId, generateDisplayName } from '../utils'
 
-export interface IParsedPath extends IConstruction{
+export interface ParsedPath extends Construction {
     pathId: string
     parsedId: string
     displayId: string
@@ -14,51 +13,39 @@ export interface IParsedPath extends IConstruction{
     normalize: () => string
 }
 
-function resolveAttrs (props: any, attrs: any[]) {
-    const context = { ...props };
+export function ParsedPath (tags: PathSet, options: object, args?: PathSet): ParsedPath
 
-    attrs.forEach(attrImpl => {
-        let key, attr = attrImpl;
-        if (is.fun(attr))
-            attr = attr(context);
-        for (key in attr)
-            context[key] = attr[key];
-        });
-    return context
-}
+export function ParsedPath (tags: [ParsedPath, ...any], options: object, args?: PathSet): ParsedPath
 
-export function ParsedPath (tags: RuleSet, options: object, paths?: RuleSet): IParsedPath
-
-export function ParsedPath (tags: [IParsedPath, ...any], options: object, paths?: RuleSet): IParsedPath
-
-export function ParsedPath (tags: any, options: any, paths: any=[]) {
-    const [tag] = tags, [path] = paths;
-    const {
-        isPathParsedPath = !is.str(path) && is.str(path?.parsedId),
+export function ParsedPath (tags: any, options: any, args: any=[]) {
+    const [tag] = tags,
+          [arg] = args,
         isTagParsedPath = !is.str(tag) && is.str(tag?.parsedId),
-        isCompositePath = !is.str(tag) || is.big(tag.charAt(0)),
+        isArgParsedPath = !is.str(arg) && is.str(arg?.parsedId),
+        isCompositePath = !is.str(tag) || is.big(tag.charAt(0))
+
+    const {
         attrs = [],
         pathId = generatePathId(options.displayId, options.parentPathId),
         parsedId = generateParsedId(options.displayId, options.pathId, pathId),
         displayId = generateDisplayName(tag, isCompositePath)
-    } = options;
+    } = options
 
     const finalAttrs = isTagParsedPath && tag.attrs
-        ? tag.attrs.concat(attrs).filter(Boolean)
+        ? Array.prototype.concat(tag.attrs, attrs).filter(Boolean)
         : attrs
 
     const pathname = new Pathname(
         pathId,
         isTagParsedPath && tag.pathname,
-        !isTagParsedPath && tags,
-        !isPathParsedPath && paths,
-        isPathParsedPath && path.pathname?.ruleSets,
-    );
+       !isTagParsedPath && tags,
+       !isArgParsedPath && args,
+        isArgParsedPath && arg.pathname?.pathSets,
+    )
 
-    const WrappedParsedPath = (props?: any, ...args: any) =>
-        is.obj(props) || is.und(props)
-            ? pathname.pure(options.pure, resolveAttrs(props, finalAttrs), ...args)
-            : parsed(WrappedParsedPath)(props, ...args)
+    const WrappedParsedPath = (props: any={}, ...next: any) => is.obj(props)
+        ? pathname.pure(options.pure, resolveAttrs(props, finalAttrs), ...next)
+        : parsed(WrappedParsedPath)(props, ...next)
 
     WrappedParsedPath.attrs = finalAttrs
     WrappedParsedPath.pathId = pathId
@@ -66,16 +53,17 @@ export function ParsedPath (tags: any, options: any, paths: any=[]) {
     WrappedParsedPath.displayId = displayId
 
     WrappedParsedPath.pathname = pathname
-    WrappedParsedPath.isStatic = pathname.isStatic && attrs.length === 0;
-    WrappedParsedPath.normalize = () => pathname.normalize()
+    WrappedParsedPath.isStatic = pathname.isStatic && attrs.length === 0
     WrappedParsedPath.toString = () => WrappedParsedPath()
+    WrappedParsedPath.normalize = () => pathname.normalize()
 
-    WrappedParsedPath.pure = (...args: any) => parsed(WrappedParsedPath).pure(...args)
-    WrappedParsedPath.mount = (...args: any) => parsed(WrappedParsedPath).mount(...args)
-    WrappedParsedPath.from = (...args: any) => parsed(WrappedParsedPath).from(...args)
-    WrappedParsedPath.to = (...args: any) => parsed(WrappedParsedPath).to(...args)
-    WrappedParsedPath.withAttrs = (args: any) => parsed(WrappedParsedPath).attrs(args)
-    WrappedParsedPath.withConfig = (args: any) => parsed(WrappedParsedPath).withCinfig(args)
+    WrappedParsedPath.mount = (...next: any) => parsed(WrappedParsedPath).mount(...next)
+    WrappedParsedPath.pure = (...next: any) => parsed(WrappedParsedPath).pure(...next)
+    WrappedParsedPath.from = (...next: any) => parsed(WrappedParsedPath).from(...next)
+    WrappedParsedPath.to = (...next: any) => parsed(WrappedParsedPath).to(...next)
 
-    return WrappedParsedPath as IParsedPath
+    WrappedParsedPath.withAttrs = (...next: any) => parsed(WrappedParsedPath).withAttrs(...next)
+    WrappedParsedPath.withConfig = (next: any) => parsed(WrappedParsedPath).withCinfig(next)
+
+    return WrappedParsedPath as ParsedPath
 }
