@@ -4,9 +4,9 @@ describe('path', () => {
     it('merge strings', () => {
         expect(path`foo${false}bar${undefined}baz${null}`).toEqual(['foo', 'bar', 'baz'])
         expect(path`foo${0}bar${NaN}baz${-1}`).toEqual(['foo', '0', 'bar', 'NaN', 'baz', '-1'])
-        expect(path`foo, bar, baz`).toEqual(["foo, bar, baz"])
+        expect(path`foo, bar, baz`).toEqual(['foo, bar, baz'])
         expect(path`${1}${true}`).toEqual(['1', 'true'])
-        expect(path`${1}${2}${[3, 4, 5]}${{come:"on"}}${{lets: "ride"}}`)
+        expect(path`${1}${2}${[3, 4, 5]}${{come:'on'}}${{lets: 'ride'}}`)
             .toEqual(['1', '2', '3', '4', '5', 'come:on;', 'lets:ride;'])
     })
 
@@ -24,9 +24,9 @@ describe('path', () => {
 
     it('without interpolations', () => {
         const str = ({bool=true}) => (bool ? 'bar' : 'baz')
-        const obj = {foo: "bar"}
+        const obj = {foo: 'bar'}
         expect(path()).toEqual([])
         expect(path(str)).toEqual([str])
-        expect(path(obj)).toEqual(["foo:bar;"])
+        expect(path(obj)).toEqual(['foo:bar;'])
     })
 })

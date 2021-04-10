@@ -29,8 +29,9 @@ const getBabelOptions = ({ useESModules }) => ({
 
 const targetTypings = (out) => ({
     writeBundle () {
+        const text = `export * from "./${input}";\nexport {default as default} from "./${input}"`
         return fs.lstat(pkg.types).catch(() => {
-            return fs.writeFile(pkg.types, `export * from "./${input}"`)
+            return fs.writeFile(pkg.types, text)
         })
     }
 })

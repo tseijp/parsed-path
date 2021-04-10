@@ -32,7 +32,7 @@
 
 - `npm install parsed-path`
 
-### Documentation and Examples
+### Documentation
 
 See the documentation for more information about `parsed-path`
 
@@ -45,7 +45,7 @@ See the documentation for more information about `parsed-path`
 
 Utilising tagged template literals (a recent addition to JavaScript),
 parsed-path allows you to write pathname.
-This tow example creates simple pathname.
+This two example creates simple pathname.
 a Root and a File, with some parsed attachment to it:
 
 ```js
@@ -71,23 +71,22 @@ const File = Path`
 You can pass a function to a parsed path's template literal to adapt it based on its props.
 When setting the back prop to true, we are moving its file directory.
 
-
 ```js
-const Wrap = Path(props => props.back && "..")`
+const Back = Path(props => props.back && "..")`
   root: ./;
   name: file;
   ext: ${props => props.ext || ".tsx"};
 `;
 ```
 
-`Wrap({back: true})` to equal ./src/index.ts
-`Wrap({name: "xx"})` to equal ./src/utils/xx.ts
-`Wrap({ext: "jsx"})` to equal ./src/utils/index.tsx
+> `Back({back: true})` to equal ./src/index.ts  
+> `Back({name: "xx"})` to equal ./src/utils/xx.tsx  
+> `Back({ext: "jsx"})` to equal ./src/utils/index.jsx  
 
 
-This is a [live editor](https://codesandbox.io/),
+This is a [live editor](https://codesandbox.io/s/parsed-path-x66qy),
 so play around with the code to get a feel for
-what it's like to work with parsed-path!
+what it's like to work with `parsed-path`!
 
 `Parsed path` uses [node/path.js](
   https://github.com/nodejs/node/blob/master/lib/path.js)
@@ -96,11 +95,11 @@ For additional information about the supported prefixes visit their [node.js doc
   https://nodejs.org/docs/latest/api/path.html#path_path_parse_path).
 
 ```js
-//    ┌──────────────────────┬────────────┐
-//    │           dir        │    base    │
-//    ├──────┬               ├──────┬─────┤
-//    │ root │               │ name │ ext │
+/*    ┌──────────────────────┬────────────┐
+ *    │           dir        │    base    │
+ *    ├──────┬               ├──────┬─────┤
+ *    │ root │               │ name │ ext │    */
 parsed`    /``home``user``dir``file``.txt `
 parsed` C:\\``      path``dir``file``.txt `
-//    └──────┴───────────────┴──────┴─────┘
+/*    └──────┴───────────────┴──────┴─────┘    */
 ```

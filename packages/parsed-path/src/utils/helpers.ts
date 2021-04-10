@@ -1,7 +1,9 @@
 /**
  * https://github.com/styled-components/styled-components/blob/master/packages/styled-components/src/utils/interleave.js
  */
+
 import { Rule, PathSet, RuleSet } from '../constructors'
+import { parsed } from '../constructors'
 
 export function interleave (
     strings: TemplateStringsArray[],
@@ -24,6 +26,13 @@ export function resolveAttrs (props: any, attrs: any[]) {
             context[key] = attr[key]
     })
     return { ...context, ...props }
+}
+
+export const resetParsed = (isServer = false) => {
+    if (!isServer)
+        if (!window.location)
+            throw Error("no window.location")
+    return parsed
 }
 
 const is = (a: any, b?: any, ...other: any): boolean => {

@@ -1,11 +1,10 @@
 import { parsedEntries } from '../parsed'
 import { resetParsed } from '../../utils'
 
-let parsed: any
-
 describe('parsed static', () => {
+    let parsed: any
     beforeEach(() => {
-        parsed = resetParsed()
+        parsed = resetParsed().posix
     })
     it('to string without args', () => {
         expect(parsed`foo`()).toEqual('foo')
@@ -14,46 +13,48 @@ describe('parsed static', () => {
         expect(parsed`foo`.toString()).toEqual('foo')
     })
     it('to string with args', () => {
-        expect(parsed`foo``bar``baz`()).toEqual('foo\\bar\\baz')
-        expect(parsed`foo``bar``baz`({})).toEqual('foo\\bar\\baz')
-        expect(parsed`foo``bar``baz` + '').toEqual('foo\\bar\\baz')
+        expect(parsed`foo``bar``baz`()).toEqual('foo/bar/baz')
+        expect(parsed`foo``bar``baz`({})).toEqual('foo/bar/baz')
+        expect(parsed`foo``bar``baz` + '').toEqual('foo/bar/baz')
     })
     it('tag as parsed path', () => {
-        expect(parsed(parsed`foo``bar``baz`) + '').toEqual('foo\\bar\\baz')
-        expect(parsed(parsed`foo``bar`)`baz` + '').toEqual('foo\\bar\\baz')
-        expect(parsed(parsed()`foo`)`bar``baz` + '').toEqual('foo\\bar\\baz')
-        expect(parsed(parsed()``)`foo``bar``baz` + '').toEqual('foo\\bar\\baz')
+        expect(parsed(parsed`foo``bar``baz`) + '').toEqual('foo/bar/baz')
+        expect(parsed(parsed`foo``bar`)`baz` + '').toEqual('foo/bar/baz')
+        expect(parsed(parsed()`foo`)`bar``baz` + '').toEqual('foo/bar/baz')
+        expect(parsed(parsed()``)`foo``bar``baz` + '').toEqual('foo/bar/baz')
     })
 })
 
 describe('parsed with props', () => {
+    let parsed: any
     beforeEach(() => {
-        parsed = resetParsed()
+        parsed = resetParsed().posix
     })
     it('to string without args', () => {
         expect(parsed`${({foo}: any) => foo}`()).toEqual('.')
-        expect(parsed`${({foo}: any) => foo}`({foo: "foo"})).toEqual('foo')
+        expect(parsed`${({foo}: any) => foo}`({foo: 'foo'})).toEqual('foo')
         expect(parsed`${({foo}: any) => foo || 'foo'}` + '').toEqual('foo')
         expect(parsed`${({foo='foo'}: any) => foo}`.toString()).toEqual('foo')
     })
     it('to string with args', () => {
-        expect(parsed`f${({o}: any) => [o, o]}``bar``baz`()).toEqual('f\\bar\\baz')
-        expect(parsed`f${({o}: any) => [o, o]}``bar``baz`({o: "o"})).toEqual('foo\\bar\\baz')
-        expect(parsed`f${({o}: any) => o? [o, o]: 'oo'}``bar``baz` + '').toEqual('foo\\bar\\baz')
-        expect(parsed`f${({o = 'o'}: any) => [o, o]}``bar``baz`.toString()).toEqual('foo\\bar\\baz')
+        expect(parsed`${({foo}: any) => foo}``bar``baz`()).toEqual('bar/baz')
+        expect(parsed`${({foo}: any) => foo}``bar``baz`({foo: 'foo'})).toEqual('foo/bar/baz')
+        expect(parsed`${({foo}: any) => foo || 'foo'}``bar``baz` + '').toEqual('foo/bar/baz')
+        expect(parsed`${({foo='foo'}: any) => foo}``bar``baz`.toString()).toEqual('foo/bar/baz')
     })
-    it('to string with args', () => {
-        expect(parsed(parsed`f${({o}: any) => o}o``bar`)`baz`()).toEqual('fo\\bar\\baz')
-        expect(parsed(parsed`f${({o}: any) => o}o``bar`)`baz`({o: "o"})).toEqual('foo\\bar\\baz')
-        expect(parsed(parsed`f${({o}: any) => o || 'o'}o``bar`)`baz` + '').toEqual('foo\\bar\\baz')
-        expect(parsed(parsed`f${({o = 'o'}: any) => o}o``bar`)`baz`.toString()).toEqual('foo\\bar\\baz')
+    it('to string with parsed path', () => {
+        expect(parsed(parsed`${({foo}: any) => foo}``bar`)`baz`()).toEqual('bar/baz')
+        expect(parsed(parsed`${({foo}: any) => foo}``bar`)`baz`({foo: 'foo'})).toEqual('foo/bar/baz')
+        expect(parsed(parsed`${({foo}: any) => foo || 'foo'}``bar`)`baz` + '').toEqual('foo/bar/baz')
+        expect(parsed(parsed`${({foo='foo'}: any) => foo}``bar`)`baz`.toString()).toEqual('foo/bar/baz')
     })
 })
 
 describe('defined parsed tag', () => {
+    let parsed: any
     let windowSpy: any
     const location = new URL('https://tsei.jp/note/api/user/100')
-    // const targets = location.pathname.split('/').filter(Boolean)
+    const targets = location.pathname.split('/').filter(Boolean)
 
     beforeEach(() => {
         const originalWindow = { ...window }
