@@ -4,11 +4,45 @@
   "module": "index.js",
   "types": "index.d.ts",
   "main": "index.cjs.js",
+  "exports": {
+    ".": "./build/index.js",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "test": "jest --watch --coverage --runInBand",
+    "build": "rollup -c"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.13.8",
+    "@babel/plugin-transform-runtime": "^7.13.15",
+    "@babel/preset-env": "^7.13.15",
+    "@babel/preset-react": "^7.13.13",
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-commonjs": "^18.0.0",
+    "@rollup/plugin-node-resolve": "^11.2.1",
+    "@types/jest": "^26.0.22",
+    "@types/node": "^14.14.37",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "jest": "^26.6.3",
+    "rollup": "^2.45.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "ts-jest": "^26.5.4",
+    "typescript": "^4.2.4"
+  },
+  "peerDependencies": {
+    "react": ">=16.8"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
   "author": "tsei",
   "license": "MIT",
   "private": false,
   "sideEffects": false,
-  "description": "parse path",
+  "description": "Use the best bits of ES6 to parse your path without stress 🤳",
   "keywords": [
     "parse",
     "path",
@@ -22,5 +56,12 @@
   "bugs": {
     "url": "https://github.com/tseijp/parsed-path/issues"
   },
-  "dependencies": {}
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@babel/preset-react": "^7.13.13",
+    "@babel/preset-typescript": "^7.13.0",
+    "jest": "^26.6.3"
+  }
 }

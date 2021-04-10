@@ -1,5 +1,8 @@
+const path = require('path');
+
 module.exports = {
     roots: ['<rootDir>/'],
+    rootDir: path.join(__dirname, '../..'),
     transform: {
         '^.+\\.(js|jsx|ts|tsx)$': '<rootDir>/node_modules/ts-jest',
     },
@@ -22,10 +25,8 @@ module.exports = {
     },
     collectCoverageFrom: [
         'src/**/*.{js,jsx,ts,tsx}',
+        '!src/**/index.tsx',
         '!src/**/*.d.ts',
-        '!src/serviceWorker.ts',
-        '!src/setupTests.ts',
-        '!src/index.tsx',
     ],
     coveragePathIgnorePatterns: ['./src/*/*.types.{ts,tsx}'],
     coverageReporters: ['json', 'lcov', 'text-summary', 'clover'],

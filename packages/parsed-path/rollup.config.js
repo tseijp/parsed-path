@@ -3,6 +3,7 @@ import pkg from './package.json';
 import babel from '@rollup/plugin-babel';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
+import { terser } from 'rollup-plugin-terser'
 
 const input = 'src/index'
 const external = Object.keys({...pkg.dependencies, ...pkg.devDependencies})
@@ -40,11 +41,13 @@ export default [
         commonjs({extensions}),
         resolve ({extensions}),
         targetTypings(),
+        terser()
     ]},
     { input, output: {file: pkg.module, format: 'esm'}, external, plugins: [
         babel( getBabelOptions({useESModules: true}) ),
         commonjs({extensions}),
         resolve ({extensions}),
         targetTypings(),
+        terser()
     ] },
 ]

@@ -2,9 +2,7 @@
 
 ### Parsed
 
-This is the default export.
-We use to create the parsed.tag helper method.
-
+This is the default export. We use to create the parsed.tag helper method.
 Return a function that accepts a tagged template literal and turns it into a pathname.
 
 ```js
@@ -21,21 +19,10 @@ render(
 ### Adapting based on props
 
 You can pass a function to a parsed path's template literal to adapt it based on its props.
-
-This path has a api version.
-When setting the primary prop to true, we are swapping out its background and text color.
+When setting the next prop to true, we are switching its version number.
 
 ```js
-const Root = parsed.http`localhost:3000`
-const Api = `api``v${props => props.version}`;
-
-render(
-  <>
-    <Api version={1}/>
-    <Api version={2}/>
-  </>
-);
-
+const Api = parsed`api``v${props => props.next? 2: 1}`;
 const Get = Api`${props =>
   props.version === 1
     ? "get/is/undefined"
@@ -43,29 +30,25 @@ const Get = Api`${props =>
 }`
 
 render(
-  <div>
-    <Get version={1}/>
-    <Get version={2}/>
-  </div>
+  <>
+    <Api/>
+    <Get/>
+    <Api next/>
+    <Get next/>
+  </>
 );
 ```
 
 ### Extending parses
 
-Quite frequently you might want to use a component,
-but change it slightly for a single case.
-Now, you could pass in an interpolated function and change them based on some props,
-but that's quite a lot of effort for overriding the styles once.
+To easily make a new pathname that inherits from another paths.
+Here we use the api url from the last section and create a special one.
 
-To easily make a new component that inherits the styling of another,
-just wrap it in the parsed() constructor.
-Here we use the button from the last section and create a special one,
-extending it with some color-related styling:
 
 ```js
 const Api = parsed.http`tsei.jp``api`;
 
-const Dev = parsed(Api)`
+const Dev = Api`
   root: localhost;
   port: 3000;
 `;
@@ -78,36 +61,9 @@ render(
 );
 ```
 
-We can see that the new api still resembles Button, while we have only added two new rules.
-
-In some cases you might want to change which tag or component a parsed component renders.
-This is common when building a navigation bar for example,
-where there are a mix of anchor links and buttons but they should be parsed identically.
-
-For this situation, we have an escape hatch.
-You can use the "as" polymorphic prop to dynamically swap out the element that receives the styles you wrote:
-
-```js
-const Api = parsed.https`tsei.jp``api`;
-
-const Dev = parsed(Api)`
-  root: localhost;
-  port: 3000;
-`;
-
-render(
-  <>
-    <Api/>
-    <Dev port={3000}/>
-    <Dev port={8000}/>
-  </>
-);
-```
-
 ### Parsing any pathname
 
-The parsed method works perfectly on all of your own or any third-party component,
-as long as they attach the passed className prop to a DOM element.
+The parsed method works perfectly on all of your own or any third-party pathname.
 
 ```js
 const Url = new URL("https://localhost:3000/");
@@ -126,19 +82,16 @@ render(
 
 ### Attaching additional props
 
-To avoid unnecessary wrappers that just pass on some props to the rendered component,
-or element, you can use the .attrs constructor.
-It allows you to attach additional props (or "attributes") to a component.
-
-This way you can for example attach static props to an element,
-or pass a third-party prop like activeClassName to React Router's Link component.
+To avoid unnecessary wrappers that just pass on some props to the path,
+you can use the .withAttrs constructor.
+It allows you to attach additional props to a path.
 
 Furthermore you can also attach more dynamic props to a component.
-The .attrs object also takes functions,
-that receive the props that the component receives.
+The .withAttrs object also takes functions,
+that receive the props that the path receives.
 The return value will be merged into the resulting props as well.
 
-Here we render an Input component and attach some dynamic and static attributes to it:
+Here we render an root path and attach some dynamic and static attributes to it:
 
 ```js
 const Root = parsed`
@@ -151,22 +104,10 @@ const Api = Root`api``v1`.withAttrs(props => ({
   port: props.dev? 3000: undefined,
   root: props.dev? "localhost": "tsei.jp"
 }));
-
-render(
-  <>
-    <Api/>
-    <Api dev/>
-  </>
-);
 ```
 
-Notice that when wrapping parsed components,
-.attrs are applied from the innermost parsed component to the outermost parsed component.
-
-This allows each wrapper to override nested uses of .attrs,
-similarly to how css properties defined later in a stylesheet override previous declarations.
-
-Input's .attrs are applied first, and then PasswordInput's .attrs:
+This allows each wrapper to override nested uses of .withAttrs.
+Root's .attrs are applied first, and then Api's .attrs:
 
 ```js
 const Dev = Api.withAttrs(props => ({dev: false});

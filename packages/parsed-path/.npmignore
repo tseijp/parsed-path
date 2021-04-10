@@ -1,0 +1,16 @@
+**/node_modules
+**/benchmarks
+**/dist
+**/lib
+.DS_Store
+*.html
+*.json
+*.log
+*.vscode
+*.js
+
+*
+!docs
+!src
+!package.json
+!tsconfig.json
