@@ -2,13 +2,23 @@ import { path, PathSet } from './path'
 import { is, relative } from '../utils'
 import { ParsedPath } from '../models'
 
+export type Attrs=
+    | object
+    | ((props: object) => object)
+
+export interface Options {
+    pure?: boolean
+    posix?: boolean
+    attrs: Attr[]
+}
+
 export interface Construction {
     toString: (...args: any) => string
     mount: (...args: any) => ParsedPath
     from: (...args: any) => ParsedPath
     to: (...args: any) => ParsedPath
-    withAttrs: (args: any) => Construction
-    withConfig: (args: any) => Construction
+    withAttrs: (args: any, options?: Options) => Construction
+    withConfig: (args: any, options?: Options) => Construction
 }
 
 export function construction (

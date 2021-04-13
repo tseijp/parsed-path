@@ -1,6 +1,6 @@
 import { is, flatten } from '../utils'
 import { PathSet } from '../constructors'
-import { ParseSheet } from './ParseSheet'
+import { Pathform } from './Pathform'
 import * as PATH from 'path'
 
 function isStaticPathSet(pathSet: any=[]): boolean {
@@ -12,58 +12,48 @@ function isStaticPathSet(pathSet: any=[]): boolean {
     })
 }
 
-export interface Pathname {
-    isStatic: boolean
-    mode: "win32" | "posix"
+export interface Pathname <Props extends object=any> {
     pathId: string
+    isStatic: boolean
     pathSets: PathSet[]
     pathname: Pathname
-    parseSheet: ParseSheet
+    toString (...args: any): string
+    joinPath (...args: any): string
+    generate (props?: Props, pathform?: Pathform, parser?: any): string[]
 }
 
-export class Pathname <Props extends object=any> {
-    normalize = (): string => PATH[this.mode].normalize(this.join())
-    toString = (...args: any): string => this.join(...args)
-    resolve = (...args: any): string => PATH[this.mode].resolve(...this.generate(...args))
-    join = (...args: any): string => PATH[this.mode].join(...this.generate(...args))
-    pure = (isOptionsPure=false, ...args: any) => isOptionsPure
-        ? this.resolve(...args)
-        : this.join(...args)
+export class Pathname {
+    toString = (...args: any) => this.joinPath(...this.generate(...args))
 
-    constructor (mode: string, pathId: string, pathname?: Pathname, ...pathSets: PathSet[])
-
-    constructor (mode: any, pathId: any, pathname?: any, ...pathSets: any) {
-        this.mode = mode
+    constructor (pathId: any, mode: any, join: any, pathname?: Pathname, ...pathSets: PathSet[]) {
         this.pathId = pathId
-        this.pathname = pathname || false
+        this.joinPath = PATH[mode][join]
+        this.pathname = pathname || undefined
         this.pathSets = pathSets.filter(Boolean)
         this.isStatic = (is.fls(pathname) || pathname.isStatic) && isStaticPathSet(pathSets)
-        this.parseSheet = new ParseSheet()
     }
 
-    format () {
-        return
-    }
-
-    generate (props?: Props, parseSheet?: any, parser?: any): string[]
-
-    generate (props?: any, parseSheet?: any, parser: any=PATH[this.mode].parse) {
-        const {pathname, isStatic, pathSets} = this
-        let paths: any[] = []
-        if (pathname) paths.push(...pathname.generate(props, parseSheet, parser))
-        if (isStatic) paths = paths.concat(flatten(pathSets))
-        else
+    generate (props?: any, pathform?: any, parser?: any) {
+        const {pathId, pathname, isStatic, pathSets} = this
+        let names: string[] = []
+        if (pathname) names.push(...pathname.generate(props, pathform, parser))
+        if (isStatic) names.push(...flatten(pathSets) as any)
+        else {
             pathSets.forEach(pathSet => {
-                let path = ''
+                let name = ''
                 pathSet.forEach(chunk => {
                     const partChunk = flatten(chunk, props)
-                    path += Array.isArray(partChunk)
+                    name += Array.isArray(partChunk)
                         ? partChunk.join("")
                         : partChunk
                 })
-                if (path)
-                    paths.push(path)
+                names.push(name)
             })
-        return paths
+        }
+        return names.filter(name => {
+            // if (pathform.hasFormForId(pathId, form))
+                return name
+            // pathform.insertForms(pathId, form, path);
+        })
     }
 }

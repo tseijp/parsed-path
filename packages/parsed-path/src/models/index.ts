@@ -1,3 +1,3 @@
 export * from './ParsedPath'
-export * from './ParseSheet'
+export * from './Pathform'
 export * from './Pathname'

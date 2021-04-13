@@ -18,7 +18,7 @@ describe('format static', () => {
         parsed = resetParsed().posix
     })
     it('to string without args', () => {
-    //     expect(parsed`dir: foo;`()).toEqual('foo ')
+    //     expect(parsed`dir: foo;`()).toEqual('foo')
     //     expect(parsed`base: foo;`({})).toEqual('foo')
     //     expect(parsed`root: foo;` + '').toEqual('foo')
     //     expect(parsed`name: foo;`.toString()).toEqual('foo')

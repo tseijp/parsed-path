@@ -2,12 +2,12 @@
  * https://github.com/styled-components/styled-components/blob/master/packages/styled-components/src/utils/interleave.js
  */
 
-import { Rule, PathSet, RuleSet } from '../constructors'
+import { PathSet, RuleSet } from '../constructors'
 import { parsed } from '../constructors'
 
 export function interleave (
     strings: TemplateStringsArray[],
-    interpolations: Rule[]
+    interpolations: RuleSet
 ): RuleSet
 
 export function interleave(strings: any=[], interpolations: any=[]){
@@ -58,7 +58,7 @@ is.url = (a: unknown): a is URL => a instanceof URL
 is.set = (a: unknown): a is Set<any> => a instanceof Set
 is.map = (a: unknown): a is Map<any, any> => a instanceof Map
 is.big = (a: unknown): a is string => is.str(a) && a === a.toUpperCase()
-is.len = (l: number, a: any) => a && (is.arr(a)? a: Object.keys(a)).length === l
+is.len = (l: number, a: unknown): a is object => a && (is.arr(a)? a: Object.keys(a)).length === l
 
 export  { is }
 
@@ -97,26 +97,4 @@ export function relative(from: any, to: any) {
             out += out.length === 0 ? '..' : '/..'
 
     return out
-}
-// forked from https://github.com/jbgutierrez/path-parse
-
-const splitPathRe = /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/
-
-export function parse (pathString: string) {
-
-    var allParts = splitPathRe.exec(pathString)?.slice(1)
-    if (!allParts || allParts.length !== 4)
-        throw new TypeError("Invalid path '" + pathString + "'")
-
-    allParts[1] = allParts[1] || ''
-    allParts[2] = allParts[2] || ''
-    allParts[3] = allParts[3] || ''
-
-    return {
-        root: allParts[0],
-        dir: allParts[0] + allParts[1].slice(0, -1),
-        base: allParts[2],
-        ext: allParts[3],
-        name: allParts[2].slice(0, allParts[2].length - allParts[3].length)
-    }
 }

@@ -4,6 +4,8 @@
 import { is } from './helpers'
 import { Path, PathSet, Rule } from '../constructors'
 
+const replaceChunkRe = /\s/g
+
 export function flatten (
     chunk: undefined | unknown | null | false | string,
     props?: any,
@@ -17,9 +19,6 @@ export function flatten (
 export function flatten (chunk: any, props?: any) {
     if (is.fls(chunk))
         return ''
-
-    if (is.str(chunk))
-        return chunk
 
     if (is.arr(chunk)) {
         const ruleSet = []
@@ -40,5 +39,5 @@ export function flatten (chunk: any, props?: any) {
     if (is.obj(chunk) && chunk.constructor === Object)
         return Object.keys(chunk).map(k => `${k}:${(chunk as any)[k]};`).join()
 
-    return chunk.toString()
+    return chunk.toString().replace(replaceChunkRe, '')
 }

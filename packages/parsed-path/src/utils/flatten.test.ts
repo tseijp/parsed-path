@@ -4,14 +4,14 @@ describe('flatten', () => {
     it('merge strings', () => {
         expect(flatten(['foo', 'bar', 'baz']))
             .toEqual(['foo', 'bar', 'baz'])
+        expect(flatten([' f o o ', '\tb\ta\tr\t', '\nb\na\nz\n']))
+            .toEqual(['foo', 'bar', 'baz'])
         expect(flatten(['foo', false, 'bar', undefined, 'baz', null]))
             .toEqual(['foo', 'bar', 'baz'])
-        expect(flatten(['foo', 0, 'bar', NaN, 'baz', -1]))
-            .toEqual(['foo', '0', 'bar', 'NaN', 'baz', '-1'])
-        expect(flatten([1, true]))
-            .toEqual(['1', 'true'])
-        expect(flatten([1, 2, [3, 4, 5], 'come:on', 'lets:ride']))
-            .toEqual(['1', '2', '3', '4', '5', 'come:on', 'lets:ride'])
+        expect(flatten(['foo', 0, 'bar', NaN, 'baz', -1, 1, true]))
+            .toEqual(['foo', '0', 'bar', 'NaN', 'baz', '-1', '1', 'true'])
+        expect(flatten([1, 2, [3, 4, 5], 'come:on;', 'lets:ride;']))
+            .toEqual(['1', '2', '3', '4', '5', 'come:on;', 'lets:ride;'])
     })
 
     it('defers functions', () => {

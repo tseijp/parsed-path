@@ -1,13 +1,15 @@
 import { ParsedPath } from '../models'
 import { construction } from './construction'
 
-const parsed: any = (...tags: any) => construction(ParsedPath, tags)
+const posix = process.platform !== 'win32';
+
+const parsed = (...tags: any) => construction(ParsedPath, tags, {posix})
 
 parsed.win32 = (...tags: any) => construction(ParsedPath, tags, {posix: false})
 
 parsed.posix = (...tags: any) => construction(ParsedPath, tags, {posix: true})
 
-parsed.pure = (...tags: any) => construction(ParsedPath, tags, {pure: true})
+parsed.pure = (...tags: any) => construction(ParsedPath, tags, {posix, pure: true})
 
 const parsedEntries = Object.entries({
     https: 'https://',
