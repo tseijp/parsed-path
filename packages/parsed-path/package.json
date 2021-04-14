@@ -19,7 +19,9 @@
     "test": "jest --watch --coverage --runInBand",
     "ls": "npm pack --dry-run"
   },
-  "dependencies": {},
+  "dependencies": {
+    "stylis": "^4.0.10"
+  },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.13.0",
     "@babel/plugin-proposal-object-rest-spread": "^7.13.8",

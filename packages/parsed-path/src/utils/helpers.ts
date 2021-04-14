@@ -4,6 +4,7 @@
 
 import { PathSet, RuleSet } from '../constructors'
 import { parsed } from '../constructors'
+import { serialize } from 'stylis'
 
 export function interleave (
     strings: TemplateStringsArray[],
@@ -31,7 +32,7 @@ export function resolveAttrs (props: any, attrs: any[]) {
 export const resetParsed = (isServer = false) => {
     if (!isServer)
         if (!window.location)
-            throw Error("no window.location")
+            throw Error('no window.location')
     return parsed
 }
 
@@ -50,10 +51,10 @@ is.arr = Array.isArray
 is.fls = (a: unknown): a is false => is.und(a) || is.nul(a) || a === false || a === ''
 is.nul = (a: unknown): a is null => a === null
 is.und = (a: unknown): a is undefined => a === void 0
-is.num = (a: unknown): a is number => typeof a === "number"
-is.str = (a: unknown): a is string => typeof a === "string"
-is.fun = (a: unknown): a is Function => typeof a === "function"
-is.obj = (a: unknown): a is object => Object.prototype.toString.call(a) === "[object Object]"
+is.num = (a: unknown): a is number => typeof a === 'number'
+is.str = (a: unknown): a is string => typeof a === 'string'
+is.fun = (a: unknown): a is Function => typeof a === 'function'
+is.obj = (a: unknown): a is object => Object.prototype.toString.call(a) === '[object Object]'
 is.url = (a: unknown): a is URL => a instanceof URL
 is.set = (a: unknown): a is Set<any> => a instanceof Set
 is.map = (a: unknown): a is Map<any, any> => a instanceof Map

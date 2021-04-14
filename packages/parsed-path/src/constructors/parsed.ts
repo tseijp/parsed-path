@@ -25,7 +25,7 @@ parsedEntries.forEach(([tag, tags]: any) => {
 })
 
 window.location.pathname.split('/').reduce((tags, tag) => {
-    parsed[tag || "top"] = parsed(tags + '/' + tag)
+    parsed[tag || 'top'] = parsed(tags + '/' + tag)
     return tags + '/' + tag
 })
 

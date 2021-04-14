@@ -9,6 +9,7 @@ export interface ParsedPath extends Construction {
     displayId: string
     attrs: Attrs
     pathname: Pathname
+    pathform: Pathform
     isStatic: boolean
     toString: () => string
 }
@@ -35,26 +36,21 @@ export function ParsedPath (tags: any, options: any, args: any=[]) {
         ? Array.prototype.concat(tag.attrs, attrs).filter(Boolean)
         : attrs
 
-    const pathname = new Pathname(
-        pathId,
-        options.posix? "posix": "owin32",
-        options.pure? "resolve": "join",
+    const pathname = new Pathname (
         isTagParsedPath && tag.pathname,
        !isTagParsedPath && tags,
        !isArgParsedPath && args,
         isArgParsedPath && arg.pathname?.pathSets,
     )
 
-    const pathform = new Pathform(
-        pathId,
-        isTagParsedPath && tag.pathform
-    //  isArgParsedPath && arg.pathform
+    const pathform = new Pathform (
+        options.posix? 'posix': 'win32',
+        options.pure? 'resolve': 'join',
+        isTagParsedPath && tag.pathform,
     )
-    // pathname.pathId = pathId
-    // pathform.pathId = pathId
 
     const WrappedParsedPath = (props: any={}, ...next: any) => is.obj(props)
-        ? pathname.toString(resolveAttrs(props, finalAttrs), pathform)
+        ? pathname.generate(resolveAttrs(props, finalAttrs), pathId, pathform)
         : ParsedPath([WrappedParsedPath], options, [props, ...next])
 
     WrappedParsedPath.attrs = finalAttrs

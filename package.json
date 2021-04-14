@@ -4,8 +4,9 @@
   "author": "tsei",
   "version": "0.0.0",
   "license": "MIT",
-  "devDependencies": {},
-  "workspaces": ["packages/*"],
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "test": "lerna exec -- yarn run test",
     "build": "lerna exec -- yarn run build"

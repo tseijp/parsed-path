@@ -68,6 +68,20 @@ describe('defined parsed tag', () => {
 
     afterEach(() => void windowSpy.mockRestore())
 
+    it('basic example', () => {
+        const Root = parsed.posix`/`;
+        const Path = Root`home``user``dir`;
+        const Back = Path`
+          ${(props: any) => props.back && '.'}.
+        `;
+        const File = Back`
+          name: file;
+          ext: ${(props: any) => props.ext};
+        `;
+        expect(File({ext: '.js'})).toEqual('/home/user/dir/file.js')
+        expect(File({back: true})).toEqual('/home/user/file.txt')
+    })
+
     it('should have all paths defined', () => {
         parsedEntries.forEach(([tag]) => {
             expect(parsed[tag]).toBeTruthy()

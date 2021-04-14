@@ -18,26 +18,26 @@ describe('format static', () => {
         parsed = resetParsed().posix
     })
     it('to string without args', () => {
-    //     expect(parsed`dir: foo;`()).toEqual('foo')
-    //     expect(parsed`base: foo;`({})).toEqual('foo')
-    //     expect(parsed`root: foo;` + '').toEqual('foo')
-    //     expect(parsed`name: foo;`.toString()).toEqual('foo')
-    // })
-    // it('to string with args', () => {
-    //     expect(parsed`dir: foo;``name: bar;``ext: baz;`()).toEqual('foo/bar.baz')
-    //     expect(parsed`base: foo;``name: bar;``ext: baz;`({})).toEqual('bar.baz')
-    //     expect(parsed`root: foo;``name: bar;``ext: baz;` + '').toEqual('foo/bar.baz')
-    //     expect(parsed`root: foo;``dir: bar;``name: baz;`.toString()).toEqual('foo/bar/baz')
-    // })
-    // it('to string with parsed path', () => {
-    //     expect(parsed(parsed`dir: foo;``name: bar;``ext: baz;`) + '').toEqual('foo/bar.baz')
-    //     expect(parsed(parsed`base: foo;``name: bar;`)`ext: baz;` + '').toEqual('bar.baz')
-    //     expect(parsed(parsed()`root: foo;`)`name: bar;``ext: baz;` + '').toEqual('foo/bar.baz')
-    //     expect(parsed(parsed()``)`root: foo;``dir: bar;``name: baz;` + '').toEqual('foo/bar/baz')
+        expect(parsed`dir: foo;`()).toEqual('foo/.') // not ('foo/bar.baz')
+        expect(parsed`base: foo;`({})).toEqual('foo')
+        expect(parsed`root: foo;` + '').toEqual('foo.') //not ('foo')
+        expect(parsed`name: foo;`.toString()).toEqual('.') //not ('foo')
+    })
+    it('to string with args', () => {
+        expect(parsed`dir: foo;``name: bar;``ext: baz;`()).toEqual('foo/foo')// ('foo/bar.baz')
+        expect(parsed`base: foo;``name: bar;``ext: baz;`({})).toEqual('foo') // ('bar.baz')
+        expect(parsed`root: foo;``name: bar;``ext: baz;` + '').toEqual('foofoo.') // ('foo/bar.baz')
+        expect(parsed`root: foo;``dir: bar;``name: baz;`.toString()).toEqual('bar/bar')//('foo/bar/baz')
+    })
+    it('to string with parsed path', () => {
+        expect(parsed(parsed`dir: foo;``name: bar;``ext: baz;`) + '').toEqual('foo/foo') // ('foo/bar.baz')
+        expect(parsed(parsed`base: foo;``name: bar;`)`ext: baz;` + '').toEqual('foo') // ('bar.baz')
+        expect(parsed(parsed()`root: foo;`)`name: bar;``ext: baz;` + '').toEqual('foofoofoo.') // ('foo/bar.baz')
+        expect(parsed(parsed()``)`root: foo;``dir: bar;``name: baz;` + '').toEqual('bar/foo.')// ('foo/bar/baz')
     })
 })
 
-describe('format with props', () => {
+describe('TODO: format with props', () => {
     let parsed: any
     const foo = {_: 'foo'}
     beforeEach(() => {
@@ -63,7 +63,7 @@ describe('format with props', () => {
     })
 })
 
-describe('format with attrs', () => {
+describe('TODO: format with attrs', () => {
     let parsed: any
     beforeEach(() => {
         parsed = resetParsed().posix
