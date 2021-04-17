@@ -19,11 +19,13 @@ export interface Pathform {
     joinPath (...args: any): any
 }
 
+// this.formatPath = ((PATH as any)[mode] || PATH)?.format || format[mode].format
+// this.parsePath = ((PATH as any)[mode] || PATH)?.parse || format[mode].parse
 export class Pathform implements Pathform {
     constructor (mode: string, join: string, pathform?: Pathform, forms?: FormsMap) {
-        this.formatPath = ((PATH as any)[mode] || PATH)?.format || format[mode].format
-        this.parsePath = ((PATH as any)[mode] || PATH)?.parse || format[mode].parse
-        this.joinPath = ((PATH as any)[mode] || PATH)[join] || format[mode][join]
+        this.formatPath = (format as any)[mode].format
+        this.parsePath = (format as any)[mode].parse
+        this.joinPath = ((PATH as any)[mode] || PATH)[join]
         this.pathform = pathform || undefined
         this.isStatic = !pathform || pathform.isStatic
         this.forms = pathform?.forms || forms || new Map<string, Set<string>>([])

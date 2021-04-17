@@ -1,6 +1,6 @@
 {
   "name": "parsed-path",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "module": "index.js",
   "types": "index.d.ts",
   "main": "index.cjs.js",

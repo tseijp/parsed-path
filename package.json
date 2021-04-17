@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "test": "lerna exec -- yarn run test",
-    "build": "lerna exec -- yarn run build"
+    "build": "lerna exec -- yarn run build",
+    "publish": "lerna publish from-package"
   }
 }

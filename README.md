@@ -2,7 +2,7 @@
 <h3 align="right"><ruby>
 <h3 align="left"><ruby>
 
-```bash
+```ruby
 < 👋 >
 parsed
 path
@@ -27,7 +27,7 @@ Use the best bits of ES6 to parse your path without stress 👋
     https://www.jsdelivr.com/package/npm/parsed-path)
 [![ minified size ](
     https://badgen.net/bundlephobia/minzip/parsed-path)](
-    https://bundlephobia.com/result?p=parsed-path)
+    https://bundlephobia.com/result?p=parsed-path@latest)
 [![ types includes ](
     https://badgen.net/npm/types/parsed-path)](
     https://www.npmjs.com/package/parsed-path)
@@ -99,19 +99,19 @@ It also removes the mapping between pathname and pathform
 – using path as a low-level parsing construct could not be easier!
 
 ```js
-const File = Back`file``
+const File = Back`ignore.ts``
   name: file;
-  ext: .ts${(props: any) => props.xml && 'x'};
+  ext: ${(props: any) => props.xml && '.tsx'};
 `;
 ```
 
 <h6 align="center">
 <ruby align="left">
-<blockquote>
+<blockquote vlign="center">
 
-```js
-Back({back: true}) toEqual /home/user
-File({xml: false}) toEqual /home/user/dir/file.ts
+```jsx
+<File back /> to equal /home/user/file.ts
+<File xml /> to equal /home/user/dir/file.tsx
 ```
 
 </blockquote>
@@ -123,7 +123,7 @@ For additional information about the supported prefixes visit their <kbd>**[docs
 
 <h6 align="center">
 <ruby align="right">
-<blockquote>
+<blockquote vlign="center">
 
 ```js
 ┌──────────────────────┬────────────┐

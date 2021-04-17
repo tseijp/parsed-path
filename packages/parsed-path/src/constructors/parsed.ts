@@ -3,7 +3,7 @@ import { construction } from './construction'
 
 const isWin = process?.platform === 'win32';
 
-const parsed = (...tags: any) => construction(ParsedPath, tags, {isWin})
+const parsed: any = (...tags: any) => construction(ParsedPath, tags, {isWin})
 
 parsed.win32 = (...tags: any) => construction(ParsedPath, tags, {isWin: true})
 
