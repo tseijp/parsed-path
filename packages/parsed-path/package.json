@@ -56,6 +56,11 @@
   "keywords": [
     "parse",
     "path",
+    "stat",
+    "file",
+    "dir",
+    "filesystem",
+    "directory",
     "typescript"
   ],
   "homepage": "https://github.com/tseijp/parsed-path#readme",
