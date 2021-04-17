@@ -1,4 +1,4 @@
-import { resetParsed } from '../../utils'
+import { resetParsed } from '../src'
 
 describe('attr utils', () => {
     let parsed: any
@@ -26,6 +26,31 @@ describe('attr utils', () => {
     })
 })
 
+describe('format with attrs', () => {
+    let parsed: any
+    beforeEach(() => {
+        parsed = resetParsed().posix
+    })
+    const foo = {_: 'foo'}, ignore = {_: 'ignore'}
+    it('to string without args', () => {
+        expect(parsed().withAttrs(foo)`dir: ${({_}: any) => _};`()).toEqual('foo/.')
+        expect(parsed().withAttrs(foo)`base: ${({_}: any) => _};`(foo)).toEqual('foo')
+        expect(parsed().withAttrs(foo)`root: ${({_}: any) => _||'ignore'};`()).toEqual('foo.')
+        expect(parsed().withAttrs(foo)`name: ${({_='ignore'}: any) => _};`(foo)).toEqual('foo')
+    })
+    it('to string with args', () => {
+        expect(parsed().withAttrs(foo)`base: ${({_}: any) => _};``name: bar;``ext: baz;` + '').toEqual('foo')
+        expect(parsed`root: ${({_}: any) => _}`.withAttrs(ignore)`dir: bar;``base: baz;`(foo) + '').toEqual('bar/baz')
+        // expect(parsed`root: ${({_}: any) => _||'ignore'}``base: bar;`.withAttrs(foo)`ext: baz;` + '').toEqual('foobar') // TODO get .baz
+        // expect(parsed`root: ${({_='ignore'}: any) => _}``name: bar;``ext: baz;`.withAttrs(ignore)(foo) + '').toEqual('foobarbaz') // TODO get .bazbaz
+    })
+    it('to string with parse path', () => {
+        expect(parsed(parsed().withAttrs(foo)`base: ${({_}: any) => _};``name: bar;`)`ext: baz;`() + '').toEqual('foo')
+        expect(parsed(parsed`root: ${({_}: any) => _};`.withAttrs(ignore)`dir: bar;`)`base: baz;`(foo) + '').toEqual('bar/baz')
+        expect(parsed(parsed`root: ${({_}: any) => _ || 'ignore'};``base: bar;`).withAttrs(foo)`ext: baz;` + '').toEqual('foobar')
+        expect(parsed(parsed`root: ${({_='ignore'}: any) => _};``name: bar;`)`ext: baz;`.withAttrs(ignore)(foo) + '').toEqual('foobarbaz')
+    })
+})
 describe('parsed utils', () => {
     let parsed: any
     beforeEach(() => {

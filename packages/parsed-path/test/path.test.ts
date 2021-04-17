@@ -1,4 +1,4 @@
-import { path } from '../path'
+import { path } from '../src'
 
 describe('path', () => {
     it('merge strings', () => {

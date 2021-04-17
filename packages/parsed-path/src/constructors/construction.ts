@@ -8,7 +8,7 @@ export type Attrs=
 
 export interface Options {
     pure?: boolean
-    posix?: boolean
+    isWin?: boolean
     attrs: Attr[]
 }
 

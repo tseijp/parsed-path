@@ -21,20 +21,19 @@ export function ParsedPath (tags: [ParsedPath, ...any[]], options: Options, args
 export function ParsedPath (tags: any, options: any, args: any=[]) {
     const [tag] = tags,
           [arg] = args,
+        {attrs} = options,
         isTagParsedPath = !is.str(tag) && is.str(tag?.parsedId),
         isArgParsedPath = !is.str(arg) && is.str(arg?.parsedId),
-        isCompositePath = !is.str(tag) || is.big(tag.charAt(0))
+        isCompositePath = !is.str(tag) || is.big(tag.charAt(0)),
+        finalAttrs = isTagParsedPath && tag.attrs
+            ? Array.prototype.concat(tag.attrs, attrs).filter(Boolean)
+            : attrs || []
 
     const {
-        attrs = [],
         pathId = generatePathId(options.displayId, options.parentPathId),
         parsedId = generateParsedId(options.displayId, options.pathId, pathId),
         displayId = generateDisplayName(tag, isCompositePath)
     } = options
-
-    const finalAttrs = isTagParsedPath && tag.attrs
-        ? Array.prototype.concat(tag.attrs, attrs).filter(Boolean)
-        : attrs
 
     const pathname = new Pathname (
         isTagParsedPath && tag.pathname,
@@ -44,7 +43,7 @@ export function ParsedPath (tags: any, options: any, args: any=[]) {
     )
 
     const pathform = new Pathform (
-        options.posix? 'posix': 'win32',
+        options.isWin? 'win32': 'posix',
         options.pure? 'resolve': 'join',
         isTagParsedPath && tag.pathform,
     )
@@ -60,15 +59,15 @@ export function ParsedPath (tags: any, options: any, args: any=[]) {
 
     WrappedParsedPath.pathname = pathname
     WrappedParsedPath.pathform = pathform
-    WrappedParsedPath.isStatic = pathname.isStatic && attrs.length === 0
+    WrappedParsedPath.isStatic = pathname.isStatic && is.len(0, attrs)
     WrappedParsedPath.toString = () => WrappedParsedPath()
 
     WrappedParsedPath.mount = (...next: any) => ParsedPath(path(...next), options, [WrappedParsedPath])
     WrappedParsedPath.from = (...next: any) => ParsedPath([WrappedParsedPath], options, path(...next))
     WrappedParsedPath.to = (...next: any) => ParsedPath([WrappedParsedPath], options, path(...next))
 
-    WrappedParsedPath.withAttrs = (next: any) => parsed(WrappedParsedPath).withAttrs(next, options)
     WrappedParsedPath.withConfig = (next: any) => parsed(WrappedParsedPath).withConfig(next, options)
+    WrappedParsedPath.withAttrs = (next: any) => parsed(WrappedParsedPath).withAttrs(next, options)
 
     return WrappedParsedPath as ParsedPath
 }

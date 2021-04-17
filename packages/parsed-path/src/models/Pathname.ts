@@ -38,7 +38,7 @@ export class Pathname {
         pathSets.forEach(pathSet => {
             let name = ''
             pathSet.forEach(chunk => {
-                name += [].concat([], flatten(chunk, props)).join('')
+                name += Array.prototype.concat([], flatten(chunk, props)).join('')
             })
             names.push(name)
         })

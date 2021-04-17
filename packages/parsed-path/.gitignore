@@ -8,6 +8,7 @@
 *.log
 *.vscode
 
+README.md
 index.cjs.js
 index.d.ts
 index.js

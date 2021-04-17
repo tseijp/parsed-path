@@ -90,7 +90,7 @@ When setting the back prop to true, we are moving to its parent dir.
 
 ```js
 const Back = Path`
-  ${props => props.back && '.'}.
+  ${(props: any) => props.back && '..'}
 `;
 ```
 
@@ -99,9 +99,9 @@ It also removes the mapping between pathname and pathform
 – using path as a low-level parsing construct could not be easier!
 
 ```js
-const File = Back`
+const File = Back`file``
   name: file;
-  ext: ${props => props.ext};
+  ext: .ts${(props: any) => props.xml && 'x'};
 `;
 ```
 
@@ -110,8 +110,8 @@ const File = Back`
 <blockquote>
 
 ```js
-File({ext: "jsx"}) to equal /home/user/dir/file.jsx  
-File({back: true}) to equal /home/user/file.txt  
+Back({back: true}) toEqual /home/user
+File({xml: false}) toEqual /home/user/dir/file.ts
 ```
 
 </blockquote>
@@ -130,8 +130,8 @@ For additional information about the supported prefixes visit their <kbd>**[docs
 │           dir        │    base    │
 ├──────┬               ├──────┬─────┤
 │ root │               │ name │ ext │
-parsed`    /``home``user``dir``file``.txt `
-parsed` C:\\``      path``dir``file``.txt `
+parsed`    /``home``user``dir``file``.tsx `
+parsed` C:\\``      path``dir``file``.tsx `
 └──────┴───────────────┴──────┴─────┘
 ```
 

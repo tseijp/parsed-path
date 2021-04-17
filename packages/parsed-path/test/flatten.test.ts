@@ -1,4 +1,4 @@
-import  { flatten } from './flatten'
+import  { flatten } from '../src'
 
 describe('flatten', () => {
     it('merge strings', () => {

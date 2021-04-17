@@ -32,7 +32,7 @@ export function path (rules?: any, ...interpolations: any) {
     if (is.fun(rules) || is.obj(rules))
         return flatten(interleave([], [rules, ...interpolations]))
 
-    if (is.len(0, interpolations) && is.len(1, rules) && is.str(rules[0]))
+    if (is.len(0, interpolations) && is.len(1, rules) && is.str((rules as any)[0]))
         return rules
 
     return flatten(interleave(rules, interpolations))
