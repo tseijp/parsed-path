@@ -48,3 +48,29 @@ describe('parsed with props', () => {
         expect(parsed(parsed`${({foo='foo'}: any) => foo}``bar`)`baz`.toString()).toEqual('foo/bar/baz')
     })
 })
+
+describe('parsed with attrs', () => {
+    let parsed: any
+    const foo = {_: 'foo'}, bar = {_: 'bar'}
+    beforeEach(() => {
+        parsed = resetParsed().posix
+    })
+    it('to string without args', () => {
+        expect(parsed().withAttrs(foo)`${({_}: any) => _}` + '').toEqual('foo')
+        expect(parsed`${({_}: any) => _}`.withAttrs(foo)(bar) + '').toEqual('bar')
+        expect(parsed`${({_}: any) => _||'xxx'}`.withAttrs(foo) + '').toEqual('foo')
+        expect(parsed`${({_='xxx'}: any) => _}`.withAttrs(foo)(bar) + '').toEqual('bar')
+    })
+    it('to string with args', () => {
+        expect(parsed().withAttrs(foo)`${({_}: any) => _}``bar``baz` + '').toEqual('foo/bar/baz')
+        expect(parsed`${({_}: any) => _}`.withAttrs(foo)`bar``baz`(bar) + '').toEqual('bar/bar/baz')
+        expect(parsed`${({_}: any) => _||'xxx'}``bar`.withAttrs(foo)`baz` + '').toEqual('foo/bar/baz')
+        expect(parsed`${({_='xxx'}: any) => _}``bar``baz`.withAttrs(foo)(bar) + '').toEqual('bar/bar/baz')
+    })
+    it('to string with parse path', () => {
+        expect(parsed(parsed().withAttrs(foo)`${({_}: any) => _}``bar`)`baz`() + '').toEqual('foo/bar/baz')
+        expect(parsed(parsed`${({_}: any) => _}`.withAttrs(foo))`bar``baz`(bar) + '').toEqual('bar/bar/baz')
+        expect(parsed(parsed`${({_}: any) => _ || 'foo'}``bar`.withAttrs(foo))`baz` + '').toEqual('foo/bar/baz')
+        expect(parsed(parsed`${({_='xxx'}: any) => _}``bar`)`baz`.withAttrs(foo)(bar) + '').toEqual('bar/bar/baz')
+    })
+})

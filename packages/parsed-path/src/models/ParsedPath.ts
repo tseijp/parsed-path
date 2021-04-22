@@ -11,7 +11,7 @@ export interface ParsedPath extends Construction {
     pathname: Pathname
     pathform: Pathform
     isStatic: boolean
-    toString: () => string
+    toString (): string
 }
 
 export function ParsedPath (tags: PathSet, options: Options, args?: PathSet): ParsedPath

@@ -2,11 +2,11 @@
  * https://github.com/styled-components/styled-components/blob/master/packages/styled-components/src/utils/interleave.js
  */
 
-import { PathSet, RuleSet } from '../constructors'
+import { RuleSet } from '../constructors'
 import { parsed } from '../constructors'
 
 export function interleave (
-    strings: TemplateStringsArray[],
+    strings: string[],
     interpolations: RuleSet
 ): RuleSet
 
@@ -17,7 +17,7 @@ export function interleave(strings: any=[], interpolations: any=[]){
     return result
 }
 
-export function resolveAttrs (props: any, attrs: any[]) {
+export function resolveAttrs (props: any, attrs: any[]=[]) {
     const context: any = {}
     attrs.forEach(attr => {
         if (is.fun(attr))
@@ -25,7 +25,7 @@ export function resolveAttrs (props: any, attrs: any[]) {
         for (let key in attr)
             context[key] = attr[key]
     })
-    return { ...context, ...props }
+    return {...context, ...props}
 }
 
 export const resetParsed = (isServer = false) => {
@@ -61,40 +61,3 @@ is.big = (a: unknown): a is string => is.str(a) && a === a.toUpperCase()
 is.len = (l: number, a: any): a is object => a && (is.arr(a)? a: Object.keys(a)).length === l
 
 export  { is }
-
-/**
- * TODO: ralative paths without resolve
- * forked from https://github.com/nodejs/node/blob/master/lib/path.js
- */
-export function relative (from: PathSet, to: PathSet): PathSet
-
-export function relative(from: any, to: any) {
-    const length = from.length > to.length? from.length: to.length
-
-    let i = 0, lastCommonSep = -1
-    for (; i < length; i++) {
-        const fromCode = from.charCodeAt(1 + i)
-        if (fromCode !== to.charCodeAt(1 + i))
-            break
-        else if (fromCode === 47)
-            lastCommonSep = i
-    }
-    if (i === length)
-        if (to.length > length) {
-            if (to.charCodeAt(1 + i) === 47)
-                return to.charCodeAt(1 + i + 1)
-            if (i === 0)
-                return to.charCodeAt(1 + i)
-        } else if (from.length > length) {
-            if (from.charCodeAt(1 + i) === 47)
-                lastCommonSep = i
-            else if (i === 0)
-                lastCommonSep = 0
-        }
-    let out = ''
-    for (i = 1 + lastCommonSep + 1; i <= from.length; ++i)
-        if (i === from.length || from.charCodeAt(i) === 47)
-            out += out.length === 0 ? '..' : '/..'
-
-    return out
-}

@@ -1,41 +1,24 @@
 const path = require('path');
 
 module.exports = {
-    roots: ['<rootDir>/'],
     rootDir: path.join(__dirname, '../..'),
-    transform: {
-        '^.+\\.(js|jsx|ts|tsx)$': '<rootDir>/node_modules/ts-jest',
-    },
-    transformIgnorePatterns: ["/node_modules/(?!(xxxx.*?\\.js$))"],
-    testPathIgnorePatterns : ["/node_modules/"],
-    testRegex: ["(/test/.*|\\.(test|spec))\\.(ts|tsx|js)$"],
+    roots: ['<rootDir>/'],
+    transform: {'^.+\\.(js|jsx|ts|tsx)$': '<rootDir>/node_modules/ts-jest'},
+    testPathIgnorePatterns: ['<rootDir>/node_modules/'],
+    transformIgnorePatterns: ['<rootDir>/node_modules/(?!(xxxx.*?\\.js$))'],
+    testRegex: ['(/test/.*|\\.(test|spec))\\.(js|jsx|ts|tsx)$'],
     modulePaths: [],
     moduleFileExtensions: ['ts','tsx','js','jsx','json','node'],
-    moduleNameMapper: {
-        '^react-native$': 'react-native-web',
-        '^.+\\.module\\.(css|sass|scss)$': 'identity-obj-proxy',
-        'src/(.*)$': '<rootDir>/src/$1',
-    },
-    automock : false,
+    moduleNameMapper: {'src/(.*)$': '<rootDir>/src/$1'},
     preset: 'ts-jest',
-    globals: {
-        'ts-jest': {
-            diagnostics: true,
-        },
-    },
-    collectCoverageFrom: [
-        'src/**/*.{js,jsx,ts,tsx}',
-        '!src/**/index.tsx',
-        '!src/**/*.d.ts',
-    ],
-    coveragePathIgnorePatterns: ['./src/*/*.types.{ts,tsx}'],
-    coverageReporters: ['json', 'lcov', 'text-summary', 'clover'],
-    coverageThreshold: {
-        global: {
-            statements: 95,
-            branches  : 95,
-            lines     : 95,
-            functions : 95,
-        },
+    globals: {'ts-jest': {diagnostics: true}},
+    automock: false,
+    clearMocks: true,
+    collectCoverage: true,
+    coverageDirectory: '<rootDir>/coverage/',
+    coverageReporters: ['json', 'html', 'lcov', 'text', 'text-summary', 'clover'],
+    coverageThreshold: {global: {statements: 95, functions: 95, branches: 95, lines: 95},
+    collectCoverageFrom: ['src/*/**/*.{js,ts,tsx}', '!**/index.*'],
+    forceCoverageMatch: ['src/*/**/*.{js,ts,tsx}', '!**/index.*'],
     },
 };

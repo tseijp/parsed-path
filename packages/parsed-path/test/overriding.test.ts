@@ -26,7 +26,7 @@ describe('override format static', () => {
     })
 })
 
-describe('reformat format with props', () => {
+describe('reformat with props', () => {
     let parsed: any, target: any
     const foo = {_: 'foo'}
     beforeEach(() => {

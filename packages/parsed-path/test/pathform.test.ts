@@ -56,3 +56,29 @@ describe('format with props', () => {
         expect(parsed(parsed`root: ${({_='foo'}: any) => _};``name: bar;`)`ext: baz;`.toString()).toEqual('foobarbaz')
     })
 })
+
+describe('format with attrs', () => {
+    let parsed: any
+    beforeEach(() => {
+        parsed = resetParsed().posix
+    })
+    const foo = {_: 'foo'}, ignore = {_: 'ignore'}
+    it('to string without args', () => {
+        expect(parsed().withAttrs(foo)`dir: ${({_}: any) => _};`()).toEqual('foo/.')
+        expect(parsed().withAttrs(foo)`base: ${({_}: any) => _};`(foo)).toEqual('foo')
+        expect(parsed().withAttrs(foo)`root: ${({_}: any) => _||'ignore'};`()).toEqual('foo.')
+        expect(parsed().withAttrs(foo)`name: ${({_='ignore'}: any) => _};`(foo)).toEqual('foo')
+    })
+    it('to string with args', () => {
+        expect(parsed().withAttrs(foo)`base: ${({_}: any) => _};``name: bar;``ext: baz;` + '').toEqual('foo')
+        expect(parsed`root: ${({_}: any) => _}`.withAttrs(ignore)`dir: bar;``base: baz;`(foo) + '').toEqual('bar/baz')
+        expect(parsed`root: ${({_}: any) => _||'ignore'}``base: bar;`.withAttrs(foo)`ext: baz;` + '').toEqual('.baz') // TODO .bazfoobar
+        expect(parsed`root: ${({_='ignore'}: any) => _}``name: bar;``ext: baz;`.withAttrs(ignore)(foo) + '').toEqual('.bazbaz') // TODO foobarbaz
+    })
+    it('to string with parse path', () => {
+        expect(parsed(parsed().withAttrs(foo)`base: ${({_}: any) => _};``name: bar;`)`ext: baz;`() + '').toEqual('foo')
+        expect(parsed(parsed`root: ${({_}: any) => _};`.withAttrs(ignore)`dir: bar;`)`base: baz;`(foo) + '').toEqual('bar/baz')
+        expect(parsed(parsed`root: ${({_}: any) => _ || 'ignore'};``base: bar;`).withAttrs(foo)`ext: baz;` + '').toEqual('foobar')
+        expect(parsed(parsed`root: ${({_='ignore'}: any) => _};``name: bar;`)`ext: baz;`.withAttrs(ignore)(foo) + '').toEqual('foobarbaz')
+    })
+})

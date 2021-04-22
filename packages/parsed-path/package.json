@@ -34,6 +34,7 @@
     "@types/jest": "^26.0.22",
     "@types/node": "^14.14.37",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "codecov": "^3.8.1",
     "jest": "^26.6.3",
     "rollup": "^2.45.0",
     "rollup-plugin-node-polyfills": "^0.2.1",

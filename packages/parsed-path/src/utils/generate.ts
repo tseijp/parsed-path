@@ -6,8 +6,7 @@ export function hash (str: string, seed?: number): number
 
 export function hash (str: any, seed=5381) {
     let i = str.length
-    while (i)
-        seed = (seed * 33) ^ str.charCodeAt(--i)
+    while (i) seed = (seed * 33) ^ str.charCodeAt(--i)
     return seed
 }
 
@@ -19,7 +18,7 @@ export function getAlphabeticChar (code: any) {
 export function generateAlphabeticName (code: number): string
 
 export function generateAlphabeticName (code: any) {
-    let x, name = ''
+    let x: any, name = ''
     for (x = abs(code); x > charsLength; x = (x / charsLength) | 0)
         name = getAlphabeticChar(x % charsLength) + name
     return (getAlphabeticChar(x % charsLength) + name).replace(/(a)(d)/gi, '$1-$2')

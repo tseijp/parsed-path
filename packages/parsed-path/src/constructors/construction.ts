@@ -1,6 +1,6 @@
 import { path, PathSet } from './path'
-import { is, relative } from '../utils'
 import { ParsedPath } from '../models'
+import { is } from '../utils'
 
 export type Attrs=
     | object
@@ -13,12 +13,12 @@ export interface Options {
 }
 
 export interface Construction {
-    toString: (...args: any) => string
-    mount: (...args: any) => ParsedPath
-    from: (...args: any) => ParsedPath
-    to: (...args: any) => ParsedPath
-    withAttrs: (args: any, options?: Options) => Construction
-    withConfig: (args: any, options?: Options) => Construction
+    toString (...args: any):  string
+    mount (...args: any):  ParsedPath
+    from (...args: any):  ParsedPath
+    to (...args: any):  ParsedPath
+    withAttrs (args: any, options?: Options): Construction
+    withConfig (args: any, options?: Options): Construction
 }
 
 export function construction (
@@ -38,18 +38,18 @@ export function construction (constructor: any, tags: any, options: any={}) {
         constructor(path(...args), options, path(...tags))
 
     templateFunction.from = (...args: any) =>
-        constructor(relative(path(...args), path(...tags)), options)
+        constructor([path(...args), path(...tags)], options)
 
     templateFunction.to = (...args: any) =>
-        constructor(relative(path(...tags), path(...args)), options)
+        constructor([path(...tags), path(...args)], options)
 
-    templateFunction.withAttrs = (attrs: any, next: any={}) =>
-        construction(constructor, path(...tags), {...options, ...next, attrs:
-            Array.prototype.concat(options.attrs, next.attrs, attrs).filter(Boolean),
+    templateFunction.withAttrs = (next: any, pre: any={}) =>
+        construction(constructor, path(...tags), {...options, ...pre, attrs:
+            Array.prototype.concat(options.attrs, pre.attrs, next).filter(Boolean),
         })
 
-    templateFunction.withConfig = (config: any, next: any={}) =>
-        construction(constructor, path(...tags), {...options, ...next, ...config})
+    templateFunction.withConfig = (next: any, pre: any={}) =>
+        construction(constructor, path(...tags), {...options, ...pre, ...next})
 
     return templateFunction as Construction
 }
