@@ -1,4 +1,4 @@
-import { parsedEntries, resetParsed } from '../src'
+import { parsedEntries, resetParsed } from '../../src'
 
 describe('defined parsed tag', () => {
     let parsed: any

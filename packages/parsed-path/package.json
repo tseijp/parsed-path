@@ -1,78 +1,76 @@
 {
-  "name": "parsed-path",
-  "version": "0.1.6",
-  "module": "index.js",
-  "types": "index.d.ts",
-  "main": "index.cjs.js",
-  "files": [
-    "docs",
-    "src",
-    "index.js",
-    "index.d.ts",
-    "index.cjs.js"
-  ],
-  "sideEffect": false,
-  "scripts": {
-    "build": "rollup -c",
-    "test": "jest --watch --coverage --runInBand",
-    "ls": "npm pack --dry-run"
-  },
-  "dependencies": {
-    "@types/stylis": "^4.0.0",
-    "stylis": "^4.0.10"
-  },
-  "devDependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.13.0",
-    "@babel/plugin-proposal-object-rest-spread": "^7.13.8",
-    "@babel/plugin-transform-runtime": "^7.13.15",
-    "@babel/preset-env": "^7.13.15",
-    "@babel/preset-react": "^7.13.13",
-    "@babel/preset-typescript": "^7.13.0",
-    "@rollup/plugin-babel": "^5.3.0",
-    "@rollup/plugin-commonjs": "^18.0.0",
-    "@rollup/plugin-node-resolve": "^11.2.1",
-    "@types/jest": "^26.0.22",
-    "@types/node": "^14.14.37",
-    "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
-    "codecov": "^3.8.1",
-    "jest": "^26.6.3",
-    "rollup": "^2.45.0",
-    "rollup-plugin-node-polyfills": "^0.2.1",
-    "rollup-plugin-terser": "^7.0.2",
-    "ts-jest": "^26.5.4",
-    "typescript": "^4.2.4"
-  },
-  "peerDependencies": {
-    "react": ">=16.8"
-  },
-  "peerDependenciesMeta": {
-    "react": {
-      "optional": true
+    "name": "parsed-path",
+    "version": "0.1.7",
+    "module": "index.js",
+    "types": "index.d.ts",
+    "main": "index.cjs.js",
+    "files": [
+        "docs",
+        "src",
+        "index.js",
+        "index.d.ts",
+        "index.cjs.js"
+    ],
+    "author": "tsei",
+    "license": "MIT",
+    "private": false,
+    "sideEffect": false,
+    "description": "Use the best bits of ES6 to parse your path without stress 👋",
+    "keywords": [
+        "nodejs",
+        "typescript",
+        "parse",
+        "reactjs",
+        "filesystem",
+        "directory",
+        "file",
+        "path",
+        "stat",
+        "filepath",
+        "dir"
+    ],
+    "homepage": "https://github.com/tseijp/parsed-path#readme",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/tseijp/parsed-path.git"
+    },
+    "bugs": {
+        "url": "https://github.com/tseijp/parsed-path/issues"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "dependencies": {
+        "@types/stylis": "^4.0.0",
+        "stylis": "^4.0.10"
+    },
+    "peerDependencies": {
+        "react": ">=16.8"
+    },
+    "peerDependenciesMeta": {
+        "react": {
+            "optional": true
+        }
+    },
+    "devDependencies": {
+        "@babel/plugin-proposal-class-properties": "^7.13.0",
+        "@babel/plugin-proposal-object-rest-spread": "^7.13.8",
+        "@babel/plugin-transform-runtime": "^7.13.15",
+        "@babel/preset-env": "^7.13.15",
+        "@babel/preset-react": "^7.13.13",
+        "@babel/preset-typescript": "^7.13.0",
+        "@rollup/plugin-babel": "^5.3.0",
+        "@rollup/plugin-commonjs": "^18.0.0",
+        "@rollup/plugin-node-resolve": "^11.2.1",
+        "@types/jest": "^26.0.22",
+        "@types/node": "^14.14.37",
+        "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+        "codecov": "^3.8.1",
+        "jest": "^26.6.3",
+        "rollup": "^2.45.0",
+        "rollup-plugin-node-polyfills": "^0.2.1",
+        "rollup-plugin-terser": "^7.0.2",
+        "ts-jest": "^26.5.4",
+        "typescript": "^4.2.4"
     }
-  },
-  "author": "tsei",
-  "license": "MIT",
-  "private": false,
-  "description": "Use the best bits of ES6 to parse your path without stress 👋",
-  "keywords": [
-    "parse",
-    "path",
-    "stat",
-    "file",
-    "dir",
-    "filesystem",
-    "directory",
-    "typescript"
-  ],
-  "homepage": "https://github.com/tseijp/parsed-path#readme",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/tseijp/parsed-path.git"
-  },
-  "bugs": {
-    "url": "https://github.com/tseijp/parsed-path/issues"
-  },
-  "publishConfig": {
-    "access": "public"
-  }
 }

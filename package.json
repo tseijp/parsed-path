@@ -8,8 +8,11 @@
     "packages/*"
   ],
   "scripts": {
-    "test": "lerna exec -- yarn run test",
-    "build": "lerna exec -- yarn run build",
-    "publish": "lerna publish from-package"
+    "coverage": "lerna exec -- coverage",
+    "publish": "lerna publish from-package",
+    "build": "lerna exec -- rollup -c",
+    "watch": "lerna exec -- jest --watch --runInBand",
+    "test": "lerna exec -- jest --coverage",
+    "ls": "lerna exec -- npm pack --dry-run"
   }
 }

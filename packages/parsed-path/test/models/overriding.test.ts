@@ -1,4 +1,10 @@
-import { resetParsed } from '../src'
+import { resetParsed } from '../../src'
+/*
+ * `base``name``ext` => foo      // two ignore
+ * `root``dir``base` => bar/baz  // left ignore
+ * `root``base``ext` => foobar   // right ignore
+ * `root``name``ext` => foobarbaz
+ */
 
 describe('override format static', () => {
     let parsed: any, target: any
@@ -26,7 +32,7 @@ describe('override format static', () => {
     })
 })
 
-describe('reformat with props', () => {
+describe('override with props', () => {
     let parsed: any, target: any
     const foo = {_: 'foo'}
     beforeEach(() => {
@@ -50,5 +56,32 @@ describe('reformat with props', () => {
         expect(parsed(target`root: ${({_}: any) => _};``dir: bar;`)`base: baz;`(foo)).toEqual('Foo/Bar/baz')
         expect(parsed(target`root: ${({_}: any) => _ || 'foo'};``base: bar;`)`ext: baz;` + '').toEqual('Foo/Bar/Bazbaz')
         expect(parsed(target`root: ${({_='foo'}: any) => _};``name: bar;`)`ext: baz;`.toString()).toEqual('Foo/Bar/Bazbaz')
+    })
+})
+
+describe('override with attrs', () => {
+    let parsed: any, target: any;
+    beforeEach(() => {
+        parsed = resetParsed().posix
+        target = parsed`Foo``Bar``Baz`
+    })
+    const foo = {_: 'foo'}, ignore = {_: 'ignore'}
+    it('to string without args', () => {
+        expect(target.withAttrs(foo)`dir: ${({_}: any) => _};`()).toEqual('foo/Baz')
+        expect(target.withAttrs(foo)`base: ${({_}: any) => _};`(foo)).toEqual('Foo/Bar/foo')
+        expect(target.withAttrs(foo)`root: ${({_}: any) => _||'ignore'};`()).toEqual('Foo/Bar/Baz')
+        expect(target.withAttrs(foo)`name: ${({_='ignore'}: any) => _};`(foo)).toEqual('Foo/Bar/foo')
+    })
+    it('to string with args', () => {
+        expect(target.withAttrs(foo)`base: ${({_}: any) => _};``name: bar;``ext: baz;` + '').toEqual('Foo/Bar/foo')
+        expect(target`root: ${({_}: any) => _}`.withAttrs(ignore)`dir: bar;``base: baz;`(foo) + '').toEqual('Foo/Bar/baz')
+        expect(target`root: ${({_}: any) => _||'ignore'}``base: bar;`.withAttrs(foo)`ext: baz;` + '').toEqual('Foo/Bar/Bazbaz')
+        expect(target`root: ${({_='ignore'}: any) => _}``name: bar;``ext: baz;`.withAttrs(ignore)(foo) + '').toEqual('Foo/Bar/Bazbazbaz')
+    })
+    it('to string with parse path', () => {
+        expect(parsed(target.withAttrs(foo)`base: ${({_}: any) => _};``name: bar;`)`ext: baz;`() + '').toEqual('Foo/Bar/foo')
+        expect(parsed(target`root: ${({_}: any) => _};`.withAttrs(ignore)`dir: bar;`)`base: baz;`(foo) + '').toEqual('Foo/Bar/baz')
+        expect(parsed(target`root: ${({_}: any) => _ || 'ignore'};``base: bar;`).withAttrs(foo)`ext: baz;` + '').toEqual('Foo/Bar/Bazbaz')
+        expect(parsed(target`root: ${({_='ignore'}: any) => _};``name: bar;`)`ext: baz;`.withAttrs(ignore)(foo) + '').toEqual('Foo/Bar/Bazbazbaz')
     })
 })

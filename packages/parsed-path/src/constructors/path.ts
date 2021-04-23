@@ -27,13 +27,17 @@ export function path (rules?: TemplateStringsArray, ...interpolations: RuleSet):
 
 export function path (rules?: any, ...interpolations: any) {
     if (is.url(rules))
-        return flatten(interleave([], [parse(rules.pathname), ...interpolations]))
+        return flatten(interleave([], [rules.pathname, ...interpolations]))
 
     if (is.fun(rules) || is.obj(rules))
         return flatten(interleave([], [rules, ...interpolations]))
 
-    if (is.len(0, interpolations) && is.len(1, rules) && is.str((rules as any)[0]))
-        return rules
+    if (is.len(0, interpolations)) {
+        if (is.str(rules))
+            return [rules]
+        if (is.len(1, rules) && is.str((rules as any)[0]))
+            return rules
+    }
 
     return flatten(interleave(rules, interpolations))
 }

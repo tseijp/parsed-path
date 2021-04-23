@@ -1,4 +1,4 @@
-import { resetParsed } from '../src'
+import { resetParsed } from '../../src'
 
 describe('mount', () => {
     let parsed: any
@@ -19,10 +19,11 @@ describe('withCofig', () => {
         parsed = resetParsed().posix
     })
     it('basic', () => {
-        expect(parsed`foo``bar``baz`.withConfig({}) + '').toEqual('foo/bar/baz')
-        expect(parsed`foo``bar`.withConfig({})`baz` + '').toEqual('foo/bar/baz')
-        expect(parsed`foo`.withConfig({})`bar``baz` + '').toEqual('f/bar/baz') // TODO foo
-        expect(parsed``.withConfig({})`foo``bar``baz` + '').toEqual('foo/bar/baz')
+        const isWin = true
+        expect(parsed`foo``bar``baz`.withConfig({isWin}) + '').toEqual('foo\\bar\\baz')
+        expect(parsed`foo``bar`.withConfig({isWin})`baz` + '').toEqual('foo\\bar\\baz')
+        expect(parsed`foo`.withConfig({isWin})`bar``baz` + '').toEqual('foo\\bar\\baz')
+        expect(parsed``.withConfig({isWin})`foo``bar``baz` + '').toEqual('foo\\bar\\baz')
     })
 })
 
@@ -34,7 +35,7 @@ describe('withCofig', () => {
     it('basic', () => {
         expect(parsed`foo``bar``baz`.withAttrs({}) + '').toEqual('foo/bar/baz')
         expect(parsed`foo``bar`.withAttrs({})`baz` + '').toEqual('foo/bar/baz')
-        expect(parsed`foo`.withAttrs({})`bar``baz` + '').toEqual('f/bar/baz') // TODO foo
+        expect(parsed`foo`.withAttrs({})`bar``baz` + '').toEqual('foo/bar/baz')
         expect(parsed``.withAttrs({})`foo``bar``baz` + '').toEqual('foo/bar/baz')
     })
 })

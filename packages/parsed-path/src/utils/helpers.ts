@@ -28,10 +28,7 @@ export function resolveAttrs (props: any, attrs: any[]=[]) {
     return {...context, ...props}
 }
 
-export const resetParsed = (isServer = false) => {
-    if (!isServer)
-        if (!window.location)
-            throw Error('no window.location')
+export const resetParsed = () => {
     return parsed
 }
 
@@ -40,7 +37,7 @@ const is = (a: any, b?: any, ...other: any): boolean => {
     if (typeof a !== typeof b) return false
     if (is.str(a) || is.num(a)) return a === b
     if (is.obj(a) && is.obj(b) && is.len(0, a) && is.len(0, b)) return true
-    let i
+    let i: any
     for (i in a) if (!(i in b)) return false
     for (i in b) if (a[i] !== b[i]) return false
     return is.und(i) ? a === b : true

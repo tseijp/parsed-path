@@ -1,4 +1,4 @@
-import { resetParsed } from '../src'
+import { resetParsed } from '../../src'
 /*
  * `base``name``ext` => foo      // two ignore
  * `root``dir``base` => bar/baz  // left ignore

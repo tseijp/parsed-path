@@ -14,11 +14,8 @@ module.exports = {
     globals: {'ts-jest': {diagnostics: true}},
     automock: false,
     clearMocks: true,
-    collectCoverage: true,
     coverageDirectory: '<rootDir>/coverage/',
+    collectCoverageFrom: ['<rootDir>/packages/parsed-path/src/**/*.ts', '!**/index.*'],
     coverageReporters: ['json', 'html', 'lcov', 'text', 'text-summary', 'clover'],
-    coverageThreshold: {global: {statements: 95, functions: 95, branches: 95, lines: 95},
-    collectCoverageFrom: ['src/*/**/*.{js,ts,tsx}', '!**/index.*'],
-    forceCoverageMatch: ['src/*/**/*.{js,ts,tsx}', '!**/index.*'],
-    },
+    coverageThreshold: {global: {statements: 95, functions: 95, branches: 95, lines: 95}},
 };
