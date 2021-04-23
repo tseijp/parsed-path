@@ -1,15 +1,6 @@
-import { is, flatten } from '../utils'
+import { is, isStaticPathSet, flatten } from '../utils'
 import { PathSet } from '../constructors'
 import { Pathform } from './Pathform'
-
-function isStaticPathSet(pathSet: any=[]): boolean {
-    return !pathSet.some((rule: any) => {
-        if (is.fun(rule))
-            return true
-        if (is.arr(rule))
-            return !isStaticPathSet(rule)
-    })
-}
 
 export interface Pathname {
     pathname: Pathname

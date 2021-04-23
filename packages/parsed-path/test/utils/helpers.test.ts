@@ -1,54 +1,24 @@
-import { interleave, resolveAttrs, is } from '../../src'
-
-
-describe('path', () => {
-    it('merge strings', () => {
-        const tsa: any = ['foo', 'bar', 'baz', '']
-        expect(interleave(tsa, [false, undefined, null])).toEqual(['foo', false, 'bar', undefined, 'baz', null, ''])
-        expect(interleave(tsa, [0, NaN, -1])).toEqual(['foo', 0, 'bar', NaN, 'baz', -1, ''])
-        expect(interleave(['foo, bar, baz'], [])).toEqual(['foo, bar, baz'])
-    })
-
-    it('defers', () => {
-        const tsa = ['foo', 'baz'],
-              str = ({bool=true}) => (bool ? 'bar' : 'baz'),
-              arr = () => ['static', ({bool=true}) => (bool ? 'bar' : 'baz')],
-              obj = {foo: 'bar'}
-        expect(interleave(tsa, [str])).toEqual(['foo', str, 'baz'])
-        expect(interleave(tsa, [arr])).toEqual(['foo', arr, 'baz'])
-        expect(interleave(tsa, [obj])).toEqual(['foo', obj, 'baz'])
-    })
-})
-
-describe('resolveAttrs', () => {
-    const foo = 'foo',
-          bar = 'bar',
-          baz = 'baz'
-    it('resolve attrs', () => {
-        expect(resolveAttrs({foo, bar}, [{baz}])).toEqual({foo, bar, baz})
-        expect(resolveAttrs({foo}, [{bar}, {baz}])).toEqual({foo, bar, baz})
-        expect(resolveAttrs({}, [{foo}, {bar}, {baz}])).toEqual({foo, bar, baz})
-    })
-
-    it('resolve functional attrs', () => {
-        expect(resolveAttrs({foo, bar}, [()=>({baz})])).toEqual({foo, bar, baz})
-        expect(resolveAttrs({foo}, [()=>({bar}), ()=>({baz})])).toEqual({foo, bar, baz})
-        expect(resolveAttrs({}, [()=>({foo}), ()=>({bar}), ()=>({baz})])).toEqual({foo, bar, baz})
-    })
-})
+import { is, isStaticPathSet } from '../../src'
 
 describe('is', () => {
-    it('is.equ', () => {
+    it('is to be truthy', () => {
         const foo = 'foo',
               bar = 'bar'
-        expect(is(10, 10, 10, 10) !== is(0, 10, 10, 10)).toBeTruthy()
-        expect(is('10', '10', '10') !== is('0', '10', '10')).toBeTruthy()
-        expect(is({foo}, {foo}) !== is({foo}, {foo, bar})).toBeTruthy()
-        expect(is([foo], [foo]) !== is([foo], [foo, bar])).toBeTruthy()
+        expect(is(0, 0, 0)).toBeTruthy()
+        expect(is('0', '0', '0')).toBeTruthy()
+        expect(is({foo}, {foo})).toBeTruthy()
+        expect(is([foo], [foo])).toBeTruthy()
+        expect(is({}, {}, {})).toBeTruthy()
     })
-    it('is.len', () => {
-        expect(is.len(0, [])).toBeTruthy()
-        expect(is.len(0, {})).toBeTruthy()
+    it('is to be falsy', () => {
+        const foo = 'foo',
+              bar = 'bar'
+        expect(is(0, 0, 1)).toBeFalsy()
+        expect(is('0', '0', 0)).toBeFalsy()
+        expect(is('0', '0', '1')).toBeFalsy()
+        expect(is({foo}, {bar})).toBeFalsy()
+        expect(is([foo], [bar])).toBeFalsy()
+        expect(is({}, {}, {bar})).toBeFalsy()
     })
     it('is.xxx', () => {
         const url = 'https://tsei.jp'
@@ -64,5 +34,20 @@ describe('is', () => {
         expect(is.set(new Set([]))).toBeTruthy()
         expect(is.map(new Map([]))).toBeTruthy()
         expect(is.big("F")).toBeTruthy()
+            expect(is.len(0, [])).toBeTruthy()
+            expect(is.len(0, {})).toBeTruthy()
+    })
+})
+
+describe('isStaticPathSet', () => {
+    it('static', () => {
+        expect(isStaticPathSet(['foo', 'bar', ['baz']])).toBeTruthy()
+        expect(isStaticPathSet(['foo', ['bar', 'baz']])).toBeTruthy()
+        expect(isStaticPathSet([['foo', 'bar', 'baz']])).toBeTruthy()
+    })
+    it('not static', () => {
+        expect(isStaticPathSet(['foo', 'bar', () => ['baz']])).toBeFalsy()
+        expect(isStaticPathSet(['foo', () => ['bar', 'baz']])).toBeFalsy()
+        expect(isStaticPathSet([() => ['foo', 'bar', 'baz']])).toBeFalsy()
     })
 })

@@ -2,31 +2,8 @@
  * https://github.com/styled-components/styled-components/blob/master/packages/styled-components/src/utils/interleave.js
  */
 
-import { RuleSet } from '../constructors'
+import { PathSet } from '../constructors'
 import { parsed } from '../constructors'
-
-export function interleave (
-    strings: string[],
-    interpolations: RuleSet
-): RuleSet
-
-export function interleave(strings: any=[], interpolations: any=[]){
-    const result = [strings[0]]
-    for (let i = 0, len = interpolations.length; i < len; i += 1)
-        result.push(interpolations[i], strings[i + 1])
-    return result
-}
-
-export function resolveAttrs (props: any, attrs: any[]=[]) {
-    const context: any = {}
-    attrs.forEach(attr => {
-        if (is.fun(attr))
-            attr = attr(context)
-        for (let key in attr)
-            context[key] = attr[key]
-    })
-    return {...context, ...props}
-}
 
 export const resetParsed = () => {
     return parsed
@@ -37,10 +14,9 @@ const is = (a: any, b?: any, ...other: any): boolean => {
     if (typeof a !== typeof b) return false
     if (is.str(a) || is.num(a)) return a === b
     if (is.obj(a) && is.obj(b) && is.len(0, a) && is.len(0, b)) return true
-    let i: any
-    for (i in a) if (!(i in b)) return false
-    for (i in b) if (a[i] !== b[i]) return false
-    return is.und(i) ? a === b : true
+    for (let i in a) if (!(i in b)) return false
+    for (let i in b) if (a[i] !== b[i]) return false
+    return true
 }
 
 is.arr = Array.isArray
@@ -58,3 +34,14 @@ is.big = (a: unknown): a is string => is.str(a) && a === a.toUpperCase()
 is.len = (l: number, a: any): a is object => a && (is.arr(a)? a: Object.keys(a)).length === l
 
 export  { is }
+
+export function isStaticPathSet (pathSet: PathSet): boolean
+
+export function isStaticPathSet(pathSet: any) {
+    return !pathSet.some((rule: any) => {
+        if (is.fun(rule))
+            return true
+        if (is.arr(rule))
+            return !isStaticPathSet(rule)
+    })
+}

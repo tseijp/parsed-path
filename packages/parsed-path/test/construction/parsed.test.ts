@@ -1,9 +1,10 @@
 import { parsedEntries, resetParsed } from '../../src'
 
+const location = new URL('https://tsei.jp/note/api/user/100')
+
 describe('defined parsed tag', () => {
-    let parsed: any
-    let windowSpy: any
-    const location = new URL('https://tsei.jp/note/api/user/100')
+    let parsed: any,
+     windowSpy: any
 
     beforeEach(() => {
         const originalWindow = { ...window }

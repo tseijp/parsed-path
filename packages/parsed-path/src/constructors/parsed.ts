@@ -1,7 +1,7 @@
 import { ParsedPath } from '../models'
 import { construction } from './construction'
 
-const isWin = process?.platform === 'win32';
+const isWin = process.platform === 'win32';
 
 const parsed: any = (...tags: any) => construction(ParsedPath, tags, {isWin})
 

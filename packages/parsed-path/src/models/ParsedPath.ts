@@ -39,12 +39,12 @@ export function ParsedPath (tags: any, options: any, args: any=[]) {
         isTagParsedPath && tag.pathname,
        !isTagParsedPath && tags,
        !isArgParsedPath && args,
-        isArgParsedPath && arg.pathname?.pathSets,
+        isArgParsedPath && arg.pathname?.pathSets // TODO TEST
     )
 
     const pathform = new Pathform (
         options.isWin? 'win32': 'posix',
-        options.pure? 'resolve': 'join',
+        options.pure? 'resolve': 'join', // TODO TEST
         isTagParsedPath && tag.pathform,
     )
 

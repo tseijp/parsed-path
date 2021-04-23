@@ -8,8 +8,8 @@
     "packages/*"
   ],
   "scripts": {
-    "coverage": "lerna exec -- coverage",
-    "publish": "lerna publish from-package",
+    "codecov": "lerna exec -- codecov",
+    "update": "lerna exec -- yarn publish",
     "build": "lerna exec -- rollup -c",
     "watch": "lerna exec -- jest --watch --runInBand",
     "test": "lerna exec -- jest --coverage",

@@ -1,10 +1,13 @@
 import * as PATH from 'path'
-import { format } from '../utils'
 import { compile } from 'stylis'
+import { format } from '../utils'
+
+const parse = require('path-parse')
 
 type FormsMap = Map<string, Set<string>>
 
 const FORM_REGEX = /:/ // TODO
+
 const COMMENT_REGEX = /^\s*\/\/.*$/gm;
 
 export interface Pathform {
@@ -19,20 +22,18 @@ export interface Pathform {
     joinPath (...args: any): any
 }
 
-// this.formatPath = ((PATH as any)[mode] || PATH)?.format || format[mode].format
-// this.parsePath = ((PATH as any)[mode] || PATH)?.parse || format[mode].parse
 export class Pathform implements Pathform {
     constructor (mode: string, join: string, pathform?: Pathform, forms?: FormsMap) {
-        this.formatPath = (format as any)[mode].format
-        this.parsePath = (format as any)[mode].parse
-        this.joinPath = ((PATH as any)[mode] || PATH)[join]
+        this.formatPath = (format as any)[mode]
+        this.parsePath = (parse as any)[mode]
+        this.joinPath = ((PATH as any)[mode] || PATH)[join] //
         this.pathform = pathform || undefined
         this.isStatic = !pathform || pathform.isStatic
         this.forms = pathform?.forms || forms || new Map<string, Set<string>>([])
     }
 
     hasFormForId(id: string, form: string): boolean {
-        return this.forms.has(id) && Boolean(this.forms.get(id)?.has(form))
+        return this.forms.has(id) && Boolean(this.forms.get(id)?.has(form))//
     }
 
     insertForms (id: string, name: string) {
