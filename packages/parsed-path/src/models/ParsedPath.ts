@@ -1,6 +1,6 @@
 import { Pathform } from './Pathform'
 import { Pathname } from './Pathname'
-import { parsed, path, Attrs, Options, PathSet, Construction } from '../constructors'
+import { construction as re, Attrs, Options, PathSet, Construction } from '../constructors'
 import { is, resolveAttrs, generatePathId, generateParsedId, generateDisplayName } from '../utils'
 
 export interface ParsedPath extends Construction {
@@ -62,12 +62,17 @@ export function ParsedPath (tags: any, options: any, args: any=[]) {
     WrappedParsedPath.isStatic = pathname.isStatic && is.len(0, attrs)
     WrappedParsedPath.toString = () => WrappedParsedPath()
 
-    WrappedParsedPath.mount = (...next: any) => ParsedPath(path(...next), options, [WrappedParsedPath])
-    WrappedParsedPath.from = (...next: any) => ParsedPath([WrappedParsedPath], options, path(...next))
-    WrappedParsedPath.to = (...next: any) => ParsedPath([WrappedParsedPath], options, path(...next))
+    WrappedParsedPath.mount = (...next: any) =>
+        re(ParsedPath, [WrappedParsedPath], options).mount(...next)
+    WrappedParsedPath.from = (...next: any) =>
+        re(ParsedPath, [WrappedParsedPath], options).from(...next)
+    WrappedParsedPath.to = (...next: any) =>
+        re(ParsedPath, [WrappedParsedPath], options).to(...next)
 
-    WrappedParsedPath.withConfig = (next: any) => parsed(WrappedParsedPath).withConfig(next, options)
-    WrappedParsedPath.withAttrs = (next: any) => parsed(WrappedParsedPath).withAttrs(next, options)
+    WrappedParsedPath.withConfig = (next: any) =>
+        re(ParsedPath, [WrappedParsedPath], options).withConfig(next)
+    WrappedParsedPath.withAttrs = (next: any) =>
+        re(ParsedPath, [WrappedParsedPath], options).withAttrs(next)
 
     return WrappedParsedPath as ParsedPath
 }

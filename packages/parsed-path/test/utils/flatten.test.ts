@@ -13,7 +13,6 @@ describe('flatten', () => {
         expect(flatten([1, 2, [3, 4, 5], 'come:on;', 'lets:ride;']))
             .toEqual(['1', '2', '3', '4', '5', 'come:on;', 'lets:ride;'])
     })
-
     it('defers functions', () => {
         const str = ({bool=true}) => (bool ? 'bar' : 'baz')
         const arr = () => ['static', ({bool=true}) => (bool ? 'bar' : 'baz')]
@@ -26,7 +25,6 @@ describe('flatten', () => {
         expect(flatten(['foo', str, 'baz'], {bool: true})).toEqual(['foo', 'bar', 'baz'])
         expect(flatten(['foo', str, 'baz'], {bool: false})).toEqual(['foo', 'baz', 'baz'])
     })
-
     it('toStrings class instances', () => {
         class SomeClass { toString() {return 'some'} }
         expect(flatten([new SomeClass()])).toEqual(['some'])

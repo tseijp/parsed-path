@@ -1,6 +1,6 @@
 import { path, PathSet } from './path'
 import { ParsedPath } from '../models'
-import { is } from '../utils'
+import { is, relative } from '../utils'
 
 export type Attrs=
     | object
@@ -38,10 +38,10 @@ export function construction (constructor: any, tags: any, options: any={}) {
         constructor(path(...args), options, path(...tags))
 
     templateFunction.from = (...args: any) =>
-        constructor([path(...args), path(...tags)], options)
+        constructor(relative(path(...args), path(...tags)), options)
 
     templateFunction.to = (...args: any) =>
-        constructor([path(...tags), path(...args)], options)
+        constructor(relative(path(...tags), path(...args)), options)
 
     templateFunction.withAttrs = (next: any, pre: any={}) =>
         construction(constructor, path(...tags), {...options, ...pre, attrs:

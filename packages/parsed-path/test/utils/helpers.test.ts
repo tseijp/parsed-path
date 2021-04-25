@@ -34,8 +34,8 @@ describe('is', () => {
         expect(is.set(new Set([]))).toBeTruthy()
         expect(is.map(new Map([]))).toBeTruthy()
         expect(is.big("F")).toBeTruthy()
-            expect(is.len(0, [])).toBeTruthy()
-            expect(is.len(0, {})).toBeTruthy()
+        expect(is.len(0, [])).toBeTruthy()
+        expect(is.len(0, {})).toBeTruthy()
     })
 })
 
