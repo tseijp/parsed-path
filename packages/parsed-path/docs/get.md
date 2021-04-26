@@ -22,28 +22,11 @@ render(
 
 ### Utilities
 
-`parsed-path` utilies make path manipulation without stress.
-This example creates two simple pathname,
-a Root and a File, with some parsed attachment to it:
-
 ```js
-const Root = parsed`src/utils`;
-
-const File = Root`..``index.ts`;
-
-const Wrap = File`
-  ext: ${props => props.ext};
-  name: ${props => props.file};
-`;
-
 console.log`
-  ${  Root.to`src`  } to equal ..
-  ${  Root.from`src`  } to equal utils
-  ${  Root.mount`test`  } to equal test/src/utils
-
-  ${  File.dir`utils`  } to equal ~/src/utils
-  ${  File.move`test`  } to equal ~/test/index.ts
-  ${  File.name`.tsx`  } to equal index.tsx
+  ${  parsed`foo``bar``baz`.mount`foo``bar`  } to equal 'foo/bar/foo/bar/baz'
+  ${  parsed`foo``bar``baz`.from`foo``bar`  } to equal 'baz'
+  ${  parsed`foo``bar``baz`.to`foo``bar`  } to equal '..'
 `
 ```
 

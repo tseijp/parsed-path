@@ -1,7 +1,7 @@
 import { Pathform } from './Pathform'
 import { Pathname } from './Pathname'
 import { construction as re, Attrs, Options, PathSet, Construction } from '../constructors'
-import { is, resolveAttrs, generatePathId, generateParsedId, generateDisplayName } from '../utils'
+import { is, generatePathId, generateParsedId, generateDisplayName } from '../utils'
 
 export interface ParsedPath extends Construction {
     pathId: string
@@ -21,13 +21,12 @@ export function ParsedPath (tags: [ParsedPath, ...any[]], options: Options, args
 export function ParsedPath (tags: any, options: any, args: any=[]) {
     const [tag] = tags,
           [arg] = args,
-        {attrs} = options,
         isTagParsedPath = !is.str(tag) && is.str(tag?.parsedId),
         isArgParsedPath = !is.str(arg) && is.str(arg?.parsedId),
         isCompositePath = !is.str(tag) || is.big(tag.charAt(0)),
-        finalAttrs = isTagParsedPath && tag.attrs
-            ? Array.prototype.concat(tag.attrs, attrs).filter(Boolean)
-            : attrs || []
+        attrs = isTagParsedPath && tag.attrs
+            ? Array.prototype.concat(tag.attrs, options.attrs).filter(Boolean)
+            : options.attrs || []
 
     const {
         pathId = generatePathId(options.displayId, options.parentPathId),
@@ -39,20 +38,20 @@ export function ParsedPath (tags: any, options: any, args: any=[]) {
         isTagParsedPath && tag.pathname,
        !isTagParsedPath && tags,
        !isArgParsedPath && args,
-        isArgParsedPath && arg.pathname?.pathSets // TODO TEST
+        isArgParsedPath && arg.pathname?.pathSets
     )
 
     const pathform = new Pathform (
         options.isWin? 'win32': 'posix',
-        options.pure? 'resolve': 'join', // TODO TEST
+        options.pure? 'resolve': 'join',
         isTagParsedPath && tag.pathform,
     )
 
     const WrappedParsedPath = (props: any={}, ...next: any) => is.obj(props)
-        ? pathname.generate(resolveAttrs(props, finalAttrs), pathId, pathform)
+        ? pathname.generate(props, pathform, {...options, pathId, attrs})
         : ParsedPath([WrappedParsedPath], options, [props, ...next])
 
-    WrappedParsedPath.attrs = finalAttrs
+    WrappedParsedPath.attrs = attrs
     WrappedParsedPath.pathId = pathId
     WrappedParsedPath.parsedId = parsedId
     WrappedParsedPath.displayId = displayId

@@ -1,4 +1,4 @@
-import { is, isStaticPathSet, flatten } from '../utils'
+import { is, isStaticPathSet, flatten, relative, resolvePath, resolveAttrs } from '../utils'
 import { PathSet } from '../constructors'
 import { Pathform } from './Pathform'
 
@@ -17,22 +17,30 @@ export class Pathname {
         this.isStatic = (is.fls(pathname) || pathname.isStatic) && isStaticPathSet(pathSets)
     }
 
-    generate (props: object, id: string, pathform?: Pathform): string
+    generate (props: object, pathform?: Pathform, options?: any): string
 
-    generate (props: any, id: any, pathform: any) {
+    generate (props: any, pathform: any, options: any) {
+        const {attrs, mount, from, to, ...other} = options
         const {pathname, isStatic, pathSets} = this
-        let names: string[] = []
-        if (pathname) names.push(pathname.generate(props, id, pathform))
-        if (isStatic)
-            return pathform.generate(id, names.concat(flatten(pathSets)))
-
-        pathSets.forEach(pathSet => {
-            let name = ''
-            pathSet.forEach(chunk => {
-                name += Array.prototype.concat([], flatten(chunk, props)).join('')
+        let names: any[] = []
+        if (attrs) props = resolveAttrs(props, attrs)
+        if (pathname) names.push(pathname.generate(props, pathform, other))
+        if (isStatic) names = names.concat(flatten(pathSets))
+        else
+            pathSets.forEach(pathSet => {
+                let name = ''
+                pathSet.forEach(chunk => {
+                    name += Array.prototype.concat([], flatten(chunk, props)).join('')
+                })
+                names.push(name)
             })
-            names.push(name)
-        })
-        return pathform.generate(id, names)
+        if (mount)
+            names = names.concat(resolvePath(mount, props, pathform, other))
+        if (from || to)
+            names = relative(
+                to? resolvePath(to, props, pathform, other): names,
+                from? resolvePath(from, props, pathform, other): names,
+            )
+        return pathform.generate(names, other)
     }
 }

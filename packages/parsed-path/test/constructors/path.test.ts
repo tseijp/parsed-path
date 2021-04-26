@@ -17,11 +17,11 @@ describe('path', () => {
     })
     it('get one string', () => {
         expect(path`foo, bar, baz`).toEqual(['foo, bar, baz'])
-        expect(path(`foo, bar, baz`)).toEqual(['foo, bar, baz'])
+        expect(path(`foo, bar, baz`)).toEqual(['foo,bar,baz'])
     })
     it('get url', () => {
         const url = new URL('https://tsei.jp/foo/bar/baz')
-        expect(path(url)).toEqual(['/foo/bar/baz'])
+        expect(path(url)).toEqual(['', 'foo', 'bar', 'baz'])
     })
     it('toStrings class instances', () => {
         class SomeClass { toString() {return 'some'} }

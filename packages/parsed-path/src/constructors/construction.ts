@@ -1,4 +1,4 @@
-import { path, PathSet } from './path'
+import { path, RuleSet } from './path'
 import { ParsedPath } from '../models'
 import { is, relative } from '../utils'
 
@@ -23,11 +23,11 @@ export interface Construction {
 
 export function construction (
     constructor: (...args: any) => ParsedPath,
-    tags: PathSet,
-    options?: object
+    tags: RuleSet,
+    options: object
 ): Construction
 
-export function construction (constructor: any, tags: any, options: any={}) {
+export function construction (constructor: any, tags: any, options: any) {
     const templateFunction = (props: any={}, ...args: any) => is.obj(props)
         ? constructor(path(...tags), options)(props, ...args)
         : constructor(path(...tags), options, path(props, ...args))
@@ -35,13 +35,13 @@ export function construction (constructor: any, tags: any, options: any={}) {
     templateFunction.toString = (...args: any) => templateFunction(...args)
 
     templateFunction.mount = (...args: any) =>
-        constructor(path(...args), options, path(...tags))
+        constructor(path(...args), {...options, mount: path(...tags)})
 
     templateFunction.from = (...args: any) =>
-        constructor(relative(path(...args), path(...tags)), options)
+        constructor(path(...args), {...options, from: path(...tags)})
 
     templateFunction.to = (...args: any) =>
-        constructor(relative(path(...tags), path(...args)), options)
+        constructor(path(...args), {...options, to: path(...tags)})
 
     templateFunction.withAttrs = (next: any, pre: any={}) =>
         construction(constructor, path(...tags), {...options, ...pre, attrs:

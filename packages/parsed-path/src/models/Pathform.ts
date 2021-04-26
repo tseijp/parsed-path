@@ -26,14 +26,14 @@ export class Pathform implements Pathform {
     constructor (mode: string, join: string, pathform?: Pathform, forms?: FormsMap) {
         this.formatPath = (format as any)[mode]
         this.parsePath = (parse as any)[mode]
-        this.joinPath = ((PATH as any)[mode] || PATH)[join] //
+        this.joinPath = ((PATH as any)[mode] || PATH)[join]
         this.pathform = pathform || undefined
         this.isStatic = !pathform || pathform.isStatic
         this.forms = pathform?.forms || forms || new Map<string, Set<string>>([])
     }
 
     hasFormForId(id: string, form: string): boolean {
-        return this.forms.has(id) && Boolean(this.forms.get(id)?.has(form))//
+        return this.forms.has(id) && Boolean(this.forms.get(id)?.has(form))
     }
 
     insertForms (id: string, name: string) {
@@ -54,12 +54,13 @@ export class Pathform implements Pathform {
         return Object.assign({}, ...compiled)
     }
 
-    generate (id: string, names: string[]) {
+    generate (names: string[], options: any={}) {
         const {isStatic, forms, joinPath, joinForm, parsePath, parseForm} = this
-        const filterNames = names.filter((name: string) => {
+        const {pathId: id} = options
+        const filterNames = names.filter(name => {
             if (name.match(FORM_REGEX) && !this.hasFormForId(id, name))
                 this.insertForms(id, name)
-            else return name
+            else return true
         })
 
         if (isStatic && (forms.get(id)?.size || 0) ===0)

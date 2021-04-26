@@ -1,15 +1,14 @@
 import { resetParsed } from '../../src'
 
 describe('mount', () => {
-    let parsed: any, target: any
+    let parsed: any
     beforeEach(() => {
         parsed = resetParsed().posix
-        target = parsed`foo``bar``baz`
     })
     it('basic', () => {
-        expect(target.mount`` + '').toEqual('baz') // TODO
+        expect(parsed`foo``bar``baz`.mount`` + '').toEqual('foo/bar/baz')
         expect(parsed`foo``bar`.mount`baz` + '').toEqual('baz/foo/bar')
-        expect(parsed`foo`.mount`bar``baz` + '').toEqual('bar/foo/baz')
+        expect(parsed`foo`.mount`bar``baz` + '').toEqual('bar/baz/foo')
         expect(parsed``.mount`foo``bar``baz` + '').toEqual('foo/bar/baz')
     })
 })
@@ -17,29 +16,37 @@ describe('mount', () => {
 describe('from util', () => {
     let parsed: any, target: any
     beforeEach(() => {
-        parsed = resetParsed()
+        parsed = resetParsed().posix
         target = parsed`foo``bar``baz`
     })
     it('basic', () => {
-        expect(target.from(['']) + '').toEqual('.')
-        expect(target.from(['foo']) + '').toEqual('.')
-        expect(target.from(['foo', 'bar']) + '').toEqual('.')
-        expect(target.from(['foo', 'bar', 'baz']) + '').toEqual('.')
+        expect(target.from`` + '').toEqual('foo/bar/baz')
+        expect(target.from`foo` + '').toEqual('bar/baz')
+        expect(target.from`bar` + '').toEqual('../foo/bar/baz')
+        expect(target.from`baz` + '').toEqual('../foo/bar/baz')
+        expect(target.from`foo``bar` + '').toEqual('baz')
+        expect(target.from`foo``baz` + '').toEqual('../bar/baz')
+        expect(target.from`bar``baz` + '').toEqual('../../foo/bar/baz')
+        expect(target.from`foo``bar``baz` + '').toEqual('../../foo/bar/baz')
     })
 })
 describe('to util', () => {
     let parsed: any, target: any
     beforeEach(() => {
-        parsed = resetParsed()
+        parsed = resetParsed().posix
         target = parsed`foo``bar``baz`
     })
     it('basic', () => {
-        expect(target.to(['foo']) + '').toEqual('.')
-        expect(target.to(['foo', 'bar']) + '').toEqual('.')
-        expect(target.to(['foo', 'bar', 'baz']) + '').toEqual('.')
+        expect(target.to`` + '').toEqual('../../..')
+        expect(target.to`foo` + '').toEqual('../..')
+        expect(target.to`bar` + '').toEqual('../../../bar')
+        expect(target.to`baz` + '').toEqual('../../../baz')
+        expect(target.to`foo``bar` + '').toEqual('..')
+        expect(target.to`foo``baz` + '').toEqual('../../baz')
+        expect(target.to`bar``baz` + '').toEqual('../../../bar/baz')
+        expect(target.to`foo``bar``baz` + '').toEqual('../../../foo/bar/baz') // TODO ''
     })
 })
-
 describe('with config', () => {
     let parsed: any
     beforeEach(() => {
@@ -53,7 +60,6 @@ describe('with config', () => {
         expect(parsed``.withConfig({isWin})`foo``bar``baz` + '').toEqual('foo\\bar\\baz')
     })
 })
-
 describe('with attrs', () => {
     let parsed: any
     beforeEach(() => {
@@ -66,7 +72,6 @@ describe('with attrs', () => {
         expect(parsed``.withAttrs({})`foo``bar``baz` + '').toEqual('foo/bar/baz')
     })
 })
-
 // describe('TODO utils', () => {
 //     let parsed: any, target: any
 //     beforeEach(() => {

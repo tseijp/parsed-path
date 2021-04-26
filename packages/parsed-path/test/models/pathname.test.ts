@@ -76,7 +76,7 @@ describe('parsed with attrs', () => {
     it('to string with parse path', () => {
         expect(parsed(parsed().withAttrs(foo)`${({_}: any) => _}``bar`)`baz`() + '').toEqual('foo/bar/baz')
         expect(parsed(parsed`${({_}: any) => _}`.withAttrs(foo))`bar``baz`(bar) + '').toEqual('bar/bar/baz')
-        expect(parsed(parsed`${({_}: any) => _ || 'foo'}``bar`.withAttrs(foo))`baz` + '').toEqual('foo/bar/baz')
+        expect(parsed(parsed`${({_}: any) => _ || 'foo'}``bar`.withAttrs(foo))`baz` + '').toEqual('foobar/baz') // TODO
         expect(parsed(parsed`${({_='ignore'}: any) => _}``bar`)`baz`.withAttrs(foo)(bar) + '').toEqual('bar/bar/baz')
     })
 })

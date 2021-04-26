@@ -1,4 +1,3 @@
-import { parse } from 'path'
 import {interleave, flatten, is} from '../utils'
 
 export type Path =
@@ -34,7 +33,7 @@ export function path (rules?: any, ...interpolations: any) {
 
     if (is.len(0, interpolations)) {
         if (is.str(rules))
-            return [rules]
+            return flatten(rules)
         if (is.len(1, rules) && is.str((rules as any)[0]))
             return rules
     }

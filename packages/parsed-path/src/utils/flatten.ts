@@ -39,5 +39,5 @@ export function flatten (chunk: any, props?: any) {
     if (is.obj(chunk) && chunk.constructor === Object)
         return Object.keys(chunk).map(k => `${k}:${(chunk as any)[k]};`).join()
 
-    return chunk.toString().replace(replaceChunkRe, '')
+    return chunk === '/' ? chunk  : chunk.toString().replace(replaceChunkRe, '').split('/')
 }
