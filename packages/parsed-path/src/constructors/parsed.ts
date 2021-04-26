@@ -3,17 +3,17 @@ import { construction } from './construction'
 
 const isWin = process.platform === 'win32';
 
-const parsed: any = (...tags: any) => construction(ParsedPath, tags, {isWin})
+const parsed: any = (...tags: any) => construction(ParsedPath, {isWin}, ...tags)
 
-parsed.win32 = (...tags: any) => construction(ParsedPath, tags, {isWin: true})
+parsed.win32 = (...tags: any) => construction(ParsedPath, {isWin: true}, ...tags)
 
-parsed.posix = (...tags: any) => construction(ParsedPath, tags, {isWin: false})
+parsed.posix = (...tags: any) => construction(ParsedPath, {isWin: false}, ...tags)
 
-parsed.pure  = (...tags: any) => construction(ParsedPath, tags, {isWin, pure: true})
+parsed.pure  = (...tags: any) => construction(ParsedPath, {isWin, pure: true}, ...tags)
 
-parsed.pureWin32  = (...tags: any) => construction(ParsedPath, tags, {isWin: true, pure: true})
+parsed.pureWin32  = (...tags: any) => construction(ParsedPath, {isWin: true, pure: true}, ...tags)
 
-parsed.purePosix  = (...tags: any) => construction(ParsedPath, tags, {isWin: false, pure: true})
+parsed.purePosix  = (...tags: any) => construction(ParsedPath, {isWin: false, pure: true}, ...tags)
 
 const parsedEntries = Object.entries({
     https: 'https://',

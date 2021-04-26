@@ -42,13 +42,4 @@ describe('defined parsed tag', () => {
         expect(Back({back: true})).toEqual('/home/user')
         expect(File({xml: false})).toEqual('/home/user/dir/file.ts')
     })
-    // it('basic utils', () => {
-    //     const path = parsed`src``utils`
-    //     const file = path`..``index.js`
-    //     expect(path.mount`test` + '').toEqual('test/src/utils')
-    //     expect(path.from`src` + '').toEqual('utils')
-    //     expect(path.to`src` + '').toEqual('..')
-    //     expect(file.move`test`).toEqual('src/test/index.ts')
-    //     expect(file.name`.tsx`).toEqual('index.tsx')
-    // })
 })

@@ -47,9 +47,9 @@ export function ParsedPath (tags: any, options: any, args: any=[]) {
         isTagParsedPath && tag.pathform,
     )
 
-    const WrappedParsedPath = (props: any={}, ...next: any) => is.obj(props)
-        ? pathname.generate(props, pathform, {...options, pathId, attrs})
-        : ParsedPath([WrappedParsedPath], options, [props, ...next])
+    const WrappedParsedPath = (prop: any={}, ...props: any) => is.obj(prop)
+        ? pathname.generate(prop, pathform, {...options, pathId, attrs})
+        : ParsedPath([WrappedParsedPath], options, [prop, ...props])
 
     WrappedParsedPath.attrs = attrs
     WrappedParsedPath.pathId = pathId
@@ -61,17 +61,16 @@ export function ParsedPath (tags: any, options: any, args: any=[]) {
     WrappedParsedPath.isStatic = pathname.isStatic && is.len(0, attrs)
     WrappedParsedPath.toString = () => WrappedParsedPath()
 
-    WrappedParsedPath.mount = (...next: any) =>
-        re(ParsedPath, [WrappedParsedPath], options).mount(...next)
-    WrappedParsedPath.from = (...next: any) =>
-        re(ParsedPath, [WrappedParsedPath], options).from(...next)
-    WrappedParsedPath.to = (...next: any) =>
-        re(ParsedPath, [WrappedParsedPath], options).to(...next)
-
-    WrappedParsedPath.withConfig = (next: any) =>
-        re(ParsedPath, [WrappedParsedPath], options).withConfig(next)
-    WrappedParsedPath.withAttrs = (next: any) =>
-        re(ParsedPath, [WrappedParsedPath], options).withAttrs(next)
+    WrappedParsedPath.mount = (...props: any) =>
+        re(ParsedPath, options, WrappedParsedPath).mount(...props)
+    WrappedParsedPath.from = (...props: any) =>
+        re(ParsedPath, options, WrappedParsedPath).from(...props)
+    WrappedParsedPath.to = (...props: any) =>
+        re(ParsedPath, options, WrappedParsedPath).to(...props)
+    WrappedParsedPath.withConfig = (props: any) =>
+        re(ParsedPath, options, WrappedParsedPath).withConfig(props)
+    WrappedParsedPath.withAttrs = (props: any) =>
+        re(ParsedPath, options, WrappedParsedPath).withAttrs(props)
 
     return WrappedParsedPath as ParsedPath
 }

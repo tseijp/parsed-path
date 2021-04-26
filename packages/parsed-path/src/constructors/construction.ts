@@ -23,11 +23,11 @@ export interface Construction {
 
 export function construction (
     constructor: (...args: any) => ParsedPath,
-    tags: RuleSet,
-    options: object
+    options: object,
+    ...tags: RuleSet
 ): Construction
 
-export function construction (constructor: any, tags: any, options: any) {
+export function construction (constructor: any, options: any, ...tags: any) {
     const templateFunction = (props: any={}, ...args: any) => is.obj(props)
         ? constructor(path(...tags), options)(props, ...args)
         : constructor(path(...tags), options, path(props, ...args))
@@ -43,13 +43,14 @@ export function construction (constructor: any, tags: any, options: any) {
     templateFunction.to = (...args: any) =>
         constructor(path(...args), {...options, to: path(...tags)})
 
-    templateFunction.withAttrs = (next: any, pre: any={}) =>
-        construction(constructor, path(...tags), {...options, ...pre, attrs:
-            Array.prototype.concat(options.attrs, pre.attrs, next).filter(Boolean),
-        })
-
     templateFunction.withConfig = (next: any, pre: any={}) =>
-        construction(constructor, path(...tags), {...options, ...pre, ...next})
+        construction(constructor, {...pre, ...options, ...next}, ...tags)
+
+    templateFunction.withAttrs = (next: any, pre: any={}) =>
+        construction(constructor, {...pre, ...options, attrs:
+            Array.prototype.concat(options.attrs, pre.attrs, next).filter(Boolean),
+        }, ...tags)
+
 
     return templateFunction as Construction
 }
