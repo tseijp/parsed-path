@@ -1,15 +1,13 @@
 import { ParsedPath } from '../models'
 import { construction } from './construction'
 
-const isWin = process.platform === 'win32';
-
-const parsed: any = (...tags: any) => construction(ParsedPath, {isWin}, ...tags)
+const parsed: any = (...tags: any) => construction(ParsedPath, {isWin: false}, ...tags)
 
 parsed.win32 = (...tags: any) => construction(ParsedPath, {isWin: true}, ...tags)
 
 parsed.posix = (...tags: any) => construction(ParsedPath, {isWin: false}, ...tags)
 
-parsed.pure  = (...tags: any) => construction(ParsedPath, {isWin, pure: true}, ...tags)
+parsed.pure  = (...tags: any) => construction(ParsedPath, {isWin: false, pure: true}, ...tags)
 
 parsed.pureWin32  = (...tags: any) => construction(ParsedPath, {isWin: true, pure: true}, ...tags)
 
@@ -28,7 +26,7 @@ parsedEntries.forEach(([tag, tags]: any) => {
     (parsed as any)[tag] = parsed(tags)
 })
 
-window.location.pathname.split('/').reduce((tags, tag) => {
+window?.location?.pathname?.split('/').reduce((tags, tag) => {
     (parsed as any)[tag || 'top'] = parsed(tags + '/' + tag)
     return tags + '/' + tag
 })

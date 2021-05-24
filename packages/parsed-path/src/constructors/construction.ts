@@ -1,6 +1,6 @@
 import { path, RuleSet } from './path'
 import { ParsedPath } from '../models'
-import { is, relative } from '../utils'
+import { is } from '../utils'
 
 export type Attrs=
     | object

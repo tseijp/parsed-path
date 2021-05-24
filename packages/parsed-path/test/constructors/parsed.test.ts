@@ -42,4 +42,9 @@ describe('defined parsed tag', () => {
         expect(Back({back: true})).toEqual('/home/user')
         expect(File({xml: false})).toEqual('/home/user/dir/file.ts')
     })
+    it('as', () => {
+        const Root = parsed.posix`/`
+        const as = () => 'foo'
+        expect(Root({as})).toEqual('foo')
+    })
 })
