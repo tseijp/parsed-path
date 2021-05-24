@@ -41,9 +41,8 @@
         "access": "public"
     },
     "dependencies": {
-        "@types/path-parse": "^1.0.19",
         "@types/stylis": "^4.0.0",
-        "path-parse": "^1.0.6",
+        "path-browserify": "^1.0.1",
         "stylis": "^4.0.10"
     },
     "peerDependencies": {

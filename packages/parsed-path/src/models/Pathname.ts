@@ -15,6 +15,7 @@ export class Pathname {
         this.pathname = pathname || undefined
         this.pathSets = pathSets.filter(Boolean)
         this.isStatic = (is.fls(pathname) || pathname.isStatic) && isStaticPathSet(pathSets)
+        this.generate = this.generate.bind(this)
     }
 
     generate (props: object, pathform?: Pathform, options?: any): string
@@ -41,6 +42,7 @@ export class Pathname {
                 to? resolvePath(to, props, pathform, other): names,
                 from? resolvePath(from, props, pathform, other): names,
             )
-        return pathform.generate(names, other)
+        const link = pathform.generate(names, other)
+        return is.fun(props.as)? props.as({...props, link}): link
     }
 }

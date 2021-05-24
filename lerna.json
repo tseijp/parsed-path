@@ -1,6 +1,6 @@
 {
-  "version": "independent",
-  "npmClient": "yarn",
-  "useWorkspaces": true,
-  "packages": ["packages/*"]
+    "version": "independent",
+    "npmClient": "yarn",
+    "useWorkspaces": true,
+    "packages": ["packages/parsed-path", "webpage"]
 }

@@ -4,9 +4,7 @@
   "author": "tsei",
   "version": "0.0.0",
   "license": "MIT",
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": ["packages/*", "webpage"],
   "scripts": {
     "codecov": "lerna exec -- codecov",
     "update": "lerna exec -- yarn publish",

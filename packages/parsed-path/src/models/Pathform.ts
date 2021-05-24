@@ -1,8 +1,7 @@
-import * as PATH from 'path'
 import { compile } from 'stylis'
 import { format } from '../utils'
 
-const parse = require('path-parse')
+const path = require('path-browserify')
 
 type FormsMap = Map<string, Set<string>>
 
@@ -25,11 +24,18 @@ export interface Pathform {
 export class Pathform implements Pathform {
     constructor (mode: string, join: string, pathform?: Pathform, forms?: FormsMap) {
         this.formatPath = (format as any)[mode]
-        this.parsePath = (parse as any)[mode]
-        this.joinPath = ((PATH as any)[mode] || PATH)[join]
+        this.parsePath = ((path as any)[mode] || path)?.parse//(parse as any)[mode]
+        this.joinPath = ((path as any)[mode] || path)[join]
+
         this.pathform = pathform || undefined
         this.isStatic = !pathform || pathform.isStatic
         this.forms = pathform?.forms || forms || new Map<string, Set<string>>([])
+
+        this.hasFormForId = this.hasFormForId.bind(this)
+        this.insertForms = this.insertForms.bind(this)
+        this.parseForm = this.parseForm.bind(this)
+        this.joinForm = this.joinForm.bind(this)
+        this.generate = this.generate.bind(this)
     }
 
     hasFormForId(id: string, form: string): boolean {
@@ -71,6 +77,7 @@ export class Pathform implements Pathform {
         const parsedPath = parsePath(joinedPath)
         const parsedForm = parseForm(joinedForm)
         const {dir, name, ext} = parsedPath
+
         return this.formatPath({dir, name, ext, ...parsedForm})
     }
 }
