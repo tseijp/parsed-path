@@ -11,17 +11,13 @@ module.exports = {
   projectName: 'parsed-path', // Usually your repo name.
   themeConfig: {
     navbar: {
-      title: 'parsed-path',
-      logo: {
-        alt: 'Logo',
-        src: 'img/logo.svg',
-      },
+      title: '<👋> parsed path',
       items: [
         {
           type: 'doc',
           docId: 'intro',
           position: 'left',
-          label: 'Tutorial',
+          label: 'Documentation',
         },
         {
           href: 'https://github.com/tseijp/parsed-path',

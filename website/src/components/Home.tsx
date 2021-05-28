@@ -1,7 +1,45 @@
 import React from 'react'
 import styled from 'styled-components'
 
+const blmGrey = 'rgb(33, 33, 33)';
+const blmMetal = 'rgb(66, 66, 66)';
 
+
+const Home: any = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+  background: linear-gradient(20deg, ${blmGrey}, ${blmMetal});
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.17);
+  box-sizing: border-box;
+  min-height: 100vh;
+  padding-top: 160px;
+  padding-bottom: 160px;
+`
+
+function HomeHeader() {
+  return (
+    <header>
+      <h1>{`<👋>`}</h1>
+      <p>parsed</p>
+      <p>path</p>
+    </header>
+  )
+}
+
+Home.Header = styled(HomeHeader)`
+    padding: 4rem 0;
+    border: solid white;
+    flex-direction: column;
+    p {
+        padding: 2rem;
+        text-align: left;
+        font-size: 50px;
+    }
+`
 
 function Feature({title, children}: any) {
   return (
@@ -24,7 +62,7 @@ const StyledFeature = styled(Feature)`
     width: 200px;
 `
 
-export default function HomepageFeatures() {
+Home.Features = () =>  {
   return (
     <Section>
       <div className="container">
@@ -47,5 +85,7 @@ export default function HomepageFeatures() {
         </div>
       </div>
     </Section>
-  );
+  )
 }
+
+export {Home}
