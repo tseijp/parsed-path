@@ -1,5 +1,9 @@
 {
     "name": "parsed-path",
+    "author": "tsei",
+    "license": "MIT",
+    "private": false,
+    "sideEffect": false,
     "version": "0.1.12",
     "module": "index.js",
     "types": "index.d.ts",
@@ -11,10 +15,6 @@
         "index.d.ts",
         "index.cjs.js"
     ],
-    "author": "tsei",
-    "license": "MIT",
-    "private": false,
-    "sideEffect": false,
     "description": "Use the best bits of ES6 to parse your path without stress 👋",
     "keywords": [
         "nodejs",

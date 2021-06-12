@@ -3,8 +3,8 @@ import Layout from '@theme/Layout'
 import parsed from 'parsed-path'
 import styled, {css} from 'styled-components'
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext'
-import {Home} from '../components/Home'
-import {Live} from '../components/Live'
+import {Home} from '../../components/Home'
+import {Live} from '../../components/Live'
 
 const Button = styled.a`
   /* This renders the buttons above... Edit me! */

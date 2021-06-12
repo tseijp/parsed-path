@@ -4,8 +4,9 @@
   "author": "tsei",
   "version": "0.0.0",
   "license": "MIT",
-  "workspaces": ["packages/*", "webpage"],
+  "workspaces": ["packages/*", "examples/*"],
   "scripts": {
+    "docs": "cd examples && cd docs && yarn start",
     "codecov": "lerna exec -- codecov",
     "update": "lerna exec -- yarn publish",
     "build": "lerna exec -- rollup -c",

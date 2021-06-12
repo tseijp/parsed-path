@@ -9,7 +9,7 @@ export type Attrs=
 export interface Options {
     pure?: boolean
     isWin?: boolean
-    attrs: Attr[]
+    attrs?: Attr[]
 }
 
 export interface Construction {
@@ -23,7 +23,7 @@ export interface Construction {
 
 export function construction (
     constructor: (...args: any) => ParsedPath,
-    options: object,
+    options: Options,
     ...tags: RuleSet
 ): Construction
 
