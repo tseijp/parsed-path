@@ -1,5 +1,5 @@
 import { is, isStaticPathSet, flatten, relative, resolvePath, resolveAttrs } from '../utils'
-import { PathSet } from '../constructors'
+import { PathSet, Config } from '../constructors'
 import { Pathform } from './Pathform'
 
 export interface Pathname {
@@ -18,9 +18,9 @@ export class Pathname {
         this.generate = this.generate.bind(this)
     }
 
-    generate (props: object, pathform?: Pathform, options?: any): string
+    generate (props: object, pathform: Pathform, config: Config): string
 
-    generate (props: any, pathform: any, options: any={}) {
+    generate (props: any, pathform: any, options: any) {
         const {attrs, mount, from, to, ...other} = options,
               {pathname, isStatic, pathSets} = this
         let names: any[] = []

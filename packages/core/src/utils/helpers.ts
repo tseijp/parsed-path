@@ -13,7 +13,6 @@ const is = (a: any, b?: any, ...other: any): boolean => {
     if (other.length > 0) return is(a, b) && is(b, ...other)
     if (typeof a !== typeof b) return false
     if (is.str(a) || is.num(a)) return a === b
-    if (is.obj(a) && is.obj(b) && is.len(0, a) && is.len(0, b)) return true
     for (let i in a) if (!(i in b)) return false
     for (let i in b) if (a[i] !== b[i]) return false
     return true

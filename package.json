@@ -7,7 +7,6 @@
   "workspaces": ["packages/*", "examples/*"],
   "scripts": {
     "docs": "lerna exec --scope @parsed-path/docs yarn start",
-    "codecov": "lerna exec --scope parsed-path -- codecov",
     "update": "lerna exec --scope parsed-path -- yarn publish",
     "build": "lerna exec --scope parsed-path -- rollup -c",
     "watch": "lerna exec --scope parsed-path -- jest --watch --runInBand",

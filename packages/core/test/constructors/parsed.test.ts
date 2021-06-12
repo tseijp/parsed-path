@@ -1,56 +1,51 @@
 import { primitives, resetParsed } from '../../src'
-import {Pathname, Pathform} from '../../src'
-const location = new URL('https://tsei.jp/note/api/user/100')
+
+// const LOCATION = new URL('https://tsei.jp/note/api/user/100')
 
 describe('multi generate', () => {
     let parsed: any;
     beforeEach(() => {
         parsed = resetParsed().posix
     })
-    it('basic', () => {
+    it('without pathform', () => {
         const Root = parsed`/${(_: any) => _.number}`
         let i = 0
         for (;;)
             if (i < 10)
-                expect(Root({number: ++i}) + "").toBe(`/${i}`)
+                expect(Root({number: ++i}) + "").toEqual(`/${i}`)
+            else break
+    })
+    it('with pathform', () => {
+        const Root = parsed`name: ${(_: any) => _.number};ext: js;`
+        let i = 0
+        for(;;)
+            if (i < 0)
+                expect(Root({number: ++i}) + "").toEqual(`${i}.js`)
             else break
     })
 })
 
 describe('defined parsed tag', () => {
-    let parsed: any,
-     windowSpy: any
+    let parsed: any
     beforeEach(() => {
-        const originalWindow = { ...window }
         parsed = resetParsed()
-        windowSpy = jest.spyOn(global, 'window', 'get')
-        windowSpy.mockImplementation(() => ({
-            ...originalWindow,
-            location
-        }))
     })
-    afterEach(() => void windowSpy.mockRestore())
-    // it('ERROR: should have all tags defined', () => {
-    //     const targets = location.pathname.split('/').filter(Boolean)
-    //     targets.forEach(tag => {
-    //         expect(parsed[tag]).toBeTruthy()
-    //     })
-    // })
-
-    it('test', () => {
-        const pathname = new Pathname(undefined, ['https://', 'github.com'])
-        const pathform = new Pathform('posix', 'join')
-        expect(
-            // ["https://", "github.com"]
-            // pathname.generate({}, {generate: (names, other) => [names, other]} as any)
-            pathname.generate({}, pathform)
-        ).toEqual('https://github.com')
+    it('ERROR: should have all tags defined', () => {
+        window.location.pathname.split('/').forEach(tag => {
+            expect(parsed[tag || 'top']).toBeTruthy()
+        })
     })
-
     it('should have all paths defined', () => {
         primitives.forEach((key) => {
             expect(parsed[key]).toBeTruthy()
         })
+    })
+})
+
+describe('', () => {
+    let parsed: any
+    beforeEach(() => {
+        parsed = resetParsed()
     })
     it('basic example', () => {
         const Root = parsed.posix`/`

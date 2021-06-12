@@ -7,26 +7,19 @@ import { Path, PathSet, Rule, primitives } from '../constructors'
 const replaceChunkRe = /\s/g
 
 export function flatten (
-    chunk: undefined | unknown | null | false | string,
-    props?: any,
-): string
-
-export function flatten (
     chunk: Rule | Path,
     props?: any
 ): PathSet
 
 export function flatten (chunk: any, props?: any) {
     if (is.fls(chunk))
-        return ''
+        return []
 
     if (is.arr(chunk)) {
         const ruleSet = []
-        for (let i = 0, len = chunk.length, result: any; i < len; i += 1) {
+        for (let i = 0, result: any; i < chunk.length; i++) {
             result = flatten(chunk[i], props)
-            if (result === '') continue
-            if (is.arr(result)) ruleSet.push(...result)
-            else ruleSet.push(result)
+            ruleSet.push(...Array.prototype.concat(result))
         }
         return ruleSet
     }

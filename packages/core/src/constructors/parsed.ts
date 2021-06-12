@@ -18,8 +18,7 @@ primitives.forEach((primitive, tags) => {
     (parsed as any)[primitive] = parsed(tags)
 })
 
-// Shorthands for all valid Location Pathname
-window?.location?.pathname?.split('/').reduce((tags, tag) => {
+window.location.pathname.split('/').reduce((tags, tag) => {
     (parsed as any)[tag || 'top'] = parsed(tags + '/' + tag)
     return tags + '/' + tag
 })

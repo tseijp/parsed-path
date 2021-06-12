@@ -6,7 +6,7 @@ export type Attrs=
     | object
     | ((props: object) => object)
 
-export interface Options {
+export interface Config {
     pure?: boolean
     isWin?: boolean
     attrs?: Attr[]
@@ -17,40 +17,39 @@ export interface Construction {
     mount (...args: any):  ParsedPath
     from (...args: any):  ParsedPath
     to (...args: any):  ParsedPath
-    withAttrs (next: any, prev?: Options): Construction
-    withConfig (next: any, prev?: Options): Construction
+    withAttrs (next: any, prev?: Config): Construction
+    withConfig (next: any, prev?: Config): Construction
 }
 
 export function construction (
     constructor: (...args: any[]) => ParsedPath,
-    options: Options,
+    config: Config,
     ...tags: RuleSet
 ): Construction
 
-export function construction (constructor: any, options: any, ...tags: any) {
-    const templateFunction = (props: any={}, ...args: any) => is.obj(props)
-        ? constructor(path(...tags), options)(props, ...args)
-        : constructor(path(...tags), options, path(props, ...args))
+export function construction (constructor: any, config: any, ...tags: any) {
+    const templateFunction = (arg: any={}, ...args: any) => is.obj(arg)
+        ? constructor(path(...tags), config)(arg, ...args)
+        : constructor(path(...tags), config, path(arg, ...args))
 
     templateFunction.toString = (...args: any) => templateFunction(...args)
 
     templateFunction.mount = (...args: any) =>
-        constructor(path(...args), {...options, mount: path(...tags)})
+        constructor(path(...args), {...config, mount: path(...tags)})
 
     templateFunction.from = (...args: any) =>
-        constructor(path(...args), {...options, from: path(...tags)})
+        constructor(path(...args), {...config, from: path(...tags)})
 
     templateFunction.to = (...args: any) =>
-        constructor(path(...args), {...options, to: path(...tags)})
+        constructor(path(...args), {...config, to: path(...tags)})
 
     templateFunction.withConfig = (next: any, prev: any={}) =>
-        construction(constructor, {...prev, ...options, ...next}, ...tags)
+        construction(constructor, {...prev, ...config, ...next}, ...tags)
 
     templateFunction.withAttrs = (next: any, prev: any={}) =>
-        construction(constructor, {...prev, ...options, attrs:
-            Array.prototype.concat(options.attrs, prev.attrs, next).filter(Boolean),
+        construction(constructor, {...prev, ...config, attrs:
+            Array.prototype.concat(config.attrs, prev.attrs, next).filter(Boolean),
         }, ...tags)
-
 
     return templateFunction as Construction
 }

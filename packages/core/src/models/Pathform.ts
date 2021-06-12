@@ -22,17 +22,16 @@ export interface Pathform {
 }
 
 export class Pathform implements Pathform {
-    constructor (mode: string, join: string, pathform?: Pathform, forms?: FormsMap) {
+    constructor (mode: string, join: string, pathform?: Pathform) {
         this.formatPath = format[mode]
-        this.parsePath = (path[mode] || path)?.parse
-        this.joinPath = (path[mode] || path)[join]
-
+        this.parsePath = path.parse
+        this.joinPath = path[join]
         this.pathform = pathform || undefined
         this.isStatic = !pathform || pathform.isStatic
-        this.forms = pathform?.forms || forms || new Map<string, Set<string>>([])
+        this.forms = pathform.forms || new Map<string, Set<string>>([])
     }
 
-    hasFormForId(id: string, form: string): boolean {
+    hasFormForId(id: string, form: string) {
         return this.forms.has(id) && Boolean(this.forms.get(id)?.has(form))
     }
 

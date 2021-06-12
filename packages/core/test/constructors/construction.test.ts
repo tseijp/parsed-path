@@ -48,19 +48,19 @@ describe('to util', () => {
     })
 })
 // to be delete isWin
-// describe('TODO: with config', () => {
-//     let parsed: any
-//     beforeEach(() => {
-//         parsed = resetParsed().posix
-//     })
-//     it('basic', () => {
-//         const isWin = true
-//         expect(parsed`foo``bar``baz`.withConfig({isWin}) + '').toEqual('foo\\bar\\baz')
-//         expect(parsed`foo``bar`.withConfig({isWin})`baz` + '').toEqual('foo\\bar\\baz')
-//         expect(parsed`foo`.withConfig({isWin})`bar``baz` + '').toEqual('foo\\bar\\baz')
-//         expect(parsed``.withConfig({isWin})`foo``bar``baz` + '').toEqual('foo\\bar\\baz')
-//     })
-// })
+describe('TODO: with config', () => {
+    let parsed: any
+    beforeEach(() => {
+        parsed = resetParsed().posix
+    })
+    it('basic', () => {
+        const isWin = true
+        expect(parsed`foo``bar``baz`.withConfig({isWin}) + '').toEqual('foo/bar/baz')
+        expect(parsed`foo``bar`.withConfig({isWin})`baz` + '').toEqual('foo/bar/baz')
+        expect(parsed`foo`.withConfig({isWin})`bar``baz` + '').toEqual('foo/bar/baz')
+        expect(parsed``.withConfig({isWin})`foo``bar``baz` + '').toEqual('foo/bar/baz')
+    })
+})
 describe('with attrs', () => {
     let parsed: any
     beforeEach(() => {
@@ -70,7 +70,7 @@ describe('with attrs', () => {
         expect(parsed`foo``bar``baz`.withAttrs({}) + '').toEqual('foo/bar/baz')
         expect(parsed`foo``bar`.withAttrs({})`baz` + '').toEqual('foo/bar/baz')
         expect(parsed`foo`.withAttrs({})`bar``baz` + '').toEqual('foo/bar/baz')
-        expect(parsed``.withAttrs({})`foo``bar``baz` + '').toEqual('foo/bar/baz')
+        expect(parsed().withAttrs({})`foo``bar``baz` + '').toEqual('foo/bar/baz')
     })
 })
 // describe('TODO utils', () => {
