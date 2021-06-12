@@ -144,8 +144,8 @@ This is a <kbd>**[live editor][live]**</kbd>,
 so play around with the code to get a feel for
 what it's like to work with `parsed-path`!
 
-[get.md]: https://github.com/tseijp/parsed-path/blob/master/packages/parsed-path/docs/get.md
-[api.md]: https://github.com/tseijp/parsed-path/blob/master/packages/parsed-path/docs/api.md
+[get.md]: https://github.com/tseijp/parsed-path/blob/master/packages/core/docs/get.md
+[api.md]: https://github.com/tseijp/parsed-path/blob/master/packages/core/docs/api.md
 [live]: https://codesandbox.io/s/parsed-path-x66qy
 [node]: https://github.com/nodejs/node/blob/master/lib/path.js
 [docs]: https://nodejs.org/docs/latest/api/path.html#path_path_parse_path

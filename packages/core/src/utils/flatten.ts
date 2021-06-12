@@ -2,7 +2,7 @@
  * https://github.com/styled-components/styled-components/blob/master/packages/styled-components/src/utils/flatten.js
  */
 import { is } from './helpers'
-import { Path, PathSet, Rule } from '../constructors'
+import { Path, PathSet, Rule, primitives } from '../constructors'
 
 const replaceChunkRe = /\s/g
 
@@ -34,10 +34,10 @@ export function flatten (chunk: any, props?: any) {
     if (is.fun(chunk))
         if (props)
             return flatten(chunk(props), props)
-        else return chunk
+        else return [chunk]
 
-    if (is.obj(chunk) && chunk.constructor === Object)
-        return Object.keys(chunk).map(k => `${k}:${(chunk as any)[k]};`).join()
+    if (is.str(chunk) && primitives.has(chunk))
+        return [chunk]
 
-    return chunk === '/' ? chunk  : chunk.toString().replace(replaceChunkRe, '').split('/')
+    return chunk.toString().replace(replaceChunkRe, '').split('/')
 }

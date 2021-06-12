@@ -6,12 +6,12 @@
   "license": "MIT",
   "workspaces": ["packages/*", "examples/*"],
   "scripts": {
-    "docs": "cd examples && cd docs && yarn start",
-    "codecov": "lerna exec -- codecov",
-    "update": "lerna exec -- yarn publish",
-    "build": "lerna exec -- rollup -c",
-    "watch": "lerna exec -- jest --watch --runInBand",
-    "test": "lerna exec -- jest --coverage",
-    "ls": "lerna exec -- npm pack --dry-run"
+    "docs": "lerna exec --scope @parsed-path/docs yarn start",
+    "codecov": "lerna exec --scope parsed-path -- codecov",
+    "update": "lerna exec --scope parsed-path -- yarn publish",
+    "build": "lerna exec --scope parsed-path -- rollup -c",
+    "watch": "lerna exec --scope parsed-path -- jest --watch --runInBand",
+    "cov": "lerna exec --scope parsed-path -- jest --coverage",
+    "ls": "lerna exec --scope parsed-path -- npm pack --dry-run"
   }
 }

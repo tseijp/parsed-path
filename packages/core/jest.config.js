@@ -15,7 +15,7 @@ module.exports = {
     automock: false,
     clearMocks: true,
     coverageDirectory: '<rootDir>/coverage/',
-    collectCoverageFrom: ['<rootDir>/packages/parsed-path/src/**/*.ts', '!**/index.*'],
+    collectCoverageFrom: ['<rootDir>/packages/core/src/**/*.ts', '!**/index.*'],
     coverageReporters: ['json', 'html', 'lcov', 'text', 'text-summary', 'clover'],
     coverageThreshold: {global: {statements: 95, functions: 95, branches: 95, lines: 95}},
 };

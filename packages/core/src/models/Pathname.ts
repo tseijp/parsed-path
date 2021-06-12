@@ -20,9 +20,9 @@ export class Pathname {
 
     generate (props: object, pathform?: Pathform, options?: any): string
 
-    generate (props: any, pathform: any, options: any) {
-        const {attrs, mount, from, to, ...other} = options
-        const {pathname, isStatic, pathSets} = this
+    generate (props: any, pathform: any, options: any={}) {
+        const {attrs, mount, from, to, ...other} = options,
+              {pathname, isStatic, pathSets} = this
         let names: any[] = []
         if (attrs) props = resolveAttrs(props, attrs)
         if (pathname) names.push(pathname.generate(props, pathform, other))

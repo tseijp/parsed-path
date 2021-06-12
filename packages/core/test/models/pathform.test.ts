@@ -71,9 +71,9 @@ describe('format with attrs', () => {
     })
     it('to string with args', () => {
         expect(parsed().withAttrs(foo)`base: ${({_}: any) => _};``name: bar;``ext: baz;` + '').toEqual('foo')
-        expect(parsed`root: ${({_}: any) => _}`.withAttrs(ignore)`dir: bar;``base: baz;`(foo) + '').toEqual('baz') // TODO bar/baz
-        expect(parsed`root: ${({_}: any) => _||'ignore'}``base: bar;`.withAttrs(foo)`ext: baz;` + '').toEqual('.baz') // TODO .bazfoobar
-        expect(parsed`root: ${({_='ignore'}: any) => _}``name: bar;``ext: baz;`.withAttrs(ignore)(foo) + '').toEqual('.bazbaz') // TODO foobarbaz
+        expect(parsed`root: ${({_}: any) => _};`.withAttrs(ignore)`dir: bar;``base: baz;`(foo) + '').toEqual('bar/baz')
+        expect(parsed`root: ${({_}: any) => _||'ignore'};``base: bar;`.withAttrs(foo)`ext: baz;` + '').toEqual('foobar') // TODO .bazfoobar
+        expect(parsed`root: ${({_}: any) => _||'ignore'};``name: bar;``ext: baz;`.withAttrs(ignore)(foo) + '').toEqual('foobarbaz')
     })
     it('to string with parse path', () => {
         expect(parsed(parsed().withAttrs(foo)`base: ${({_}: any) => _};``name: bar;`)`ext: baz;`() + '').toEqual('foo')

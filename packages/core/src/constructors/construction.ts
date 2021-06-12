@@ -17,12 +17,12 @@ export interface Construction {
     mount (...args: any):  ParsedPath
     from (...args: any):  ParsedPath
     to (...args: any):  ParsedPath
-    withAttrs (args: any, options?: Options): Construction
-    withConfig (args: any, options?: Options): Construction
+    withAttrs (next: any, prev?: Options): Construction
+    withConfig (next: any, prev?: Options): Construction
 }
 
 export function construction (
-    constructor: (...args: any) => ParsedPath,
+    constructor: (...args: any[]) => ParsedPath,
     options: Options,
     ...tags: RuleSet
 ): Construction
@@ -43,12 +43,12 @@ export function construction (constructor: any, options: any, ...tags: any) {
     templateFunction.to = (...args: any) =>
         constructor(path(...args), {...options, to: path(...tags)})
 
-    templateFunction.withConfig = (next: any, pre: any={}) =>
-        construction(constructor, {...pre, ...options, ...next}, ...tags)
+    templateFunction.withConfig = (next: any, prev: any={}) =>
+        construction(constructor, {...prev, ...options, ...next}, ...tags)
 
-    templateFunction.withAttrs = (next: any, pre: any={}) =>
-        construction(constructor, {...pre, ...options, attrs:
-            Array.prototype.concat(options.attrs, pre.attrs, next).filter(Boolean),
+    templateFunction.withAttrs = (next: any, prev: any={}) =>
+        construction(constructor, {...prev, ...options, attrs:
+            Array.prototype.concat(options.attrs, prev.attrs, next).filter(Boolean),
         }, ...tags)
 
 

@@ -5,7 +5,7 @@ const path = require('path-browserify')
 
 type FormsMap = Map<string, Set<string>>
 
-const FORM_REGEX = /:/ // TODO
+const FORM_REGEX = /;/ // TODO
 
 const COMMENT_REGEX = /^\s*\/\/.*$/gm;
 
@@ -23,19 +23,13 @@ export interface Pathform {
 
 export class Pathform implements Pathform {
     constructor (mode: string, join: string, pathform?: Pathform, forms?: FormsMap) {
-        this.formatPath = (format as any)[mode]
-        this.parsePath = ((path as any)[mode] || path)?.parse//(parse as any)[mode]
-        this.joinPath = ((path as any)[mode] || path)[join]
+        this.formatPath = format[mode]
+        this.parsePath = (path[mode] || path)?.parse
+        this.joinPath = (path[mode] || path)[join]
 
         this.pathform = pathform || undefined
         this.isStatic = !pathform || pathform.isStatic
         this.forms = pathform?.forms || forms || new Map<string, Set<string>>([])
-
-        this.hasFormForId = this.hasFormForId.bind(this)
-        this.insertForms = this.insertForms.bind(this)
-        this.parseForm = this.parseForm.bind(this)
-        this.joinForm = this.joinForm.bind(this)
-        this.generate = this.generate.bind(this)
     }
 
     hasFormForId(id: string, form: string): boolean {
@@ -63,21 +57,21 @@ export class Pathform implements Pathform {
     generate (names: string[], options: any={}) {
         const {isStatic, forms, joinPath, joinForm, parsePath, parseForm} = this
         const {pathId: id} = options
-        const filterNames = names.filter(name => {
+        const informalNames = names.filter(name => {
             if (name.match(FORM_REGEX) && !this.hasFormForId(id, name))
-                this.insertForms(id, name)
-            else return true
+                return this.insertForms(id, name)
+            return true
         })
 
         if (isStatic && (forms.get(id)?.size || 0) ===0)
-            return joinPath(...filterNames)
+            return joinPath(...informalNames).replace(':/','://')
 
-        const joinedPath = joinPath(...filterNames)
-        const joinedForm = joinForm(forms.get(id))
-        const parsedPath = parsePath(joinedPath)
-        const parsedForm = parseForm(joinedForm)
-        const {dir, name, ext} = parsedPath
+        const joinedPath = joinPath(...informalNames),
+              joinedForm = joinForm(forms.get(id)),
+              parsedPath = parsePath(joinedPath),
+              parsedForm = parseForm(joinedForm),
+              {dir, name, ext} = parsedPath
 
-        return this.formatPath({dir, name, ext, ...parsedForm})
+        return this.formatPath({dir, name, ext, ...parsedForm}).replace(':/','://')
     }
 }

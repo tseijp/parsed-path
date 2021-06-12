@@ -2,8 +2,7 @@ import { is, isStaticPathSet } from '../../src'
 
 describe('is', () => {
     it('is to be truthy', () => {
-        const foo = 'foo',
-              bar = 'bar'
+        const foo = 'foo'
         expect(is(0, 0, 0)).toBeTruthy()
         expect(is('0', '0', '0')).toBeTruthy()
         expect(is({foo}, {foo})).toBeTruthy()
@@ -35,7 +34,7 @@ describe('is', () => {
         expect(is.map(new Map([]))).toBeTruthy()
         expect(is.big("F")).toBeTruthy()
         expect(is.len(0, [])).toBeTruthy()
-        expect(is.len(0, {})).toBeTruthy()
+        expect(is.len(1, '1')).toBeTruthy()
     })
 })
 

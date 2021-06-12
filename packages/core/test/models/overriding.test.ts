@@ -14,9 +14,9 @@ describe('override format static', () => {
     })
     it('to string without args', () => {
         expect(target`dir: foo;`()).toEqual('foo/Baz')
-        expect(target`base: foo`({})).toEqual('Foo/Bar/foo')
-        expect(target`root: foo` + '').toEqual('Foo/Bar/Baz')
-        expect(target`name: foo`.toString()).toEqual('Foo/Bar/foo')
+        expect(target`base: foo;`({})).toEqual('Foo/Bar/foo')
+        expect(target`root: foo;` + '').toEqual('Foo/Bar/Baz')
+        expect(target`name: foo;`.toString()).toEqual('Foo/Bar/foo')
     })
     it('to string with args', () => {
         expect(target`base: foo;``name: bar;``ext: baz;`()).toEqual('Foo/Bar/foo')
@@ -74,9 +74,9 @@ describe('override with attrs', () => {
     })
     it('to string with args', () => {
         expect(target.withAttrs(foo)`base: ${({_}: any) => _};``name: bar;``ext: baz;` + '').toEqual('Foo/Bar/foo')
-        expect(target`root: ${({_}: any) => _}`.withAttrs(ignore)`dir: bar;``base: baz;`(foo) + '').toEqual('Foo/Bar/baz')
-        expect(target`root: ${({_}: any) => _||'ignore'}``base: bar;`.withAttrs(foo)`ext: baz;` + '').toEqual('Foo/Bar/Bazbaz')
-        expect(target`root: ${({_='ignore'}: any) => _}``name: bar;``ext: baz;`.withAttrs(ignore)(foo) + '').toEqual('Foo/Bar/Bazbazbaz')
+        expect(target`root: ${({_}: any) => _};`.withAttrs(ignore)`dir: bar;``base: baz;`(foo) + '').toEqual('Foo/Bar/baz')
+        expect(target`root: ${({_}: any) => _||'ignore'};``base: bar;`.withAttrs(foo)`ext: baz;` + '').toEqual('Foo/Bar/Bazbaz')
+        expect(target`root: ${({_='ignore'}: any) => _};``name: bar;``ext: baz;`.withAttrs(ignore)(foo) + '').toEqual('Foo/Bar/Bazbazbaz')
     })
     it('to string with parse path', () => {
         expect(parsed(target.withAttrs(foo)`base: ${({_}: any) => _};``name: bar;`)`ext: baz;`() + '').toEqual('Foo/Bar/foo')
