@@ -2,7 +2,7 @@
 <rss version="2.0">
     <channel>
         <title>parsed-path Blog</title>
-        <link>https://tseijp.github.io/parsed-path/blog</link>
+        <link>https://tseijp.github.io/blog</link>
         <description>parsed-path Blog</description>
         <lastBuildDate>Sun, 25 Oct 2015 23:29:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
