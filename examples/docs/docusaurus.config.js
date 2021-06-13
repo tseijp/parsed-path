@@ -2,14 +2,17 @@
 module.exports = {
   title: 'parsed-path',
   tagline: 'Use the best bits of ES6 to parse your path without stress 👋',
-  url: 'https://tsei.jp',
-  baseUrl: '/',
+  url: 'https://tseijp.github.io',
+  baseUrl: '/parsed-path/',
   onBrokenLinks: 'throw',
+  organizationName: 'tseijp',
+  projectName: 'parsed-path',
   onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.ico',
-  organizationName: 'tseijp', // Usually your GitHub org/user name.
-  projectName: 'parsed-path', // Usually your repo name.
+  favicon: 'img/favicon.png',
   themeConfig: {
+    prism: {
+      theme: require('prism-react-renderer/themes/vsDark'),
+    },
     navbar: {
       title: '<👋> parsed path',
       items: [
@@ -52,7 +55,7 @@ module.exports = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      copyright: `©tseijp ${new Date().getFullYear()}. Built with Docusaurus.`,
     },
   },
   presets: [

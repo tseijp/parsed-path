@@ -2,22 +2,25 @@
 sidebar_position: 1
 ---
 
-# Tutorial Intro
+# Introduction
 
-Let's discover **Docusaurus in less than 5 minutes**.
+Let's discover **parsed-path in less than 5 minutes**.
+
+
+## Installation
+
+To install the entire `parsed-path` lib:
+
+```shell
+yarn add parsed-path
+```
 
 ## Getting Started
 
-Get started by **creating a new site**.
-
-Or **try Docusaurus immediately** with **[new.docusaurus.io](https://new.docusaurus.io)**.
-
-## Generate a new site
-
-Generate a new Docusaurus site using the **classic template**:
+Clone repository from **[here](https://github.com/tseijp/parsed-path)**:
 
 ```shell
-npx @docusaurus/init@latest init my-website classic
+git clone https://github.com/tseijp/parsed-path
 ```
 
 ## Start your site
@@ -25,11 +28,11 @@ npx @docusaurus/init@latest init my-website classic
 Run the development server:
 
 ```shell
-cd my-website
-
-npx docusaurus start
+cd parsed-path
+yarn init
+yarn docs
 ```
 
-Your site starts at `http://localhost:3000`.
+Your site starts at [`localhost:3000`](http://localhost:3000).
 
 Open `docs/intro.md` and edit some lines: the site **reloads automatically** and display your changes.

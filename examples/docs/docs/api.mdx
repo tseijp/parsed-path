@@ -1,5 +1,6 @@
 ---
 sidebar_position: 3
+sidebar_label: API References
 ---
 
 # API References
@@ -9,30 +10,31 @@ sidebar_position: 3
 This is the default export. We use to create the parsed.tag helper method.
 Return a function that accepts a tagged template literal and turns it into a pathname.
 
-```js
-const Api = parsed.https`tsei.jp``api``v${props => props.version}`;
+import parsed from 'parsed-path'
+import {Live} from '../components/Live'
 
+<Live.Card scope={{parsed, React}} code={`
+const Api = parsed.https\`tsei.jp\`\`api\`\`v\${props => props.version}\`;
 render(
   <>
-    <Api version={1}/>
-    <Api version={2}/>
+    v1: <Api version={1}/><br/>
+    v2: <Api version={2}/><br/>
   </>
 );
-```
+`.trim()}/>
 
 ### Adapting based on props
 
 You can pass a function to a parsed path's template literal to adapt it based on its props.
 When setting the next prop to true, we are switching its version number.
 
-```js
-const Api = parsed`api``v${props => props.next? 2: 1}`;
-const Get = Api`${props =>
+<Live.Card scope={{parsed, React}} code={`
+const Api = parsed\`api\`\`v\${props => props.next? 2: 1}\`;
+const Get = Api\`\${props =>
   props.version === 1
     ? "get/is/undefined"
     : "get"
-}`
-
+}\`;
 render(
   <>
     <Api/>
@@ -41,7 +43,7 @@ render(
     <Get next/>
   </>
 );
-```
+`.trim()}/>
 
 ### Extending parses
 
@@ -49,40 +51,37 @@ To easily make a new pathname that inherits from another paths.
 Here we use the api url from the last section and create a special one.
 
 
-```js
-const Api = parsed.http`tsei.jp``api`;
-
-const Dev = Api`
+<Live.Card scope={{React, parsed}} code={`
+const Api = parsed.http\`tsei.jp\`\`api\`;
+const Dev = Api\`
   root: localhost;
   port: 3000;
-`;
-
+\`;
 render(
   <>
-    <Api/>
-    <Dev/>
+    Api: <Api/><br/>
+    Dev: <Dev/><br/>
   </>
 );
-```
+`.trim()}/>
 
 ### Parsing any pathname
 
 The parsed method works perfectly on all of your own or any third-party pathname.
 
-```js
+<Live.Card scope={{React, parsed}} code={`
 const Url = new URL("https://localhost:3000/");
-const Api = parsed(Url)`
+const Api = parsed(Url)\`
   port: 3001;
-  root: http;
-`;
-
+  root: http://;
+\`;
 render(
   <>
-    <Api/>
-    <Api port="8000"/>
+    Api: <Api/><br/>
+    Api: <Api port="8000"/><br/>
   </>
 );
-```
+`.trim()}/>
 
 ### Attaching additional props
 
@@ -97,31 +96,27 @@ The return value will be merged into the resulting props as well.
 
 Here we render an root path and attach some dynamic and static attributes to it:
 
-```js
-const Root = parsed`
-  port: ${props => props.port}
-  root: ${props => props.root}
-`;
+This allows each wrapper to override nested uses of .withAttrs.
+Root's .attrs are applied first, and then Api's .attrs:
 
-const Api = Root`api``v1`.withAttrs(props => ({
+
+<Live.Card scope={{React, parsed}} code={`
+const Root = parsed\`
+  port: \${props => props.port};
+  root: \${props => props.root};
+\`;
+const Api = Root\`api\`\`v1\`.withAttrs(props => ({
   dev: false,
   port: props.dev? 3000: undefined,
   root: props.dev? "localhost": "tsei.jp"
 }));
-```
-
-This allows each wrapper to override nested uses of .withAttrs.
-Root's .attrs are applied first, and then Api's .attrs:
-
-```js
-const Dev = Api.withAttrs(props => ({dev: false});
+const Dev = Api.withAttrs(props => ({dev: false}));
 const Pro = Api.withAttrs(props => ({dev: true}));
-
 render(
   <>
-    <Api/>
-    <Dev/>
-    <Pro/>
+    Api: <Api/><br/>
+    Dev: <Dev/><br/>
+    Pro: <Pro/><br/>
   </>
 );
-```
+`.trim()}/>

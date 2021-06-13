@@ -18,9 +18,10 @@ primitives.forEach((primitive, tags) => {
     (parsed as any)[primitive] = parsed(tags)
 })
 
-window.location.pathname.split('/').reduce((tags, tag) => {
-    (parsed as any)[tag || 'top'] = parsed(tags + '/' + tag)
-    return tags + '/' + tag
-})
+if (typeof window !== 'undefined')
+    window.location.pathname.split('/').reduce((tags, tag) => {
+        (parsed as any)[tag || 'top'] = parsed(tags + '/' + tag)
+        return tags + '/' + tag
+    })
 
 export { parsed }

@@ -64,8 +64,8 @@ export default function App () {
               </SupportingTagline>
             </Title>
             <Live.Preview/>
-            <Live.Container>
-              <Live.Editor />
+            <Live.Container style={{maxWidth: "34rem"}}>
+              <Live.Editor style={{minHeight: "27rem"}}/>
               <Live.Error />
             </Live.Container>
           </Live>

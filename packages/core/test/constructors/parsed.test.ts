@@ -31,9 +31,10 @@ describe('defined parsed tag', () => {
         parsed = resetParsed()
     })
     it('ERROR: should have all tags defined', () => {
-        window.location.pathname.split('/').forEach(tag => {
-            expect(parsed[tag || 'top']).toBeTruthy()
-        })
+        if (typeof window !== 'undefined')
+            window.location.pathname.split('/').forEach(tag => {
+                expect(parsed[tag || 'top']).toBeTruthy()
+            })
     })
     it('should have all paths defined', () => {
         primitives.forEach((key) => {

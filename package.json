@@ -1,11 +1,12 @@
 {
-  "name": "@parsed-path/monorepo",
-  "private": true,
+  "name": "@parsed-path/root",
   "author": "tsei",
-  "version": "0.0.0",
+  "private": true,
   "license": "MIT",
   "workspaces": ["packages/*", "examples/*"],
   "scripts": {
+    "deploy": "cd examples && cd docs && yarn build && yarn deploy",
+    "init": "npm i -g lerna yarn && lerna bootstrap",
     "docs": "lerna exec --scope @parsed-path/docs yarn start",
     "update": "lerna exec --scope parsed-path -- yarn publish",
     "build": "lerna exec --scope parsed-path -- rollup -c",

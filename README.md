@@ -59,14 +59,17 @@ npm install parsed-path or yarn add parsed-path
 
 </h4>
 
-### Documentation
+### Documentation and Examples
 
 See the documentation for more information about `parsed-path`.
 
 <h6>
 
-- <kbd>**[Getting started][get.md]**</kbd>
-- <kbd>**[API Reference][api.md]**</kbd>
+More info about the project can be found here: <kbd>**[Tutorial Intro][intro]**</kbd>
+
+Quicklinks to some of the most-visited pages: <kbd>**[Getting started][get]**</kbd>
+
+Examples and tutorials can be found here: <kbd>**[API Reference][api]**</kbd>
 
 </h6>
 <hr/>
@@ -144,8 +147,9 @@ This is a <kbd>**[live editor][live]**</kbd>,
 so play around with the code to get a feel for
 what it's like to work with `parsed-path`!
 
-[get.md]: https://github.com/tseijp/parsed-path/blob/master/packages/core/docs/get.md
-[api.md]: https://github.com/tseijp/parsed-path/blob/master/packages/core/docs/api.md
+[intro]: https://tseijp.github.io/parsed-path/docs/intro
+[get]: https://tseijp.github.io/parsed-path/docs/get
+[api]: https://tseijp.github.io/parsed-path/docs/api
 [live]: https://codesandbox.io/s/parsed-path-x66qy
 [node]: https://github.com/nodejs/node/blob/master/lib/path.js
 [docs]: https://nodejs.org/docs/latest/api/path.html#path_path_parse_path
