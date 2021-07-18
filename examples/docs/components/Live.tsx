@@ -24,7 +24,7 @@ const Live: any = styled(LiveProvider).attrs({theme})<any>`
     display: flex;
     flex-wrap:wrap;
   `}
-`
+`;
 
 Live.Error = styled(LiveError)`
   display: block;
@@ -35,7 +35,7 @@ Live.Error = styled(LiveError)`
   font-size: 0.8rem;
   font-family: ${headerFont};
   white-space: pre;
-`
+`;
 
 Live.Editor = styled(LiveEditor)<any>`
   font-size: 0.8rem;
@@ -51,7 +51,7 @@ Live.Editor = styled(LiveEditor)<any>`
   white-space: pre;
   cursor: text;
   width: 100%;
-`
+`;
 
 Live.Container = styled.div`
   width: 100%;
@@ -59,12 +59,12 @@ Live.Container = styled.div`
   display: inline-block;
   margin: ${rem(35)} 0;
   border-radius: ${rem(10)};
-`
+`;
 
 Live.Preview = styled(LivePreview)`
   width: 100%;
   margin: ${rem(36)} 0;
-`
+`;
 
 Live.Card = styled((props: any) => (
   <Live flex noInline {...props}>
@@ -78,6 +78,6 @@ Live.Card = styled((props: any) => (
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-`
+`;
 
 export {Live}

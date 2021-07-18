@@ -2,8 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 
 const blmGrey = 'rgb(33, 33, 33)';
-const blmMetal = 'rgb(66, 66, 66)';
 
+const blmMetal = 'rgb(66, 66, 66)';
 
 const Home: any = styled.div`
   display: flex;
@@ -18,74 +18,33 @@ const Home: any = styled.div`
   min-height: 100vh;
   padding-top: 160px;
   padding-bottom: 160px;
-`
+`;
 
-function HomeHeader() {
-  return (
-    <header>
-      <h1>{`<👋>`}</h1>
-      <p>parsed</p>
-      <p>path</p>
-    </header>
-  )
-}
-
-Home.Header = styled(HomeHeader)`
-    padding: 4rem 0;
+Home.Header = styled.header`
+    padding: 1rem 3rem;
     border: solid white;
     flex-direction: column;
-    p {
-        padding: 2rem;
+    > p {
         text-align: left;
-        font-size: 50px;
+        font-size: 1.5rem;
     }
-`
+`;
 
-function Feature({title, children}: any) {
-  return (
-    <div className="col col--4">
-      <h3>{title}</h3>
-      <p>{children}</p>
-    </div>
-  );
-}
+Home.Tagline = styled.h1`
+  font-weight: 600;
+  font-size: 1.3rem;
+`;
 
-const Section = styled.section`
-    display: flex;
-    align-items: center;
-    padding: 2rem 0;
-    width: 100%;
-`
+Home.SupportingTagline = styled.h2`
+  font-size: 1.1rem;
+  font-weight: 400;
+`;
 
-const StyledFeature = styled(Feature)`
-    height: 200px;
-    width: 200px;
-`
-
-Home.Features = () =>  {
-  return (
-    <Section>
-      <div className="container">
-        <div className="row">
-          <StyledFeature
-            title='Easy to Use'>
-            Docusaurus was designed from the ground up to be easily installed and
-            used to get your website up and running quickly.
-          </StyledFeature>
-          <StyledFeature
-            title='Focus on What Matters'>
-            Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-            ahead and move your docs into the <code>docs</code> directory.
-          </StyledFeature>
-          <StyledFeature
-            title='Powered by React'>
-            Extend or customize your website layout by reusing React. Docusaurus can
-            be extended while reusing the same header and footer.
-          </StyledFeature>
-        </div>
-      </div>
-    </Section>
-  )
-}
+Home.Title = styled.div`
+  margin: 2rem 0;
+  h1, h2 {
+    margin: 0;
+  }
+`;
 
 export {Home}

@@ -17,8 +17,9 @@ import {Live} from '../components/Live'
 const Api = parsed.https\`tsei.jp\`\`api\`\`v\${props => props.version}\`;
 render(
   <>
-    v1: <Api version={1}/><br/>
-    v2: <Api version={2}/><br/>
+    v1: <Api version={1}/>
+    <br/>
+    v2: <Api version={2}/>
   </>
 );
 `.trim()}/>
@@ -37,10 +38,13 @@ const Get = Api\`\${props =>
 }\`;
 render(
   <>
-    <Api/>
-    <Get/>
-    <Api next/>
-    <Get next/>
+    Apt: <Api/>
+    <br/>
+    Get: <Get/>
+    <br/>
+    Api next: <Api next/>
+    <br/>
+    Get next: <Get next/>
   </>
 );
 `.trim()}/>
@@ -59,8 +63,9 @@ const Dev = Api\`
 \`;
 render(
   <>
-    Api: <Api/><br/>
-    Dev: <Dev/><br/>
+    Api: <Api/>
+    <br/>
+    Dev: <Dev/>
   </>
 );
 `.trim()}/>
@@ -77,8 +82,9 @@ const Api = parsed(Url)\`
 \`;
 render(
   <>
-    Api: <Api/><br/>
-    Api: <Api port="8000"/><br/>
+    Api: <Api/>
+    <br/>
+    Api: <Api port="8000"/>
   </>
 );
 `.trim()}/>
@@ -114,9 +120,11 @@ const Dev = Api.withAttrs(props => ({dev: false}));
 const Pro = Api.withAttrs(props => ({dev: true}));
 render(
   <>
-    Api: <Api/><br/>
-    Dev: <Dev/><br/>
-    Pro: <Pro/><br/>
+    Api: <Api/>
+    <br/>
+    Dev: <Dev/>
+    <br/>
+    Pro: <Pro/>
   </>
 );
 `.trim()}/>

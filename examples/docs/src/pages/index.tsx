@@ -26,19 +26,20 @@ const Button = styled.a`
 `
 
 const Code = `
-const Docs = parsed\`/\`\`docs\`\`get\`;
+const Docs = parsed\`docs\`\`get\`;
 
 const Github = parsed.https\`github.com\`
 
-const Username = parsed(Github)\`tseijp\`
+const Username = Github\`\${props => props.usermame}\`
 
-const Repository = Username\`\${props => props.repository}\`
+const Repository = parsed(Username)\`parsed-path\`
 
 render(
   <>
     <Button href={Docs()}>Documentation</Button>
     <Button
-      href={Repository()}
+      href={Repository({usermame: 'tseijp'})}
+      repository="parsed-path"
       target="_blank"
       rel="noopener"
       primary>
@@ -55,39 +56,25 @@ export default function App () {
         title={`Hello from ${siteConfig.title}`}
         description="Description will go into a meta tag in <head />">
         <Home>
-          <Home.Header/>
+          <Home.Header>
+            <h1>{`<👋>`}</h1>
+            <p>parsed</p>
+            <p>path</p>
+          </Home.Header>
           <Live hero code={Code} noInline scope={{ React, parsed, Button }}>
-            <Title>
-              <Tagline>Visual primitives for the component age.</Tagline>
-              <SupportingTagline>
+            <Home.Title>
+              <Home.Tagline></Home.Tagline>
+              <Home.SupportingTagline>
                 Use the best bits of ES6 to parse your path without stress 👋
-              </SupportingTagline>
-            </Title>
+              </Home.SupportingTagline>
+            </Home.Title>
             <Live.Preview/>
             <Live.Container style={{maxWidth: "34rem"}}>
               <Live.Editor style={{minHeight: "27rem"}}/>
               <Live.Error />
             </Live.Container>
           </Live>
-          <Home.Features/>
         </Home>
       </Layout>
     );
 }
-
-const Tagline = styled.h1`
-  font-weight: 600;
-  font-size: 1.3rem;
-`;
-
-const SupportingTagline = styled.h2`
-  font-size: 1.1rem;
-  font-weight: 400;
-`;
-
-const Title = styled.div`
-  margin: 2rem 0;
-  h1, h2 {
-    margin: 0;
-  }
-`;

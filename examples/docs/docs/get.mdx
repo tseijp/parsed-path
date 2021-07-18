@@ -19,8 +19,9 @@ const File = Root\`home\`\`user\`\`dir\`\`
 \`;
 render(
   <>
-    <Root/>
-    <File/>1
+    Root: <Root/>
+    <br/>
+    File: <File/>
   </>
 );
 `.trim()}/>
@@ -33,9 +34,11 @@ const From = parsed\`foo\`\`bar\`\`baz\`.from\`foo\`\`bar\`; // to be 'baz'
 const To = parsed\`foo\`\`bar\`\`baz\`.to\`foo\`\`bar\`; // to be '..'
 render(
   <>
-    Mount: <Mount/><br/>
-    From: <From/><br/>
-    To: <To/><br/>
+    Mount: <Mount/>
+    <br/>
+    From: <From/>
+    <br/>
+    To: <To/>
   </>
 )
 `.trim()}/>

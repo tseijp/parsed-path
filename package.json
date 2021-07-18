@@ -5,11 +5,11 @@
   "license": "MIT",
   "workspaces": ["packages/*", "examples/*"],
   "scripts": {
-    "deploy": "cd examples && cd docs && yarn build && yarn deploy",
-    "init": "npm i -g lerna yarn && lerna bootstrap",
-    "docs": "lerna exec --scope @parsed-path/docs yarn start",
+    "start": "lerna exec --scope @parsed-path/docs yarn start",
+    "build": "lerna exec --scope @parsed-path/docs yarn build",
+    "deploy": "lerna exec --scope @parsed-path/docs yarn deploy",
     "update": "lerna exec --scope parsed-path -- yarn publish",
-    "build": "lerna exec --scope parsed-path -- rollup -c",
+    "rollup": "lerna exec --scope parsed-path -- rollup -c",
     "watch": "lerna exec --scope parsed-path -- jest --watch --runInBand",
     "cov": "lerna exec --scope parsed-path -- jest --coverage",
     "ls": "lerna exec --scope parsed-path -- npm pack --dry-run"
