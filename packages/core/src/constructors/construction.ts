@@ -7,6 +7,8 @@ export type Attrs=
     | ((props: object) => object)
 
 export interface Config {
+    as?: (props: any) => null | JSX.Element
+    key?: string,
     pure?: boolean
     isWin?: boolean
     attrs?: Attr[]

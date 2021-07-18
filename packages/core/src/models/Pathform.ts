@@ -57,9 +57,9 @@ export class Pathform implements Pathform {
         const {isStatic, forms, joinPath, joinForm, parsePath, parseForm} = this
         const {pathId: id} = options
         const informalNames = names.filter(name => {
-            if (name.match(FORM_REGEX) && !this.hasFormForId(id, name))
-                return this.insertForms(id, name)
-            return true
+            if (name.match?.(FORM_REGEX) && !this.hasFormForId(id, name))
+                this.insertForms(id, name)
+            else return true
         })
 
         if (isStatic && (forms.get(id)?.size || 0) ===0)

@@ -1,6 +1,6 @@
 import React from 'react'
 import Layout from '@theme/Layout'
-import parsed from 'parsed-path'
+import parsed from 'parsed-path/src'
 import styled, {css} from 'styled-components'
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext'
 import {Home} from '../../components/Home'
@@ -30,21 +30,21 @@ const Docs = parsed\`docs\`\`get\`;
 
 const Github = parsed.https\`github.com\`
 
-const Username = Github\`\${props => props.usermame}\`
+const Username = Github\`\${props => props.username}\`
 
-const Repository = parsed(Username)\`parsed-path\`
+const Repo = parsed(Username)\`parsed-path\`
 
 render(
   <>
-    <Button href={Docs()}>Documentation</Button>
-    <Button
-      href={Repository({usermame: 'tseijp'})}
-      repository="parsed-path"
+    <Docs as={Button}>Documentation</Docs>
+    <Repo
+      as={Button}
+      username="tseijp"
       target="_blank"
       rel="noopener"
       primary>
       Github
-    </Button>
+    </Repo>
   </>
 )
 `.trim();
