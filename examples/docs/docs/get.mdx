@@ -19,8 +19,7 @@ const File = Root\`home\`\`user\`\`dir\`\`
 \`;
 render(
   <>
-    Root: <Root/>
-    <br/>
+    Root: <Root/> <br/>
     File: <File/>
   </>
 );
@@ -34,13 +33,11 @@ const From = parsed\`foo\`\`bar\`\`baz\`.from\`foo\`\`bar\`; // to be 'baz'
 const To = parsed\`foo\`\`bar\`\`baz\`.to\`foo\`\`bar\`; // to be '..'
 render(
   <>
-    Mount: <Mount/>
-    <br/>
-    From: <From/>
-    <br/>
+    Mount: <Mount/> <br/>
+    From: <From/> <br/>
     To: <To/>
   </>
-)
+);
 `.trim()}/>
 
 ### React Recipies
@@ -48,7 +45,8 @@ render(
 <Live.Card scope={{ React, parsed }} code={`
 const VERSION = 2.1;
 const API = parsed\`api\`\`v\${VERSION}\`\`user\`\`\${props => props.user}\`;
+const As = props => React.createElement('button', props, props.href);
 render(
-  <API user={10}/>
+  <API as={As} user={10}/>
 )
 `.trim()}/>

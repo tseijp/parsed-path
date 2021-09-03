@@ -5,20 +5,19 @@ sidebar_label: API References
 
 # API References
 
-### Parsed
+### parsed
 
-This is the default export. We use to create the parsed.tag helper method.
+This is the default export. We use to create the parsed tag helper method.
 Return a function that accepts a tagged template literal and turns it into a pathname.
 
-import parsed from 'parsed-path'
-import {Live} from '../components/Live'
+import parsed from 'parsed-path';
+import {Live} from '../components/Live';
 
 <Live.Card scope={{parsed, React}} code={`
 const Api = parsed.https\`tsei.jp\`\`api\`\`v\${props => props.version}\`;
 render(
   <>
-    v1: <Api version={1}/>
-    <br/>
+    v1: <Api version={1}/> <br/>
     v2: <Api version={2}/>
   </>
 );
@@ -38,13 +37,8 @@ const Get = Api\`\${props =>
 }\`;
 render(
   <>
-    Apt: <Api/>
-    <br/>
-    Get: <Get/>
-    <br/>
-    Api next: <Api next/>
-    <br/>
-    Get next: <Get next/>
+    Api: <Api/> <br/>
+    Get: <Get next/>
   </>
 );
 `.trim()}/>
@@ -63,8 +57,7 @@ const Dev = Api\`
 \`;
 render(
   <>
-    Api: <Api/>
-    <br/>
+    Api: <Api/> <br/>
     Dev: <Dev/>
   </>
 );
@@ -120,10 +113,8 @@ const Dev = Api.withAttrs(props => ({dev: false}));
 const Pro = Api.withAttrs(props => ({dev: true}));
 render(
   <>
-    Api: <Api/>
-    <br/>
-    Dev: <Dev/>
-    <br/>
+    Api: <Api/> <br/>
+    Dev: <Dev/> <br/>
     Pro: <Pro/>
   </>
 );

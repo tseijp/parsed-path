@@ -1,5 +1,6 @@
 import { primitives, resetParsed } from '../../src'
-
+import styled from 'styled-components'
+import renderer from 'react-test-renderer';
 // const LOCATION = new URL('https://tsei.jp/note/api/user/100')
 
 describe('multi generate', () => {
@@ -71,7 +72,8 @@ describe('', () => {
     })
     it('as props', () => {
         const Root = parsed.posix`/`
-        const as = () => 'foo'
-        expect(Root({as})).toEqual('foo')
+        const as = styled.button``
+        const el = renderer.create(Root({as}));
+        expect(el).toBeTruthy();
     })
 })
