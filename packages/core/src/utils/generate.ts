@@ -1,5 +1,5 @@
 import { is } from './helpers'
-const {abs} = Math
+const { abs } = Math
 const charsLength = 52
 
 export function hash (str: string, seed?: number): number

@@ -1,4 +1,4 @@
-import { RuleSet } from '../constructors'
+import type { RuleSet } from '../constructors'
 
 export function interleave (
     strings: string[],

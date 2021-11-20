@@ -19,10 +19,12 @@ describe('flatten', () => {
             expect(flatten(tags)).toEqual([tags])
         })
     })
+
     it('toStrings class instances', () => {
         class SomeClass { toString() {return 'some'} }
         expect(flatten([new SomeClass()])).toEqual(['some'])
     })
+
     it('merge strings', () => {
         expect(flatten([1, 2, [3, 4, 5]])).toEqual(['1', '2', '3', '4', '5'])
         expect(flatten(['foo', 0, 'bar', NaN, 'baz', -1])).toEqual(['foo', '0', 'bar', 'NaN', 'baz', '-1'])

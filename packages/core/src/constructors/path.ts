@@ -1,13 +1,5 @@
 import {interleave, flatten, is} from '../utils'
 
-export const primitives = new Map([
-    ['https://', 'https'],
-    ['http://', 'http'],
-    ['./', 'base'],
-    ['~/', 'user'],
-    ['/', 'root']
-])
-
 export type Path =
     | string
     | ((props: any) => PathSet)
@@ -26,6 +18,9 @@ export type RuleSet = Rule[]
 
 export type PathSet = Path[]
 
+/**
+ *  @TODO COMMENT
+ */
 export function path (rules?: URL, ...interpolations: RuleSet): PathSet
 
 export function path (rules?: Rule, ...interpolations: RuleSet): PathSet

@@ -2,14 +2,14 @@
  * https://github.com/styled-components/styled-components/blob/master/packages/styled-components/src/utils/interleave.js
  */
 
-import { PathSet } from '../constructors'
 import { parsed } from '../constructors'
+import type { PathSet } from '../constructors'
 
 export const resetParsed = () => {
     return parsed
 }
 
-const is = (a: any, b?: any, ...other: any): boolean => {
+export const is = (a: any, b?: any, ...other: any): boolean => {
     if (other.length > 0) return is(a, b) && is(b, ...other)
     if (typeof a !== typeof b) return false
     if (is.str(a) || is.num(a)) return a === b
@@ -32,11 +32,9 @@ is.map = (a: unknown): a is Map<any, any> => a instanceof Map
 is.big = (a: unknown): a is string => is.str(a) && a === a.toUpperCase()
 is.len = (l: number, a: any): a is string | any[] => (is.arr(a) || is.str(a)) && a.length === l
 
-export  { is }
-
 export function isStaticPathSet (pathSet: PathSet): boolean
 
-export function isStaticPathSet(pathSet: any) {
+export function isStaticPathSet (pathSet: any) {
     return !pathSet.some((rule: any) => {
         if (is.fun(rule))
             return true

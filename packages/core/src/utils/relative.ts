@@ -1,6 +1,7 @@
 import { is } from './helpers'
 import { flatten } from './flatten'
-import { path, Path } from '../constructors'
+import type { Path } from '../constructors'
+
 const { min } = Math
 
 export function relative (from: Path, to?: Path): Path[]

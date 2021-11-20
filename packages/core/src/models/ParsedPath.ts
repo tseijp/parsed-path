@@ -1,6 +1,6 @@
 import { Pathform } from './Pathform'
 import { Pathname } from './Pathname'
-import { construction as re, Attrs, Config, PathSet, Construction } from '../constructors'
+import { re, Attrs, Config, PathSet, Construction } from '../constructors'
 import { is, generatePathId, generateParsedId, generateDisplayName } from '../utils'
 
 export interface ParsedPath extends Construction {
@@ -8,10 +8,10 @@ export interface ParsedPath extends Construction {
     parsedId: string
     displayId: string
     attrs: Attrs
+    config: Config
     pathname: Pathname
     pathform: Pathform
     isStatic: boolean
-    toString (): string
 }
 
 export function ParsedPath (tags: PathSet, config: Config, args?: PathSet): ParsedPath
@@ -34,6 +34,9 @@ export function ParsedPath (tags: any, config: any, args: any=[]) {
         displayId = generateDisplayName(tag, isCompositePath)
     } = config
 
+    /**
+     *  @TODO COMMENT
+     */
     const pathname = new Pathname (
         isTagParsedPath && tag.pathname,
        !isTagParsedPath && tags,
@@ -47,31 +50,31 @@ export function ParsedPath (tags: any, config: any, args: any=[]) {
         isTagParsedPath && tag.pathform,
     )
 
-    const WrappedParsedPath = (prop: any={}, ...props: any) => is.obj(prop)
-        ? pathname.generate(prop, pathform, {...config, pathId, attrs})
-        : ParsedPath([WrappedParsedPath], config, [prop, ...props])
+    /**
+     *  @TODO COMMENT
+     */
+    const _: ParsedPath = (props={}, ...other: any[]) => is.obj(props)
+        ? pathname.generate(props, pathform, {...config, pathId, attrs})
+        : ParsedPath([_], config, [props, ...other])
 
-    WrappedParsedPath.attrs = attrs
-    WrappedParsedPath.config = config
-    WrappedParsedPath.pathId = pathId
-    WrappedParsedPath.parsedId = parsedId
-    WrappedParsedPath.displayId = displayId
+    _.attrs = attrs
+    _.config = config
+    _.pathId = pathId
+    _.parsedId = parsedId
+    _.displayId = displayId
 
-    WrappedParsedPath.pathname = pathname
-    WrappedParsedPath.pathform = pathform
-    WrappedParsedPath.isStatic = pathname.isStatic && is.len(0, attrs)
-    WrappedParsedPath.toString = () => WrappedParsedPath()
+    _.pathname = pathname
+    _.pathform = pathform
+    _.isStatic = pathname.isStatic && is.len(0, attrs)
 
-    WrappedParsedPath.mount = (...props: any) =>
-        re(ParsedPath, config, WrappedParsedPath).mount(...props)
-    WrappedParsedPath.from = (...props: any) =>
-        re(ParsedPath, config, WrappedParsedPath).from(...props)
-    WrappedParsedPath.to = (...props: any) =>
-        re(ParsedPath, config, WrappedParsedPath).to(...props)
-    WrappedParsedPath.withConfig = (props: any) =>
-        re(ParsedPath, config, WrappedParsedPath).withConfig(props) //
-    WrappedParsedPath.withAttrs = (props: any) =>
-        re(ParsedPath, config, WrappedParsedPath).withAttrs(props)
+    _.withConfig = (to, from={}) => re(ParsedPath, config, _).withConfig(to, from)
+    _.withAttrs = (to, from={}) => re(ParsedPath, config, _).withAttrs(to, from)
+    _.toString = (...args) => (_ as any)(...args)
+    _.mount = (...args) => re(ParsedPath, config, _).mount(...args)
+    _.from = (...args) => re(ParsedPath, config, _).from(...args)
+    _.to = (...args) => re(ParsedPath, config, _).to(...args)
+    _.q = (...args) => re(ParsedPath, config, _).q(...args)
 
-    return WrappedParsedPath as ParsedPath
+
+    return _ as ParsedPath
 }
