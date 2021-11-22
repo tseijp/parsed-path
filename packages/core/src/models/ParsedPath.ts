@@ -53,8 +53,8 @@ export function ParsedPath (tags: any, config: any, args: any=[]) {
     /**
      *  @TODO COMMENT
      */
-    const _: ParsedPath = (props={}, ...other: any[]) => is.obj(props)
-        ? pathname.generate(props, pathform, {...config, pathId, attrs})
+    const _: ParsedPath = (props={}, ...other: any[]): any => is.obj(props)
+        ? pathname.generate(pathform, props, {...config, pathId, attrs})
         : ParsedPath([_], config, [props, ...other])
 
     _.attrs = attrs
@@ -66,15 +66,15 @@ export function ParsedPath (tags: any, config: any, args: any=[]) {
     _.pathname = pathname
     _.pathform = pathform
     _.isStatic = pathname.isStatic && is.len(0, attrs)
+    _.toString = (...args) => _(...args)
 
     _.withConfig = (to, from={}) => re(ParsedPath, config, _).withConfig(to, from)
     _.withAttrs = (to, from={}) => re(ParsedPath, config, _).withAttrs(to, from)
-    _.toString = (...args) => (_ as any)(...args)
     _.mount = (...args) => re(ParsedPath, config, _).mount(...args)
     _.from = (...args) => re(ParsedPath, config, _).from(...args)
     _.to = (...args) => re(ParsedPath, config, _).to(...args)
     _.q = (...args) => re(ParsedPath, config, _).q(...args)
 
 
-    return _ as ParsedPath
+    return _
 }

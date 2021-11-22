@@ -12,14 +12,14 @@
     "core@latest": "lerna add @docusaurus/core@latest --dev --scope @parsed-path/docs",
     "preset@latest": "lerna add  @docusaurus/preset-classic@latest --dev --scope @parsed-path/docs",
     "latest": "yarn run core@latest & yarn run preset@latest",
-    "start": "lerna exec --scope @parsed-path/docs yarn start",
-    "build": "lerna exec --scope @parsed-path/docs yarn build",
-    "deploy": "lerna exec --scope @parsed-path/docs yarn deploy",
-    "update": "lerna exec --scope parsed-path -- yarn publish",
-    "rollup": "lerna exec --scope parsed-path -- yarn rollup -c",
-    "watch": "lerna exec --scope parsed-path -- yarn jest --watch --runInBand",
-    "cov": "lerna exec --scope parsed-path -- yarn jest --coverage",
-    "ls": "lerna exec --scope parsed-path -- npm pack --dry-run"
+    "start": "cd examples && cd docs && yarn start",
+    "build": "cd examples && cd docs && yarn build",
+    "deploy": "cd examples && cd docs && yarn deploy",
+    "rollup": "cd packages && cd core && yarn rollup -c",
+    "watch": "cd packages && cd core && yarn jest --watch --runInBand",
+    "cov": "cd packages && cd core && yarn jest --coverage",
+    "npm": "cd packages && cd core && yarn publish",
+    "ls": "cd packages && cd core && npm pack --dry-run"
   },
   "devDependencies": {
       "lerna": "^4.0.0"

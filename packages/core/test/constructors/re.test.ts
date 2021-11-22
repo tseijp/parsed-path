@@ -13,6 +13,17 @@ describe('mount', () => {
     })
 })
 
+describe('query', () => {
+    let parsed: any
+    beforeEach(() => void (parsed = resetParsed().posix))
+    it('basic', () => {
+        expect(parsed`foo``bar``baz`.q`` + '').toEqual('foo/bar/baz?')
+        expect(parsed`foo``bar`.q`baz` + '').toEqual('foo/bar?baz')
+        expect(parsed`foo`.q`bar``baz` + '').toEqual('foo?bar&baz')
+        expect(parsed``.q`foo``bar``baz` + '').toEqual('?foo&bar&baz')
+    })
+})
+
 describe('from util', () => {
     let parsed: any, target: any
     beforeEach(() => {
@@ -30,6 +41,7 @@ describe('from util', () => {
         expect(target.from`foo``bar``baz` + '').toEqual('../../foo/bar/baz')
     })
 })
+
 describe('to util', () => {
     let parsed: any, target: any
     beforeEach(() => {
@@ -47,6 +59,7 @@ describe('to util', () => {
         expect(target.to`foo``bar``baz` + '').toEqual('../../../foo/bar/baz') // TODO ''
     })
 })
+
 // to be delete isWin
 describe('TODO: with config', () => {
     let parsed: any
@@ -61,6 +74,7 @@ describe('TODO: with config', () => {
         expect(parsed``.withConfig({isWin})`foo``bar``baz` + '').toEqual('foo/bar/baz')
     })
 })
+
 describe('with attrs', () => {
     let parsed: any
     beforeEach(() => {
@@ -73,6 +87,7 @@ describe('with attrs', () => {
         expect(parsed().withAttrs({})`foo``bar``baz` + '').toEqual('foo/bar/baz')
     })
 })
+
 // describe('TODO utils', () => {
 //     let parsed: any, target: any
 //     beforeEach(() => {

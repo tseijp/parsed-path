@@ -63,7 +63,7 @@ export class Pathform implements Pathform {
         })
 
         if (isStatic && (forms.get(id)?.size || 0) ===0)
-            return joinPath(...informalNames).replace(':/','://')
+            return cleanup(joinPath(...informalNames))
 
         const joinedPath = joinPath(...informalNames),
               joinedForm = joinForm(forms.get(id)),
@@ -71,6 +71,10 @@ export class Pathform implements Pathform {
               parsedForm = parseForm(joinedForm),
               {dir, name, ext} = parsedPath
 
-        return this.formatPath({dir, name, ext, ...parsedForm}).replace(':/','://')
+        return cleanup(this.formatPath({dir, name, ext, ...parsedForm}))
     }
+}
+
+function cleanup (path: string) {
+    return path.replace(':/','://').replace('/?','?')
 }
