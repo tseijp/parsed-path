@@ -4,7 +4,7 @@
     "license": "MIT",
     "private": false,
     "sideEffect": false,
-    "version": "0.1.16",
+    "version": "0.1.17",
     "module": "index.js",
     "types": "index.d.ts",
     "main": "index.cjs.js",
