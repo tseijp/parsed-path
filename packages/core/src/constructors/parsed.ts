@@ -1,7 +1,7 @@
 import { ParsedPath } from '../models'
 import type { RuleSet } from './path'
 import type { Construction, Config } from './re'
-import { construction } from './re'
+import { re } from './re'
 
 export const primitives = new Map([
     ['https://', 'https'],
@@ -25,14 +25,14 @@ export interface Parsed {
     withConfig: (props: Config) => (...tags: RuleSet) => Construction
 }
 
-const parsed: Parsed = (...tags) => construction(ParsedPath, {isWin: false}, ...tags)
-parsed.posix = (...tags) => construction(ParsedPath, {isWin: false}, ...tags)
-parsed.win32 = (...tags) => construction(ParsedPath, {isWin: true}, ...tags)
-parsed.pure = (...tags) => construction(ParsedPath, {isWin: false, pure: true}, ...tags)
-parsed.pureWin32 = (...tags) => construction(ParsedPath, {isWin: true, pure: true}, ...tags)
-parsed.purePosix = (...tags) => construction(ParsedPath, {isWin: false, pure: true}, ...tags)
-parsed.withAttrs = (config) => (...tags) => construction(ParsedPath, config, ...tags)
-parsed.withConfig = (config) => (...tags) => construction(ParsedPath, config, ...tags)
+const parsed: Parsed = (...tags) => re(ParsedPath, {isWin: false}, ...tags)
+parsed.posix = (...tags) => re(ParsedPath, {isWin: false}, ...tags)
+parsed.win32 = (...tags) => re(ParsedPath, {isWin: true}, ...tags)
+parsed.pure = (...tags) => re(ParsedPath, {isWin: false, pure: true}, ...tags)
+parsed.pureWin32 = (...tags) => re(ParsedPath, {isWin: true, pure: true}, ...tags)
+parsed.purePosix = (...tags) => re(ParsedPath, {isWin: false, pure: true}, ...tags)
+parsed.withAttrs = (config) => (...tags) => re(ParsedPath, config, ...tags)
+parsed.withConfig = (config) => (...tags) => re(ParsedPath, config, ...tags)
 
 
 /**

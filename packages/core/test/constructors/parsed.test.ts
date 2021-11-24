@@ -44,7 +44,7 @@ describe('defined parsed tag', () => {
     })
 })
 
-describe('', () => {
+describe('examles', () => {
     let parsed: any
     beforeEach(() => {
         parsed = resetParsed()

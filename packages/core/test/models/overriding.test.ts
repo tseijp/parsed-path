@@ -34,28 +34,28 @@ describe('override format static', () => {
 
 describe('override with props', () => {
     let parsed: any, target: any
-    const foo = {$: 'foo'}, $ = ($: any) => $.$, $foo = ($: any) => $.$||'foo'
+    const foo = {$: 'foo'}, $ = ($: any) => $.$, $foo = ($: any) => $.$ || 'foo'
     beforeEach(() => {
         parsed = resetParsed().posix
         target = parsed`Foo``Bar``Baz`
     })
     it('to string without args', () => {
         expect(target`dir: ${$};`()).toEqual('Foo/Bar/Baz')
-        expect(target`base: ${$};`(foo)).toEqual('Foo/Bar/Baz')
+        expect(target`base: ${$};`(foo)).toEqual('Foo/Bar/foo')
         expect(target`root: ${$foo};` + '').toEqual('Foo/Bar/Baz')
-        expect(target`name: ${({$='foo'}: any) => $};`.toString()).toEqual('Foo/Bar/Baz')
+        expect(target`name: ${({$='foo'}: any) => $};`.toString()).toEqual('Foo/Bar/foo')
     })
     it('to string with args', () => {
         expect(target`base: ${$};``name: bar;``ext: baz;`()).toEqual('Foo/Bar/barbaz')
-        expect(target`root: ${$};``dir: bar;``base: baz;`(foo)).toEqual('Foo/Bar/baz')
-        expect(target`root: ${$foo};``base: bar;``ext: baz;` + '').toEqual('Foo/Bar/Bazbaz')
-        expect(target`root: ${$foo};``name: bar;``ext: baz;`.toString()).toEqual('Foo/Bar/Bazbaz')
+        expect(target`root: ${$};``dir: bar;``base: baz;`(foo)).toEqual('bar/baz')
+        expect(target`root: ${$foo};``base: bar;``ext: baz;` + '').toEqual('Foo/Bar/bar')
+        expect(target`root: ${$foo};``name: bar;``ext: baz;`.toString()).toEqual('Foo/Bar/barbaz')
     })
     it('to string parsed path', () => {
         expect(parsed(target`base: ${$};``name: bar;`)`ext: baz;`()).toEqual('Foo/Bar/barbaz')
-        expect(parsed(target`root: ${$};``dir: bar;`)`base: baz;`(foo)).toEqual('Foo/Bar/baz')
-        expect(parsed(target`root: ${$foo};``base: bar;`)`ext: baz;` + '').toEqual('Foo/Bar/Bazbaz')
-        expect(parsed(target`root: ${$foo};``name: bar;`)`ext: baz;`.toString()).toEqual('Foo/Bar/Bazbaz')
+        expect(parsed(target`root: ${$};``dir: bar;`)`base: baz;`(foo)).toEqual('bar/baz')
+        expect(parsed(target`root: ${$foo};``base: bar;`)`ext: baz;` + '').toEqual('Foo/Bar/bar')
+        expect(parsed(target`root: ${$foo};``name: bar;`)`ext: baz;`.toString()).toEqual('Foo/Bar/barbaz')
     })
 })
 
@@ -74,15 +74,15 @@ describe('override with attrs', () => {
     })
     it('to string with args', () => {
         expect(target.withAttrs(foo)`base: ${$};``name: bar;``ext: baz;` + '').toEqual('Foo/Bar/foo')
-        expect(target`root: ${$};`.withAttrs(ignore)`dir: bar;``base: baz;`(foo) + '').toEqual('Foo/Bar/baz')
-        expect(target`root: ${$};``base: bar;`.withAttrs(foo)`ext: baz;` + '').toEqual('Foo/Bar/Bazbaz')
-        expect(target`root: ${$};``name: bar;``ext: baz;`.withAttrs(ignore)(foo) + '').toEqual('Foo/Bar/Bazbazbaz')
+        expect(target`root: ${$};`.withAttrs(ignore)`dir: bar;``base: baz;`(foo) + '').toEqual('bar/baz')
+        expect(target`root: ${$};``base: bar;`.withAttrs(foo)`ext: baz;` + '').toEqual('Foo/Bar/bar')
+        expect(target`root: ${$};``name: bar;``ext: baz;`.withAttrs(ignore)(foo) + '').toEqual('Foo/Bar/barbaz')
     })
     it('to string with parse path', () => {
         expect(parsed(target.withAttrs(foo)`base: ${$};``name: bar;`)`ext: baz;`() + '').toEqual('Foo/Bar/foo')
-        expect(parsed(target`root: ${$};`.withAttrs(ignore)`dir: bar;`)`base: baz;`(foo) + '').toEqual('Foo/Bar/baz')
-        expect(parsed(target`root: ${$};``base: bar;`).withAttrs(foo)`ext: baz;` + '').toEqual('Foo/Bar/Bazbaz')
-        expect(parsed(target`root: ${$};``name: bar;`)`ext: baz;`.withAttrs(ignore)(foo) + '').toEqual('Foo/Bar/Bazbazbaz')
+        expect(parsed(target`root: ${$};`.withAttrs(ignore)`dir: bar;`)`base: baz;`(foo) + '').toEqual('bar/baz')
+        expect(parsed(target`root: ${$};``base: bar;`).withAttrs(foo)`ext: baz;` + '').toEqual('Foo/Bar/bar')
+        expect(parsed(target`root: ${$};``name: bar;`)`ext: baz;`.withAttrs(ignore)(foo) + '').toEqual('Foo/Bar/barbaz')
     })
 })
 
