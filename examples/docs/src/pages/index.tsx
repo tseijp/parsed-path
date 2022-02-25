@@ -6,7 +6,9 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext'
 import {Home} from '../../components/Home'
 import {Live} from '../../components/Live'
 
-const Button = styled.a`
+type ButtonProps = {primary?: boolean}
+
+const Button = styled.a<ButtonProps>`
   /* This renders the buttons above... Edit me! */
   display: inline-block;
   border-radius: 3px;
@@ -19,7 +21,7 @@ const Button = styled.a`
 
   /* The GitHub button is a primary button
    * edit this to target it specifically! */
-  ${(props: any) => props.primary && css`
+  ${props => props.primary && css`
     background: white;
     color: black;
   `}

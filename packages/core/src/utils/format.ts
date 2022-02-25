@@ -2,7 +2,15 @@
  * forked: https://github.com/nodejs/node/blob/master/lib/path.js
  */
 
-function _format (pathObject: any, sep: any) {
+export type PathObject = Partial<{
+  dir: string
+  base: string
+  root: string
+  name: string
+  ext: string
+}>
+
+function _format (pathObject: PathObject, sep: '/'|'\\') {
     const dir = pathObject.dir || pathObject.root
     const base = pathObject.base || `${pathObject.name || ''}${pathObject.ext || ''}`
     if (!dir)
@@ -10,7 +18,7 @@ function _format (pathObject: any, sep: any) {
     return dir === pathObject.root ? `${dir}${base}` : `${dir}${sep}${base}`
 }
 
-const posix = (pathObject: any) => _format(pathObject, '/')
-const win32 = (pathObject: any) => _format(pathObject, '\\')
+const posix = (pathObject: object) => _format(pathObject, '/')
+const win32 = (pathObject: object) => _format(pathObject, '\\')
 
 export const format = { win32, posix }

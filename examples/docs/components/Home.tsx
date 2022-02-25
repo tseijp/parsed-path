@@ -5,7 +5,15 @@ const blmGrey = 'rgb(33, 33, 33)';
 
 const blmMetal = 'rgb(66, 66, 66)';
 
-const Home: any = styled.div`
+interface Home {
+  <Props>(porps: Props): null | JSX.Element
+  Header: <Props>(props: Props) => null | JSX.Element
+  Tagline: <Props>(props: Props) => null | JSX.Element
+  SupportingTagline: <Props>(props: Props) => null | JSX.Element
+  Title: <Props>(props: Props) => null | JSX.Element
+}
+
+export const Home = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -18,7 +26,7 @@ const Home: any = styled.div`
   min-height: 100vh;
   padding-top: 160px;
   padding-bottom: 160px;
-`;
+` as unknown as Home;
 
 Home.Header = styled.header`
     padding: 1rem 3rem;
@@ -46,5 +54,3 @@ Home.Title = styled.div`
     margin: 0;
   }
 `;
-
-export {Home}

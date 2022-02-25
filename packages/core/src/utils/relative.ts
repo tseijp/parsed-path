@@ -1,12 +1,10 @@
 import { is } from './helpers'
 import { flatten } from './flatten'
-import type { Path } from '../constructors'
+import type { Path, PathSet } from '../constructors'
 
 const { min } = Math
 
-export function relative (from: Path, to?: Path): Path[]
-
-export function relative (from: any, to: any=[]) {
+export function relative (from: Path, to: PathSet=[]): PathSet {
     if (from === to) return []
     if (is.str(to)) to = flatten(to)
     if (is.str(from)) from = flatten(from)

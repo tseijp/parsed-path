@@ -9,7 +9,18 @@ const monospace = 'dm, monospace';
 const headerFont = `"Avenir Next", ${bodyFont}`;
 const sidebarWidth = 300;
 
-const Live: any = styled(LiveProvider).attrs({theme})<any>`
+interface Live {
+  <Props>(props: Props & LiveProps): null | JSX.Element
+  Error: <Props>(props: Props & EditorProps) => null | JSX.Element
+  Editor: <Props>(props: Props) => null | JSX.Element
+  Container: <Props>(props: Props) => null | JSX.Element
+  Preview: <Props>(props: Props) => null | JSX.Element
+  Card: <Props>(props: Props) => null | JSX.Element
+}
+
+type LiveProps = Partial<{flex: boolean, moveRight: boolean}>
+
+const Live = styled(LiveProvider).attrs({theme})<LiveProps>`
   width: ${rem(1024)};
   max-width: 100%;
   margin: 0 auto;
@@ -24,7 +35,7 @@ const Live: any = styled(LiveProvider).attrs({theme})<any>`
     display: flex;
     flex-wrap:wrap;
   `}
-`;
+` as unknown as Live;
 
 Live.Error = styled(LiveError)`
   display: block;
@@ -37,7 +48,12 @@ Live.Error = styled(LiveError)`
   white-space: pre;
 `;
 
-Live.Editor = styled(LiveEditor)<any>`
+type EditorProps = Partial<{
+  height: number
+  minHeight: number
+}>
+
+Live.Editor = styled(LiveEditor)<EditorProps>`
   font-size: 0.8rem;
   font-family: ${monospace};
   font-weight: 300;
@@ -66,7 +82,7 @@ Live.Preview = styled(LivePreview)`
   margin: ${rem(36)} 0;
 `;
 
-Live.Card = styled((props: any) => (
+Live.Card = styled((props: LiveProps) => (
   <Live flex noInline {...props}>
     <Live.Container>
       <Live.Editor />

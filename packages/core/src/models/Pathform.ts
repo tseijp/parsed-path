@@ -1,6 +1,6 @@
 import { compile } from 'stylis'
-import { format } from '../utils'
-
+import { Config } from '../constructors'
+import { format, PathObject } from '../utils'
 const path = require('path-browserify')
 
 type FormsMap = Map<string, Set<string>>
@@ -13,22 +13,21 @@ export interface Pathform {
     pathId: string
     pathform?: Pathform
     isStatic: boolean
-    tag: any
     forms: FormsMap
     options: object
-    formatPath (...args: any): any
-    parsePath (...args: any): any
-    joinPath (...args: any): any
+    formatPath (pathObject: PathObject): string
+    parsePath (...args: string[]): PathObject
+    joinPath (...args: string[]): string
 }
 
 export class Pathform implements Pathform {
-    constructor (mode: string, join: string, pathform?: Pathform) {
+    constructor (mode: 'posix'|'win32', join: string, pathform?: Pathform|false) {
         this.formatPath = format[mode]
         this.parsePath = path.parse
         this.joinPath = path[join]
         this.pathform = pathform || undefined
         this.isStatic = !pathform || pathform.isStatic
-        this.forms = pathform.forms || new Map<string, Set<string>>([])
+        this.forms = this.pathform?.forms || new Map<string, Set<string>>([])
     }
 
     hasFormForId(id: string, form: string) {
@@ -49,13 +48,13 @@ export class Pathform implements Pathform {
 
     parseForm(form: string) {
         if (!form) return {}
-        const compiled = compile(form).map((form: any) => ({[form.props]: form.children}))
+        const compiled = compile(form).map((form: any) => ({[form.props]: form.children})) // @TODO fix any
         return Object.assign({}, ...compiled)
     }
 
-    generate (names: string[], options: any={}) {
+    generate (names: string[], config: Config={}) {
         const {isStatic, forms, joinPath, joinForm, parsePath, parseForm} = this
-        const {pathId: id} = options
+        const { pathId: id } = config
         const informalNames = names.filter(name => {
             if (name.match?.(FORM_REGEX) && !this.hasFormForId(id, name))
                 this.insertForms(id, name)

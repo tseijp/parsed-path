@@ -6,31 +6,24 @@ import { Path, PathSet, Rule, primitives } from '../constructors'
 
 const replaceChunkRe = /\s/g
 
-export function flatten (
-    chunk: Rule | Path,
-    props?: any
-): PathSet
-
-export function flatten (chunk: any, props?: any) {
+export function flatten (chunk: Rule | Path, props?: any): PathSet { // @TODO fix any Props
     if (is.fls(chunk))
         return []
 
     if (is.arr(chunk)) {
         const ruleSet = []
-        for (let i = 0, result: any; i < chunk.length; i++) {
-            result = flatten(chunk[i], props)
-            ruleSet.push(...Array.prototype.concat(result))
+        for (let i = 0, path: Path; i < chunk.length; i++) {
+            path = flatten(chunk[i], props)
+            ruleSet.push(...Array.prototype.concat(path))
         }
         return ruleSet
     }
 
     if (is.fun(chunk))
-        if (props)
-            return flatten(chunk(props), props)
-        else return [chunk]
+        return props? flatten(chunk(props), props): [chunk as Path]
 
     if (is.str(chunk) && primitives.has(chunk))
         return [chunk]
 
-    return chunk.toString().replace(replaceChunkRe, '').split('/')
+    return (chunk + "").replace(replaceChunkRe, '').split('/')
 }

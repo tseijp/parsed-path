@@ -2,7 +2,7 @@ import { interleave } from '../../src'
 
 describe('interleave', () => {
     it('merge strings', () => {
-        const tsa: any = ['foo', 'bar', 'baz', '']
+        const tsa = ['foo', 'bar', 'baz', '']
         expect(interleave(tsa, [false, undefined, null])).toEqual(['foo', false, 'bar', undefined, 'baz', null, ''])
         expect(interleave(tsa, [0, NaN, -1])).toEqual(['foo', 0, 'bar', NaN, 'baz', -1, ''])
         expect(interleave(['foo, bar, baz'])).toEqual(['foo, bar, baz'])
