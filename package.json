@@ -1,27 +1,26 @@
 {
-  "name": "@parsed-path/root",
-  "version": "1.0.0",
-  "author": "tsei",
-  "private": true,
-  "license": "MIT",
-  "workspaces": [
-    "packages/*",
-    "examples/*"
-  ],
-  "scripts": {
-    "core@latest": "lerna add @docusaurus/core@latest --dev --scope @parsed-path/docs",
-    "preset@latest": "lerna add  @docusaurus/preset-classic@latest --dev --scope @parsed-path/docs",
-    "latest": "yarn run core@latest & yarn run preset@latest",
-    "start": "cd examples && cd docs && yarn start",
-    "build": "cd examples && cd docs && yarn build",
-    "deploy": "cd examples && cd docs && yarn deploy",
-    "rollup": "cd packages && cd core && yarn rollup -c",
-    "watch": "cd packages && cd core && yarn jest --watch --runInBand",
-    "cov": "cd packages && cd core && yarn jest --coverage",
-    "npm": "cd packages && cd core && yarn publish",
-    "ls": "cd packages && cd core && npm pack --dry-run"
-  },
-  "devDependencies": {
-      "lerna": "^4.0.0"
-  }
+    "name": "@parsed-path/root",
+    "version": "1.0.0",
+    "author": "tsei",
+    "license": "MIT",
+    "private": true,
+    "workspaces": [
+        "packages/*",
+        "examples/*"
+    ],
+    "scripts": {
+        "bootstrap": "lerna bootstrap",
+        "clean": "lerna clean -y",
+        "start": "cd examples && cd docs && yarn start",
+        "build": "cd examples && cd docs && yarn build",
+        "deploy": "cd examples && cd docs && yarn deploy",
+        "rollup": "cd packages && cd core && yarn rollup -c",
+        "watch": "cd packages && cd core && yarn jest --watch --runInBand",
+        "cov": "cd packages && cd core && yarn jest --coverage",
+        "npm": "cd packages && cd core && yarn publish",
+        "ls": "cd packages && cd core && npm pack --dry-run"
+    },
+    "devDependencies": {
+        "lerna": "^4.0.0"
+    }
 }
