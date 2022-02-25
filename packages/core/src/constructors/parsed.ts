@@ -3,14 +3,15 @@ import type { RuleSet } from './path'
 import type { Construction, Config } from './re'
 import { re } from './re'
 
-export const primitives = new Map([
+export type PrimitiveKeys = 'https'|'http'|'base'|'user'|'root'
+
+export const primitives = new Map<string, PrimitiveKeys>([
     ['https://', 'https'],
     ['http://', 'http'],
     ['./', 'base'],
     ['~/', 'user'],
     ['/', 'root']
 ])
-
 /**
  * define parsed
  */
@@ -34,21 +35,19 @@ parsed.purePosix = (...tags) => re(ParsedPath, {isWin: false, pure: true}, ...ta
 parsed.withAttrs = (config) => (...tags) => re(ParsedPath, config, ...tags)
 parsed.withConfig = (config) => (...tags) => re(ParsedPath, config, ...tags)
 
-
 /**
  *  @TODO COMMENT
  */
 primitives.forEach((primitive, tags) => {
-    (parsed as any)[primitive] = parsed(tags)
+    parsed[primitive] = parsed(tags)
 })
-
 
 /**
  *  @TODO COMMENT
  */
 if (typeof window !== 'undefined')
     window.location.pathname.split('/').reduce((tags, tag) => {
-        (parsed as any)[tag || 'top'] = parsed(tags + '/' + tag)
+        parsed[tag || 'top'] = parsed(tags + '/' + tag)
         return tags + '/' + tag
     })
 

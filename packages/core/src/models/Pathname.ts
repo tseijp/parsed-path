@@ -1,6 +1,6 @@
 import { createElement as el } from 'react'
 import { is, isStaticPathSet, flatten, relative } from '../utils'
-import { PathSet, Config } from '../constructors'
+import { PathSet, Config, Attrs } from '../constructors'
 import { Pathform } from './Pathform'
 
 export interface Pathname {
@@ -10,24 +10,20 @@ export interface Pathname {
 }
 
 export class Pathname {
-    constructor (pathname?: Pathname, ...pathSets: PathSet[])
-
-    constructor (pathname?: any, ...pathSets: any) {
+    constructor (pathname?: Pathname|false, ...pathSets: PathSet[]) {
         this.pathname = pathname || undefined
         this.pathSets = pathSets.filter(Boolean)
         this.isStatic = (is.fls(pathname) || pathname.isStatic) && isStaticPathSet(pathSets)
         this.generate = this.generate.bind(this)
     }
 
-    generate (pathform: Pathform, props: object, config: Config): string
-
-    generate (pathform: any, props: any, config: any) {
+    generate (pathform: Pathform, props: any, config: Config) { // @TODO fix any Props
         const { attrs, mount, from, to, q, key='href', ...other } = config
         const { pathname, isStatic, pathSets } = this
         const args = [pathform, props, config]
-        let names: any[] = []
+        let names = []
 
-        if (attrs?.length) props = resolveAttrs(props, attrs)
+        if (is.arr(attrs)) props = resolveAttrs(props, attrs)
         if (pathname) names = [pathname.generate(pathform, {...props, as: false}, other)]
         if (isStatic) names = names.concat(flatten(pathSets))
         else names = names.concat(pathSets.map(pathSet =>
@@ -57,8 +53,8 @@ export class Pathname {
     }
 }
 
-export function resolveAttrs (props: any, attrs: any[]=[]) {
-    const context: any = {}
+export function resolveAttrs <Props>(props: Props, attrs: Attrs[]=[]) {
+    const context: any = {} // @TODO fix any
     attrs.forEach(attr => {
         if (is.fun(attr))
             attr = attr(context)
@@ -68,7 +64,7 @@ export function resolveAttrs (props: any, attrs: any[]=[]) {
     return {...context, ...props}
 }
 
-export function resolvePath (pathSet: any=[], ...args: any[]) {
+export function resolvePath (pathSet: any=[], ...args: any[]) { // TODO fix any
     const isParsedPath = !is.str(pathSet[0]) && is.str(pathSet[0]?.parsedId)
     return isParsedPath ? pathSet[0](...args) : pathSet
 }

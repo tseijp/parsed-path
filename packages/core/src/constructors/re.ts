@@ -1,6 +1,5 @@
 import { path, PathSet, RuleSet } from './path'
 import { ParsedPath } from '../models'
-import { is } from '../utils'
 
 export type Attrs =
     | object
@@ -10,10 +9,10 @@ export type Config = Partial<{
     /**
      *  Inherited config.
      */
-    as: (props: any) => null | JSX.Element
+    as: <Props>(props: Props) => null | JSX.Element
     key: string
     pure: boolean
-    attrs: Attr[]
+    attrs: Attrs
     isWin: boolean
     isQuery: boolean
 
@@ -24,26 +23,31 @@ export type Config = Partial<{
     from: PathSet
     to: PathSet
     q: PathSet
+    /**
+     * Cofig
+     */
+    pathId: string
+    parsedId: string
+    displayId: string
+    parentPathId: string
 }>
 
 export interface Construction<Model=ParsedPath> {
     (...args: RuleSet): string | Model
-    toString (arg?: object, ...args: any[]): string | Model
-    withConfig (next: any, prev?: Config): Construction
-    withAttrs (next: any, prev?: Config): Construction
-    mount (...args: any):  ParsedPath
-    from (...args: any):  ParsedPath
-    to (...args: any):  ParsedPath
-    q (...args: any): ParsedPath
+    toString (arg?: object, ...args: RuleSet): string | Model
+    withConfig (next: Config, prev?: Config): Construction
+    withAttrs (next: Attrs, prev?: Config): Construction
+    mount (...args: RuleSet):  ParsedPath
+    from (...args: RuleSet):  ParsedPath
+    to (...args: RuleSet):  ParsedPath
+    q (...args: RuleSet): ParsedPath
 }
 
 export function re (
-    constructor: (...args: any[]) => ParsedPath,
+    constructor: (...args: any[]) => ParsedPath, // @TODO fix any
     config: Config,
     ...tags: RuleSet
-): Construction
-
-export function re (constructor: any, config: any, ...tags: any) {
+): Construction {
     const _: Construction = (...args) => constructor(path(...tags), config)(...args)
 
     _.withConfig = (to, from={}) => re(constructor, {...from, ...config, ...to}, ...tags)

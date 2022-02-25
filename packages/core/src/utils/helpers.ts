@@ -32,10 +32,8 @@ is.map = (a: unknown): a is Map<any, any> => a instanceof Map
 is.big = (a: unknown): a is string => is.str(a) && a === a.toUpperCase()
 is.len = (l: number, a: any): a is string | any[] => (is.arr(a) || is.str(a)) && a.length === l
 
-export function isStaticPathSet (pathSet: PathSet): boolean
-
-export function isStaticPathSet (pathSet: any) {
-    return !pathSet.some((rule: any) => {
+export function isStaticPathSet (pathSet: PathSet): boolean {
+    return !pathSet.some((rule: unknown) => {
         if (is.fun(rule))
             return true
         if (is.arr(rule))
