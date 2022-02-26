@@ -6,7 +6,7 @@ import { Path, PathSet, Rule, primitives } from '../constructors'
 
 const replaceChunkRe = /\s/g
 
-export function flatten (chunk: Rule | Path, props?: any): PathSet { // @TODO fix any Props
+export function flatten <P=unknown>(chunk: Rule | Path, props?: P): PathSet {
     if (is.fls(chunk))
         return []
 

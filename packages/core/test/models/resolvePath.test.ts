@@ -1,7 +1,7 @@
-import { resetParsed, resolvePath } from '../../src'
+import { resetParsed, Parsed, resolvePath } from '../../src'
 
 describe('resolvePath', () => {
-    let parsed: any
+    let parsed: Parsed['posix']
     const foo = 'foo'
     beforeEach(() => {
         parsed = resetParsed().posix

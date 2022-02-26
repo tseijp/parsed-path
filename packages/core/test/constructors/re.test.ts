@@ -1,7 +1,7 @@
-import { resetParsed } from '../../src'
+import { resetParsed, Parsed, ParsedPath } from '../../src'
 
 describe('mount', () => {
-    let parsed: any
+    let parsed: Parsed['posix']
     beforeEach(() => {
         parsed = resetParsed().posix
     })
@@ -14,7 +14,7 @@ describe('mount', () => {
 })
 
 describe('query', () => {
-    let parsed: any
+    let parsed: Parsed['posix']
     beforeEach(() => void (parsed = resetParsed().posix))
     it('basic', () => {
         expect(parsed`foo``bar``baz`.q`` + '').toEqual('foo/bar/baz?')
@@ -25,7 +25,7 @@ describe('query', () => {
 })
 
 describe('from util', () => {
-    let parsed: any, target: any
+    let parsed: Parsed['posix'], target: ParsedPath
     beforeEach(() => {
         parsed = resetParsed().posix
         target = parsed`foo``bar``baz`
@@ -43,7 +43,7 @@ describe('from util', () => {
 })
 
 describe('to util', () => {
-    let parsed: any, target: any
+    let parsed: Parsed['posix'], target: ParsedPath
     beforeEach(() => {
         parsed = resetParsed().posix
         target = parsed`foo``bar``baz`
@@ -62,7 +62,7 @@ describe('to util', () => {
 
 // to be delete isWin
 describe('TODO: with config', () => {
-    let parsed: any
+    let parsed: Parsed['posix']
     beforeEach(() => {
         parsed = resetParsed().posix
     })
@@ -76,7 +76,7 @@ describe('TODO: with config', () => {
 })
 
 describe('with attrs', () => {
-    let parsed: any
+    let parsed: Parsed['posix']
     beforeEach(() => {
         parsed = resetParsed().posix
     })
@@ -89,7 +89,7 @@ describe('with attrs', () => {
 })
 
 // describe('TODO utils', () => {
-//     let parsed: any, target: any
+//     let parsed: Parsed['posix'], target: ParsedPath
 //     beforeEach(() => {
 //         parsed = resetParsed().posix
 //         target = parsed`foo``bar``baz`

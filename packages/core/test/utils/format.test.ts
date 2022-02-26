@@ -1,10 +1,7 @@
 import { format } from '../../src'
 
 describe('format with posix', () => {
-    let _: any
-    beforeEach(() => {
-        _ = format.posix
-    })
+    const _ = format.posix
     it('simple', () => {
         expect(_({dir: 'foo'})).toEqual('foo/')
         expect(_({base: 'foo'})).toEqual('foo')
@@ -20,10 +17,7 @@ describe('format with posix', () => {
 })
 
 describe('format with win32', () => {
-    let _: any
-    beforeEach(() => {
-        _ = format.win32
-    })
+    const _ = format.win32
     it('simple', () => {
         expect(_({dir: 'foo'})).toEqual('foo\\')
         expect(_({base: 'foo'})).toEqual('foo')

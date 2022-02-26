@@ -1,6 +1,6 @@
 import { Pathform } from './Pathform'
 import { Pathname } from './Pathname'
-import { re, path, Attrs, Config, PathSet, Construction } from '../constructors'
+import { re, path, Attrs, Props, Config, PathSet, Construction } from '../constructors'
 import { is, generatePathId, generateParsedId, generateDisplayName } from '../utils'
 
 export interface ParsedPath extends Construction {
@@ -17,15 +17,19 @@ export interface ParsedPath extends Construction {
     displayId: string
 }
 
+export function isParsedPath (target: unknown): target is ParsedPath {
+    return !is.str(target) && is.str((target as ParsedPath)?.parsedId)
+}
+
 export function ParsedPath (
     tags: PathSet | [ParsedPath, ...PathSet]=[],
     config: Config,
-    args: PathSet | [ParsedPath, ...PathSet]=[]
+    args: PathSet | [ParsedPath, ...PathSet]=[],
 ): ParsedPath {
     const [tag] = tags,
           [arg] = args,
-        isTagParsedPath = !is.str(tag) && is.str((tag as ParsedPath)?.parsedId),
-        isArgParsedPath = !is.str(arg) && is.str((arg as ParsedPath)?.parsedId),
+        isTagParsedPath = isParsedPath(tag),
+        isArgParsedPath = isParsedPath(arg),
         isCompositePath = !is.str(tag) || is.big(tag.charAt(0))
 
     /**
@@ -34,31 +38,34 @@ export function ParsedPath (
     config.pathId = generatePathId(config.displayId, config.parentPathId)
     config.parsedId = generateParsedId(config.displayId, config.pathId, config.pathId)
     config.displayId = generateDisplayName(tag, isCompositePath)
-    config.attrs = isTagParsedPath && (tag as ParsedPath).attrs
-        ? Array.prototype.concat((tag as ParsedPath).attrs, config.attrs).filter(Boolean)
+    config.attrs = isTagParsedPath && tag.attrs
+        ? Array.prototype.concat(tag.attrs, config.attrs).filter(Boolean)
         : config.attrs || []
 
     /**
      *  construct pathname and pathform
      */
     const pathname = new Pathname (
-        isTagParsedPath && (tag as ParsedPath).pathname,
+        isTagParsedPath && tag.pathname,
        !isTagParsedPath && tags as PathSet,
        !isArgParsedPath && args as PathSet,
-        isArgParsedPath && (arg as ParsedPath).pathname?.pathSets
+        isArgParsedPath && arg.pathname?.pathSets
     )
 
     const pathform = new Pathform (
         config.isWin? 'win32': 'posix',
         config.pure? 'resolve': 'join',
-        isTagParsedPath? (tag as ParsedPath).pathform: undefined,
+        isTagParsedPath? tag.pathform: undefined,
     )
 
     /**
      * return ParsedPath
      */
-    const _: ParsedPath = (props={}, ...other: PathSet): any => is.obj(props) // @TODO fix any
-        ? pathname.generate(pathform, props, config)
+    const _: ParsedPath = <P extends Props=Props>(
+        props: P={} as P,
+        ...other: PathSet
+    ): any => is.obj(props) // @TODO fix any
+        ? pathname.generate<P>(pathform, props, config)
         : ParsedPath(path(_), config, path(props, ...other))
 
     _.attrs = config.attrs

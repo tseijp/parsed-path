@@ -1,8 +1,9 @@
-import {interleave, flatten, is} from '../utils'
+import { interleave, flatten, is } from '../utils'
+import { Props } from './re'
 
 export type Path =
     | string
-    | (<Props>(props: Props) => PathSet)
+    | (<P extends Props=Props>(props: P) => PathSet)
     | Path[]
 
 export type Rule =
@@ -21,12 +22,6 @@ export type PathSet = Path[]
 /**
  *  @TODO COMMENT
  */
-export function path (rules?: URL, ...interpolations: RuleSet): PathSet
-
-export function path (rules?: Rule, ...interpolations: RuleSet): PathSet
-
-export function path (rules?: TemplateStringsArray, ...interpolations: RuleSet): PathSet
-
 export function path (
     rules?: URL | Rule | string[],
     ...interpolations: RuleSet

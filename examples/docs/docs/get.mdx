@@ -42,11 +42,11 @@ render(
 
 ### React Recipies
 
-<Live.Card scope={{ React, parsed }} code={`
+<Live.Card scope={{ parsed }} code={`
 const VERSION = 2.1;
 const API = parsed\`api\`\`v\${VERSION}\`\`user\`\`\${props => props.user}\`;
-const As = props => React.createElement('button', props, props.href);
+const Link = props => <a href={props.href}>{props.href}</a>;
 render(
-  <API as={As} user={10}/>
+  <API as={Link} user={10}/>
 )
 `.trim()}/>

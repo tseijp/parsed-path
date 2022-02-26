@@ -1,4 +1,4 @@
-import { resetParsed } from '../../src'
+import { resetParsed, Parsed } from '../../src'
 /*
  * `base``name``ext` => foo      // two ignore
  * `root``dir``base` => bar/baz  // left ignore
@@ -7,7 +7,7 @@ import { resetParsed } from '../../src'
  */
 
 describe('format static', () => {
-    let parsed: any
+    let parsed: Parsed['posix']
     beforeEach(() => {
         parsed = resetParsed().posix
     })
@@ -32,8 +32,8 @@ describe('format static', () => {
 })
 
 describe('format with props', () => {
-    let parsed: any
-    const foo = {$: 'foo'}, $foo = ($: any) => $.$ || 'foo', $ = ($: any) => $.$
+    let parsed: Parsed['posix']
+    const foo = {$: 'foo'}, $foo = <T>($: {$: T}) => $.$ || 'foo', $ = <T>($: {$: T}) => $.$
     beforeEach(() => {
         parsed = resetParsed().posix
     })
@@ -58,11 +58,11 @@ describe('format with props', () => {
 })
 
 describe('format with attrs', () => {
-    let parsed: any
+    let parsed: Parsed['posix']
     beforeEach(() => {
         parsed = resetParsed().posix
     })
-    const foo = {$: 'foo'}, ignore = {$: 'ignore'}, $ = ($: any) => $.$
+    const foo = {$: 'foo'}, ignore = {$: 'ignore'}, $ = <T>($: {$: T}) => $.$
     it('to string without args', () => {
         expect(parsed().withAttrs(foo)`dir: ${$};`()).toEqual('foo/.')
         expect(parsed().withAttrs(foo)`base: ${$};`(foo)).toEqual('foo')

@@ -1,6 +1,6 @@
 import { compile } from 'stylis'
 import { Config } from '../constructors'
-import { format, PathObject } from '../utils'
+import { format } from '../utils'
 const path = require('path-browserify')
 
 type FormsMap = Map<string, Set<string>>
@@ -13,18 +13,16 @@ export interface Pathform {
     pathId: string
     pathform?: Pathform
     isStatic: boolean
-    forms: FormsMap
     options: object
-    formatPath (pathObject: PathObject): string
-    parsePath (...args: string[]): PathObject
-    joinPath (...args: string[]): string
+    forms: FormsMap
+    mode: 'posix'|'win32'
+    join: string
 }
 
 export class Pathform implements Pathform {
     constructor (mode: 'posix'|'win32', join: string, pathform?: Pathform|false) {
-        this.formatPath = format[mode]
-        this.parsePath = path.parse
-        this.joinPath = path[join]
+        this.mode = mode
+        this.join = join
         this.pathform = pathform || undefined
         this.isStatic = !pathform || pathform.isStatic
         this.forms = this.pathform?.forms || new Map<string, Set<string>>([])
@@ -53,24 +51,23 @@ export class Pathform implements Pathform {
     }
 
     generate (names: string[], config: Config={}) {
-        const {isStatic, forms, joinPath, joinForm, parsePath, parseForm} = this
+        const {isStatic, forms, mode, join, joinForm, parseForm} = this
         const { pathId: id } = config
         const informalNames = names.filter(name => {
             if (name.match?.(FORM_REGEX) && !this.hasFormForId(id, name))
-                this.insertForms(id, name)
+                this.insertForms(id!, name)
             else return true
         })
 
         if (isStatic && (forms.get(id)?.size || 0) ===0)
-            return cleanup(joinPath(...informalNames))
-
-        const joinedPath = joinPath(...informalNames),
+            return cleanup(path[join](...informalNames))
+        const joinedPath = path[join](...informalNames),
               joinedForm = joinForm(forms.get(id)),
-              parsedPath = parsePath(joinedPath),
+              parsedPath = path.parse(joinedPath),
               parsedForm = parseForm(joinedForm),
               {dir, name, ext} = parsedPath
 
-        return cleanup(this.formatPath({dir, name, ext, ...parsedForm}))
+        return cleanup(format[mode]({dir, name, ext, ...parsedForm}))
     }
 }
 

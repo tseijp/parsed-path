@@ -1,10 +1,10 @@
-import { primitives, resetParsed } from '../../src'
+import { primitives, resetParsed, Parsed } from '../../src'
 import styled from 'styled-components'
 import renderer from 'react-test-renderer';
 // const LOCATION = new URL('https://tsei.jp/note/api/user/100')
 
 describe('multi generate', () => {
-    let parsed: any;
+    let parsed: Parsed['posix'];
     beforeEach(() => {
         parsed = resetParsed().posix
     })
@@ -12,22 +12,20 @@ describe('multi generate', () => {
         const Root = parsed`/${(_: any) => _.number}`
         let i = 0
         for (;;)
-            if (i < 10)
-                expect(Root({number: ++i}) + "").toEqual(`/${i}`)
-            else break
+            if (i >= 10) break
+            else expect(Root({number: ++i}) + "").toEqual(`/${i}`)
     })
     it('with pathform', () => {
         const Root = parsed`name: ${(_: any) => _.number};ext: js;`
         let i = 0
-        for(;;)
-            if (i < 0)
-                expect(Root({number: ++i}) + "").toEqual(`${i}.js`)
-            else break
+        for (;;)
+            if (i >= 0) break
+            else expect(Root({number: ++i}) + "").toEqual(`${i}.js`)
     })
 })
 
 describe('defined parsed tag', () => {
-    let parsed: any
+    let parsed: Parsed
     beforeEach(() => {
         parsed = resetParsed()
     })
@@ -45,7 +43,7 @@ describe('defined parsed tag', () => {
 })
 
 describe('examles', () => {
-    let parsed: any
+    let parsed: Parsed
     beforeEach(() => {
         parsed = resetParsed()
     })
@@ -65,6 +63,7 @@ describe('examles', () => {
         expect(File({xml: false})).toEqual('/home/user/dir/file.ts')
     })
     it('using primitives', () => {
+        // @ts-expect-error someday they'll handle imperative assignment properly
         const GITHUB = parsed.https`github.com`
         const TSEIJP = GITHUB`tseijp`
         expect(GITHUB + "").toEqual('https://github.com')

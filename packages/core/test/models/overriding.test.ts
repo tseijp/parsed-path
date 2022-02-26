@@ -1,4 +1,4 @@
-import { resetParsed } from '../../src'
+import { resetParsed, Parsed, ParsedPath } from '../../src'
 /*
  * `base``name``ext` => foo      // two ignore
  * `root``dir``base` => bar/baz  // left ignore
@@ -7,7 +7,7 @@ import { resetParsed } from '../../src'
  */
 
 describe('override format static', () => {
-    let parsed: any, target: any
+    let parsed: Parsed['posix'], target: ParsedPath
     beforeEach(() => {
         parsed = resetParsed().posix
         target = parsed`Foo``Bar``Baz`
@@ -33,8 +33,8 @@ describe('override format static', () => {
 })
 
 describe('override with props', () => {
-    let parsed: any, target: any
-    const foo = {$: 'foo'}, $ = ($: any) => $.$, $foo = ($: any) => $.$ || 'foo'
+    let parsed: Parsed['posix'], target: ParsedPath
+    const foo = {$: 'foo'}, $ = <T>($: {$: T}) => $.$, $foo = <T>($: {$: T}) => $.$ || 'foo'
     beforeEach(() => {
         parsed = resetParsed().posix
         target = parsed`Foo``Bar``Baz`
@@ -43,7 +43,7 @@ describe('override with props', () => {
         expect(target`dir: ${$};`()).toEqual('Foo/Bar/Baz')
         expect(target`base: ${$};`(foo)).toEqual('Foo/Bar/foo')
         expect(target`root: ${$foo};` + '').toEqual('Foo/Bar/Baz')
-        expect(target`name: ${({$='foo'}: any) => $};`.toString()).toEqual('Foo/Bar/foo')
+        expect(target`name: ${({$='foo'}) => $};`.toString()).toEqual('Foo/Bar/foo')
     })
     it('to string with args', () => {
         expect(target`base: ${$};``name: bar;``ext: baz;`()).toEqual('Foo/Bar/barbaz')
@@ -60,12 +60,12 @@ describe('override with props', () => {
 })
 
 describe('override with attrs', () => {
-    let parsed: any, target: any;
+    let parsed: Parsed['posix'], target: ParsedPath
     beforeEach(() => {
         parsed = resetParsed().posix
         target = parsed`Foo``Bar``Baz`
     })
-    const foo = {$: 'foo'}, ignore = {$: 'ignore'}, $ = ($: any) => $.$
+    const foo = {$: 'foo'}, ignore = {$: 'ignore'}, $ = <T>($: {$: T}) => $.$
     it('to string without args', () => {
         expect(target.withAttrs(foo)`dir: ${$};`()).toEqual('foo/Baz')
         expect(target.withAttrs(foo)`base: ${$};`(foo)).toEqual('Foo/Bar/foo')
@@ -87,7 +87,7 @@ describe('override with attrs', () => {
 })
 
 describe('override from args', () => {
-    let parsed: any, target: any
+    let parsed: Parsed['posix'], target: ParsedPath
     beforeEach(() => {
         parsed = resetParsed().posix
         target = parsed`Foo``Bar``Baz`

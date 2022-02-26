@@ -3,13 +3,17 @@ import { ParsedPath } from '../models'
 
 export type Attrs =
     | object
-    | ((props: object) => object)
+    | (<P extends Props=Props>(props: P) => P)
+
+export type Props = Partial<{
+    as: any // @TODO fix any
+}>
 
 export type Config = Partial<{
     /**
      *  Inherited config.
      */
-    as: <Props>(props: Props) => null | JSX.Element
+    as: any // @TODO fix any
     key: string
     pure: boolean
     attrs: Attrs
@@ -32,9 +36,10 @@ export type Config = Partial<{
     parentPathId: string
 }>
 
-export interface Construction<Model=ParsedPath> {
-    (...args: RuleSet): string | Model
-    toString (arg?: object, ...args: RuleSet): string | Model
+export interface Construction<T=ParsedPath> {
+    (...args: RuleSet): T // | string
+    (arg?: object, ...args: RuleSet): string | T
+    toString (arg?: object, ...args: RuleSet): string | T
     withConfig (next: Config, prev?: Config): Construction
     withAttrs (next: Attrs, prev?: Config): Construction
     mount (...args: RuleSet):  ParsedPath

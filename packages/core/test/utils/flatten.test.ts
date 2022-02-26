@@ -4,14 +4,15 @@ describe('flatten', () => {
     it('defers functions', () => {
         const str = ({bool=true}) => (bool ? 'bar' : 'baz')
         const arr = () => ['static', ({bool=true}) => (bool ? 'bar' : 'baz')]
+        type T = {bool: boolean}
         expect(flatten(['foo', str, 'baz'])).toEqual(['foo', str, 'baz'])
         expect(flatten(['foo', arr, 'baz'])).toEqual(['foo', arr, 'baz'])
-        expect(flatten(['foo', str], {bool: true})).toEqual(['foo', 'bar'])
-        expect(flatten(['foo', str], {bool: false})).toEqual(['foo', 'baz'])
-        expect(flatten(['foo', arr], {bool: true})).toEqual(['foo', 'static', 'bar'])
-        expect(flatten(['foo', arr], {bool: false})).toEqual(['foo', 'static', 'baz'])
-        expect(flatten(['foo', str, 'baz'], {bool: true})).toEqual(['foo', 'bar', 'baz'])
-        expect(flatten(['foo', str, 'baz'], {bool: false})).toEqual(['foo', 'baz', 'baz'])
+        expect(flatten<T>(['foo', str], {bool: true})).toEqual(['foo', 'bar'])
+        expect(flatten<T>(['foo', str], {bool: false})).toEqual(['foo', 'baz'])
+        expect(flatten<T>(['foo', arr], {bool: true})).toEqual(['foo', 'static', 'bar'])
+        expect(flatten<T>(['foo', arr], {bool: false})).toEqual(['foo', 'static', 'baz'])
+        expect(flatten<T>(['foo', str, 'baz'], {bool: true})).toEqual(['foo', 'bar', 'baz'])
+        expect(flatten<T>(['foo', str, 'baz'], {bool: false})).toEqual(['foo', 'baz', 'baz'])
     })
 
     it('defer primitives string', () => {

@@ -1,4 +1,4 @@
-import { resetParsed } from '../../src'
+import { resetParsed, Parsed } from '../../src'
 /*
  * `base``name``ext` => foo      // two ignore
  * `root``dir``base` => bar/baz  // left ignore
@@ -7,7 +7,7 @@ import { resetParsed } from '../../src'
  */
 
 describe('parsed static', () => {
-    let parsed: any
+    let parsed: Parsed['posix']
     beforeEach(() => {
         parsed = resetParsed().posix
     })
@@ -31,7 +31,10 @@ describe('parsed static', () => {
 })
 
 describe('parsed with props', () => {
-    let parsed: any, foo= {$: 'foo'}, $foo = ($: any) => $.$||'foo', $ = ($: any) => $.$
+    let parsed: Parsed['posix']
+    const foo= {$: 'foo'},
+        $foo = <T>($: {$: T}) => $.$ || 'foo',
+        $ = <T>($: {$: T}) => $.$
     beforeEach(() => {
         parsed = resetParsed().posix
     })
@@ -56,8 +59,10 @@ describe('parsed with props', () => {
 })
 
 describe('parsed with attrs', () => {
-    let parsed: any
-    const foo = {$: 'foo'}, bar = {$: 'bar'}, $ = ($: any) => $.$
+    let parsed: Parsed['posix']
+    const foo = {$: 'foo'},
+          bar = {$: 'bar'},
+          $ = <T>($: {$: T}) => $.$
     beforeEach(() => {
         parsed = resetParsed().posix
     })
