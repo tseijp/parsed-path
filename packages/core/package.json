@@ -1,21 +1,11 @@
 {
-    "name": "parsed-path",
-    "author": "tsei",
-    "license": "MIT",
-    "private": false,
-    "sideEffect": false,
-    "version": "0.1.18",
-    "module": "index.js",
-    "types": "index.d.ts",
-    "main": "index.cjs.js",
-    "files": [
-        "docs",
-        "src",
-        "index.js",
-        "index.d.ts",
-        "index.cjs.js"
-    ],
+    "bugs": "https://github.com/tseijp/parsed-path/issues/",
+    "homepage": "https://tseijp.github.io/parsed-path/",
+    "repository": "https://github.com/tseijp/parsed-path/",
     "description": "Use the best bits of ES6 to parse your path without stress 👋",
+    "maintainers": [
+        "tseijp (https://github.com/tseijp)"
+    ],
     "keywords": [
         "nodejs",
         "typescript",
@@ -29,14 +19,22 @@
         "filepath",
         "dir"
     ],
-    "homepage": "https://tseijp.github.io/parsed-path",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/tseijp/parsed-path.git"
-    },
-    "bugs": {
-        "url": "https://github.com/tseijp/parsed-path/issues"
-    },
+    "name": "parsed-path",
+    "author": "tsei",
+    "license": "MIT",
+    "version": "0.1.18",
+    "module": "index.js",
+    "types": "index.d.ts",
+    "main": "index.cjs.js",
+    "files": [
+        "docs",
+        "src",
+        "index.js",
+        "index.d.ts",
+        "index.cjs.js"
+    ],
+    "private": false,
+    "sideEffect": false,
     "publishConfig": {
         "access": "public"
     },

@@ -1,4 +1,24 @@
 {
+    "bugs": "https://github.com/tseijp/parsed-path/issues/",
+    "homepage": "https://tseijp.github.io/parsed-path/",
+    "repository": "https://github.com/tseijp/parsed-path/",
+    "description": "Use the best bits of ES6 to parse your path without stress 👋",
+    "maintainers": [
+        "tseijp (https://github.com/tseijp)"
+    ],
+    "keywords": [
+        "nodejs",
+        "typescript",
+        "parse",
+        "reactjs",
+        "filesystem",
+        "directory",
+        "file",
+        "path",
+        "stat",
+        "filepath",
+        "dir"
+    ],
     "name": "@parsed-path/docs",
     "version": "0.0.0",
     "private": false,
