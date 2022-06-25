@@ -1,3 +1,5 @@
+# 👋parsed-path
+
 <h3 align="center"><ruby>
 <h3 align="right"><ruby>
 <h3 align="left"><ruby>
@@ -49,7 +51,7 @@ Use the best bits of ES6 to parse your path without stress 👋
 </samp>
 </strong>
 
-### Installation
+## Installation
 
 <h4 align="center">
 
@@ -59,7 +61,7 @@ npm install parsed-path or yarn add parsed-path
 
 </h4>
 
-### Documentation and Examples
+## Documentation and Examples
 
 See the documentation for more information about `parsed-path`.
 
@@ -74,7 +76,7 @@ Examples and tutorials can be found here: <kbd>**[API Reference][api]**</kbd>
 </h6>
 <hr/>
 
-### What does it look like?
+## What does it look like?
 
 Utilising tagged template literals (a recent addition to JavaScript),
 parsed-path allows you to write pathname.
