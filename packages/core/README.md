@@ -37,7 +37,7 @@ Use the best bits of ES6 to parse your path without stress 👋
     https://www.npmjs.com/package/parsed-path)
 [![ module formats ](
     https://img.shields.io/badge/module%20formats-cjs%20esm-green.svg)](
-    #alternative-installation-methods)
+    #installation)
 [![ codecov ](
     https://codecov.io/gh/tseijp/parsed-path/coverage.svg?branch=master)](
     https://codecov.io/gh/tseijp/parsed-path)
